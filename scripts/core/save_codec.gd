@@ -32,7 +32,7 @@ static func to_dict(m: GameModel) -> Dictionary:
 			"seed": m.seed_value, "rng_state": str(m.rng.state), "story_mode": m.story_mode,
 			"day": m.day, "hour": m.hour,
 			"credits": m.credits, "research_points": m.research_points, "reputation": m.reputation,
-			"debt": m.debt, "debt_paid_total": m.debt_paid_total, "late_payments": m.late_payments,
+			"debt": m.debt, "debt_paid_total": m.debt_paid_total, "late_payments": m.late_payments, "last_rescue_day": m.last_rescue_day,
 			"garage_level": m.garage_level, "suspicion": m.suspicion, "next_id": m.next_id,
 			"ships": ships, "lots": lots, "clients": clients, "staff": staff, "candidates": cands,
 			"sold": m.sold.duplicate(true), "researched": m.researched.duplicate(),
@@ -97,6 +97,7 @@ static func from_dict(db: ContentDB, data: Dictionary) -> GameModel:
 	m.debt = int(s.get("debt", 0))
 	m.debt_paid_total = int(s.get("debt_paid_total", 0))
 	m.late_payments = int(s.get("late_payments", 0))
+	m.last_rescue_day = int(s.get("last_rescue_day", 0))
 	m.garage_level = int(s.get("garage_level", 1))
 	m.suspicion = float(s.get("suspicion", 0.0))
 	m.next_id = int(s.get("next_id", 1))

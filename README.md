@@ -21,7 +21,7 @@ Commandes : clic gauche partout ; **Espace** pause ; **1-3** vitesse ; **Échap*
 ## Vérifications
 
 ```
-python tools/check_all.py          # import, 120 tests headless, simulation 30 jours, chapitres 1-2,
+python tools/check_all.py          # import, 122 tests headless, simulation 30 jours, chapitres 1-2,
                                     # test de fumée de l'UI, assets, manifeste, workflows, docs, captures,
                                     # kit Steam
 python tools/screenshots.py        # captures du vrai jeu dans docs/screens/

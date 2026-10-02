@@ -157,3 +157,33 @@ func test_order_client_requires_criteria() -> void:
 	eq(str(res.get("result", "")), "criteria", "refus : mauvais vaisseau")
 	c.criteria = {"class": ["cargo"]}
 	eq(Valuation.estimate_wtp(m, c, s), 12000, "paie le budget de la commande")
+
+
+func test_emergency_loan_when_broke_without_ships() -> void:
+	var m: GameModel = new_model()
+	m.ships.clear()
+	for l: AuctionLot in m.lots:
+		l.player_max = 0
+	m.credits = -500
+	var debt0: int = m.debt
+	m.advance_hours(24)
+	gt(float(m.credits), 1000.0, "prêt de dépannage versé")
+	gt(float(m.debt), float(debt0), "prêt ajouté à la dette")
+	m.credits = -500
+	m.advance_hours(24)
+	check(m.credits < 0, "un seul prêt par période")
+
+
+func test_low_funds_hint_when_ships_remain() -> void:
+	var m: GameModel = new_model()
+	add_ship(m, "hull_shuttle", [], 0.3)
+	m.credits = -200
+	var debt0: int = m.debt
+	m.advance_hours(24)
+	var hinted: bool = false
+	for ev: Dictionary in m.event_log:
+		if str(ev.get("type", "")) == "low_funds":
+			hinted = true
+	check(hinted, "conseil de vente émis")
+	eq(m.debt, debt0, "pas de prêt tant qu'un vaisseau peut être vendu")
+

@@ -75,6 +75,10 @@ static func describe(ev: Dictionary) -> String:
 			return I18n.t("ui.ev.debt_paid_auto" if bool(ev.get("auto", false)) else "ui.ev.debt_paid", {"amount": _cr(ev, "amount")})
 		"debt_late":
 			return I18n.t("ui.ev.debt_late", {"amount": _cr(ev, "amount"), "penalty": _cr(ev, "penalty")})
+		"emergency_loan":
+			return I18n.t("ui.ev.emergency_loan", {"amount": _cr(ev, "amount"), "debt": _cr(ev, "debt")})
+		"low_funds":
+			return I18n.t("ui.ev.low_funds")
 		"debt_cleared":
 			return I18n.t("ui.ev.debt_cleared")
 		"item_found":

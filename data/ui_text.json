@@ -1719,5 +1719,17 @@
  "ui.settings.to_windowed": {
   "fr": "Mode fenêtré (F11)",
   "en": "Windowed (F11)"
+ },
+ "ui.ev.emergency_loan": {
+  "fr": "Prêt de dépannage de Galax-Auto : +{amount} (dette +{debt})",
+  "en": "Galax-Auto emergency loan: +{amount} (debt +{debt})"
+ },
+ "ui.ev.low_funds": {
+  "fr": "Caisse dans le rouge : vendez un vaisseau, même avec ses défauts.",
+  "en": "You're in the red: sell a ship, flaws and all."
+ },
+ "ui.cat.loan": {
+  "fr": "Prêt de dépannage",
+  "en": "Emergency loan"
  }
 }

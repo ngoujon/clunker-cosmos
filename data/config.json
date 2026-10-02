@@ -23,6 +23,7 @@
     "late_penalty": 0.10,
     "late_reputation": 3
   },
+  "rescue": {"threshold": 1500, "amount": 3000, "fee": 0.15, "cooldown_days": 7},
   "upkeep_per_level": 100,
   "garage_levels": [
     {"level": 1, "cost": 0, "slots": 3, "max_staff": 3, "stations": {"buyer": 1, "mechanic": 2, "bodyworker": 1, "seller": 1, "researcher": 1}},

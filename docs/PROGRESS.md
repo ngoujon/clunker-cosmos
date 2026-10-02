@@ -30,7 +30,7 @@
 ## État actuel
 
 - `python tools/check_all.py` : 12/12 contrôles (dont le kit Steam), `ALL CHECKS PASSED`, code de sortie 0.
-- Tests headless : 120/120 (11 suites). Simulation 30 j (graine 7, mode classique) : 54 ventes, résultat
+- Tests headless : 122/122 (11 suites). Simulation 30 j (graine 7, mode classique) : 54 ventes, résultat
   d'exploitation 327 752 ¢, 0 erreur. Histoire (graine 11) : chapitres 1 et 2 bouclés au jour 8.
 - Assets : 180 fichiers validés (palette de 32 couleurs), 209 entrées de manifeste dont 197 générées.
 

@@ -26,6 +26,7 @@ const TOAST_EVENTS: Dictionary = {
 	"salaries_unpaid": ["ui_warning", UIKit.C_BAD], "garage_upgraded": ["ui_garage", UIKit.C_GOOD],
 	"defect_found": ["ui_scan", UIKit.C_ORANGE], "research_done": ["ui_research", UIKit.C_BLUE],
 	"day_started": ["ui_day", UIKit.C_DIM], "debt_cleared": ["ui_check", UIKit.C_GOOD],
+	"emergency_loan": ["ui_debt", UIKit.C_ORANGE], "low_funds": ["ui_warning", UIKit.C_BAD],
 }
 
 var bg: TextureRect

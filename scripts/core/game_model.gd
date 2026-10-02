@@ -27,6 +27,7 @@ var reputation: float = 30.0
 var debt: int = 0
 var debt_paid_total: int = 0
 var late_payments: int = 0
+var last_rescue_day: int = 0
 var garage_level: int = 1
 var suspicion: float = 0.0
 
@@ -157,6 +158,7 @@ func _new_day() -> void:
 	StaffSystem.daily(self)
 	force_spend(int(db.config.get("upkeep_per_level", 100)) * garage_level, "upkeep")
 	_debt_due()
+	_funds_check()
 	MarketSystem.daily_after_sales(self)
 	MarketSystem.expire_clients(self)
 	MarketSystem.spawn_clients(self, false)
@@ -183,6 +185,30 @@ func _debt_due() -> void:
 		late_payments += 1
 		add_reputation(-db.cfgf("debt", "late_reputation", 3.0))
 		emit({"type": "debt_late", "amount": amount, "penalty": penalty})
+
+
+## Caisse dans le rouge : un conseil s'il reste un vaisseau à vendre ; sinon (aucun vaisseau, aucune mise en
+## cours, pas de quoi miser) Galax-Auto avance de quoi racheter une épave, ajouté à la dette avec des frais.
+## Une partie ne peut donc jamais rester bloquée.
+func _funds_check() -> void:
+	var cfg: Dictionary = db.config.get("rescue", {})
+	if cfg.is_empty() or credits >= int(cfg.get("threshold", 1500)):
+		return
+	if not ships.is_empty():
+		if credits < 0:
+			emit({"type": "low_funds", "credits": credits})
+		return
+	for l: AuctionLot in lots:
+		if not l.closed and l.player_max > 0:
+			return
+	if last_rescue_day > 0 and day - last_rescue_day < int(cfg.get("cooldown_days", 7)):
+		return
+	var amount: int = int(cfg.get("amount", 3000))
+	var total: int = amount + int(round(float(amount) * float(cfg.get("fee", 0.15))))
+	earn(amount, "loan")
+	debt += total
+	last_rescue_day = day
+	emit({"type": "emergency_loan", "amount": amount, "debt": total})
 
 
 func _trim_sold() -> void:

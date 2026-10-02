@@ -108,6 +108,11 @@ Format : décision — raison (option la plus simple quand il y avait un doute).
 28. Départ : 8 000 ¢, dette 60 000 ¢ (2 500 ¢/semaine), réputation 30. Les PNJ misent 42-66 % de la valeur
     réelle de l'épave. Le jeu doit rester rentable pour un joueur raisonnable (simulation : >10 ventes/mois).
 
+50. **Filet de sécurité économique** (`rescue` dans `data/config.json`) : sans vaisseau, sans mise en cours et à
+    moins de 1 500 ¢, Galax-Auto prête 3 000 ¢ (ajoutés à la dette avec 15 % de frais, une fois par semaine au
+    plus) ; dans le rouge avec un vaisseau en stock, un conseil « vendez un vaisseau » s'affiche. Sans cela, un
+    joueur à court d'argent et sans vaisseau ne pouvait plus ni miser ni réparer : partie bloquée.
+
 ## Kit Steam
 
 43. **Bande-annonce rendue par le jeu** (Movie Maker de Godot, `--fixed-fps 30`) : une séquence scénarisée

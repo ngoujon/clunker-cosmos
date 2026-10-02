@@ -48,6 +48,7 @@ inspecteur au stylo quatre couleurs). **Public** : amateurs de jeux de gestion/i
 | Points de recherche (RP) | réparations, ventes, scans, chercheurs | arbre technologique |
 | Réputation (0-100) | ventes réussies, clients satisfaits, contrôles propres | nombre et budget des clients |
 | Dette Galax-Auto | 60 000 ¢ au départ | échéance automatique de 2 500 ¢ tous les 7 jours (pénalité si impayée, jamais de game over) |
+| Prêt de dépannage | sans vaisseau, sans mise en cours et à moins de 1 500 ¢ | +3 000 ¢ ajoutés à la dette avec 15 % de frais, au plus une fois par semaine ; dans le rouge avec un vaisseau : conseil de vente |
 
 ## 4. Temps, idle et hors-ligne
 
@@ -135,7 +136,7 @@ Raccourcis : Espace (pause), 1-3 (vitesse), Échap (menu), F11 ou Alt+Entrée (p
 ## 11. Technique
 
 - Logique pure (`scripts/core/`, RefCounted + systèmes statiques) séparée de l'UI, **testable en headless**
-  (120 tests, simulation 30 jours, chapitres 1-2 scriptés, test de fumée de l'UI).
+  (122 tests, simulation 30 jours, chapitres 1-2 scriptés, test de fumée de l'UI).
 - Contenu JSON (`data/`), textes **FR + EN** (bascule à chaud), **sauvegarde JSON versionnée** avec migration,
   générateur aléatoire déterministe sauvegardé, autosauvegarde toutes les 30 s.
 - Hors périmètre : audio, multijoueur.
