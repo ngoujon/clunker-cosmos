@@ -290,8 +290,8 @@ def build(allow_missing: bool) -> None:
     handmade_icons(manifest)
     write_palette_png(manifest)
     (ASSETS / "ships").mkdir(parents=True, exist_ok=True)
-    (ASSETS / "ships" / "anchors.json").write_text(json.dumps(anchors, indent=1), encoding="utf-8")
-    MANIFEST.write_text(json.dumps({"_comment": "Traçabilité des assets : prompt, graine, workflow, modèle, post-traitement.", "palette": "art/palette.json", "assets": manifest}, indent=1, ensure_ascii=False), encoding="utf-8")
+    (ASSETS / "ships" / "anchors.json").write_text(json.dumps(anchors, indent=1), encoding="utf-8", newline="\n")
+    MANIFEST.write_text(json.dumps({"_comment": "Traçabilité des assets : prompt, graine, workflow, modèle, post-traitement.", "palette": "art/palette.json", "assets": manifest}, indent=1, ensure_ascii=False), encoding="utf-8", newline="\n")
     write_disclosure(manifest)
     print(f"build : {len(manifest)} entrées de manifeste, {len(anchors)} pièces ancrées, {len(missing)} manquants")
 
@@ -338,7 +338,7 @@ def write_disclosure(manifest: list[dict[str, Any]]) -> None:
     for m in gen:
         p = m["prompt"].replace("|", "/")
         lines.append(f"| `{m['file']}` | {m['seed']} | {p[:110]}… |")
-    (ROOT / "docs" / "AI_DISCLOSURE.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (ROOT / "docs" / "AI_DISCLOSURE.md").write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
 
 
 def placeholders() -> None:
@@ -381,7 +381,7 @@ def placeholders() -> None:
     if not ap.exists() or made:
         old = json.loads(ap.read_text(encoding="utf-8")) if ap.exists() else {}
         old.update(anchors)
-        ap.write_text(json.dumps(old, indent=1), encoding="utf-8")
+        ap.write_text(json.dumps(old, indent=1), encoding="utf-8", newline="\n")
     print(f"placeholders : {made} fichiers créés")
 
 

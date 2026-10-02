@@ -39,6 +39,27 @@ Format : décision — raison (option la plus simple quand il y avait un doute).
 19. **Politique de l'atelier** (honnête / pragmatique / requin) appliquée automatiquement par les mécaniciens,
     avec décision manuelle par défaut possible (réparer / maquiller / déclarer).
 
+## Interface
+
+29. **Une seule scène (`scenes/main.tscn`)**, tout le reste construit en code (`MainUI` + un `GameScreen` par
+    écran). Les écrans se reconstruisent à chaque heure de jeu ou action (drapeau `dirty`), en conservant le
+    défilement et jamais pendant un clic.
+30. **Garage en coupe** : 3 baies par étage ; les baies 4-6 et 7-9 (agrandissements, recherche) apparaissent sur des
+    mezzanines dessinées en code au-dessus du décor. La bande d'employés (portraits 24×24) n'est affichée que tant
+    qu'il reste de la place (≤ 2 étages) ; l'écran Équipe montre toujours tout.
+31. **Arbre techno en colonnes** (une branche par colonne, profondeur vers le bas) : plus lisible en 480×270 que
+    des lignes horizontales où les voies se chevauchaient.
+32. **Négociation à prix proposés** (−5 %, estimation, +8 %) plutôt qu'un champ de saisie : plus simple à la
+    souris en basse résolution ; les commandes de quête se vendent au prix fixé par le client.
+33. **Le temps est suspendu** pendant les dialogues et fenêtres modales (`Game.hold`), pas pendant la navigation.
+34. **Captures et test de fumée par une « visite » intégrée** (`-- --tour=smoke|screens`) : la même partie de
+    démonstration (mode Histoire, autopilote 14 jours, graine 20261) sert aux captures, au test headless de l'UI
+    et à la vidéo promotionnelle.
+35. **Portraits 24×24 dédiés**, réduits directement depuis l'image source (plus nets qu'un 48×48 divisé par deux).
+
+36. **Boutons sans icône** : variation de thème `TextButton` aux marges élargies (sinon le texte mordait sur le
+    cadre du 9-slice) ; titres de section posés directement sur le décor avec un bandeau sombre semi-opaque.
+
 ## Art
 
 20. **Pistes comparées** sur les mêmes prompts et graines (`tools/compare_models.py`, planche
@@ -63,6 +84,24 @@ Format : décision — raison (option la plus simple quand il y avait un doute).
     dans la palette).
 27. **Images brutes non versionnées** (`art/raw/`, ~centaines de Mo) : reproductibles via le manifeste
     (prompt, graine, workflow).
+
+37. **Revue des planches avant sélection** (`art/review/*.png`) : graine retenue par asset dans
+    `art/selection.json` ; les assets ratés sont refaits avec un prompt corrigé et de nouvelles graines
+    (`RESEEDED` dans `tools/asset_specs.py`) : coque de remorqueur générée avec des roues, ailes générées comme
+    des vaisseaux complets, deux portraits jugés trop proches de personnages connus (champignon à chapeau rouge
+    à pois blancs, mécanicien à bandana) remplacés par des designs originaux.
+38. **Ailes décrites comme des plaques** (« plaque triangulaire », « lame en parallélogramme », « panneau solaire ») :
+    le mot *wing* faisait dessiner un vaisseau entier.
+39. **Usure en décalcomanies** : taches dispersées générées sur fond blanc, détourées par les coins puis
+    appliquées par le shader par blocs de 5×5 px selon un seuil de hachage (proportion = usure du vaisseau,
+    type de tache choisi d'après les défauts). Les textures plein cadre donnaient des aplats peu lisibles.
+40. **Moteurs dessinés à la verticale tournés de 90°** avant le test d'orientation ; la flamme est détectée sur
+    les teintes 5-60° saturées et lumineuses (le bleu/violet des tuyères n'est plus pris pour une flamme).
+41. **Icônes de lecture (pause, ×1, ×2, ×4) dessinées par script** dans la palette : symboles universels plus
+    lisibles en 16×16 qu'une génération ; marquées « faites main » dans le manifeste.
+42. **Icône de la branche Diagnostic régénérée** (scanner portatif) : le stéthoscope devenait invisible après
+    quantification (contour sombre sur fond sombre) ; la variante ressemblant à une console de jeu portable
+    a été écartée (trop proche d'un produit existant).
 
 ## Équilibrage
 

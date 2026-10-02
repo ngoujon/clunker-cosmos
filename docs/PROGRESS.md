@@ -11,20 +11,30 @@
   113 tests headless, simulation 30 jours, chapitres 1-2 scriptés.
 - [x] **J1b — Pipeline art** : workflows API (4 pistes), client HTTP, validation `/object_info`, comparatif,
   `pixelize.py`, `gen_assets.py` (generate/sheets/build/placeholders/validate), placeholders.
-- [ ] **J2 — Interface** : écrans garage (vue en coupe), enchères, RH, arbre (graphe), journal de quêtes,
-  ventes, dialogues, rapport du jour / hors-ligne, menu de nouvelle partie, FR/EN.
-- [ ] **J3 — Art final** : génération Z-Image, revue des planches, sélection, build, shader palette-swap + usure.
-- [ ] **J4 — Vérifications** : `tools/check_all.py`, captures `docs/screens/`, README, GDD, finitions.
+- [x] **J2 — Interface** : écran titre (parade de vaisseaux, Histoire / Classique, FR/EN), garage en coupe
+  (baies, mezzanine, coup de main, détail avec réparer / maquiller / peindre / options / vendre), enchères
+  (5 lieux, scan, mises par procuration, maximum conseillé), ventes (clients, critères, offres, contre-offres),
+  équipe (postes, règles de priorité, embauche), labo (graphe de 42 nœuds), quêtes + journal, bureau
+  (finances, dette, agrandissement, politique, automatisation, rapport du jour), dialogues (machine à écrire),
+  rapport hors-ligne, toasts d'événements. Visite automatique `--tour=smoke|screens` pour les tests et captures.
+- [x] **J3 — Art final** : 197 images Z-Image-Turbo retenues après revue des planches (graines dans
+  `art/selection.json`), post-traitées en palette de 32 couleurs ; vaisseaux composés par ancres ; shader
+  `ship_part.gdshader` (peinture par palette-swap + calque d'usure) ; manifeste et divulgation IA à jour.
+- [x] **J4 — Vérifications** : `tools/check_all.py` → `ALL CHECKS PASSED` (11 contrôles), 9 captures du vrai jeu
+  dans `docs/screens/` relues et corrigées, README, GDD, DECISIONS, MODEL_LICENSES, AI_DISCLOSURE.
+- [ ] **J5 — Kit Steam** (demande ajoutée par l'utilisateur, à faire APRÈS J4) : vidéo promotionnelle
+  publiable sur Steam (MP4 H.264 1920×1080, muette car audio hors périmètre), captures pour la fiche magasin
+  (1920×1080, ×4 nearest), et `docs/STEAM_STORE.md` (descriptions FR/EN, configuration requise, langues,
+  tags, divulgation IA, éléments restant à fournir).
 
 ## État actuel
 
-- Tests : 113/113. Simulation 30 j (graine 7) : 54 ventes, résultat d'exploitation > 0, 0 erreur.
-  Histoire (graine 11) : chapitres 1 et 2 bouclés en 8 jours de jeu.
-- Génération des 175 assets (238 images) lancée avec Z-Image-Turbo.
+- `python tools/check_all.py` : 11/11 contrôles, `ALL CHECKS PASSED`, code de sortie 0.
+- Tests headless : 120/120 (11 suites). Simulation 30 j (graine 7, mode classique) : 54 ventes, résultat
+  d'exploitation 327 752 ¢, 0 erreur. Histoire (graine 11) : chapitres 1 et 2 bouclés au jour 8.
+- Assets : 180 fichiers validés (palette de 32 couleurs), 209 entrées de manifeste dont 197 générées.
 
 ## Prochaines étapes
 
-1. UI complète (thème, écrans) avec les placeholders.
-2. Revue des planches d'art (`art/review/*.png`), choix des graines (`art/selection.json`), `build`.
-3. `tools/check_all.py` + `tools/screenshots.py`, captures regardées et corrigées.
-4. README, GDD, licences, divulgation IA.
+1. J5 — kit Steam : `tools/make_trailer.py` (Movie Maker de Godot → MP4 H.264 1920×1080 FR et EN),
+   captures 1920×1080 (`python tools/screenshots.py --steam`), `docs/STEAM_STORE.md`.
