@@ -21,7 +21,7 @@ NEGATIVE = "blurry, photo, realistic, 3d render, text, letters, watermark, signa
 HULLS = {
     "hull_shuttle": ("small chubby used space shuttle hull shaped like a mosquito body, rounded nose", [76, 34]),
     "hull_courier": ("sleek small courier spaceship hull, slim aerodynamic body, pointed nose", [80, 30]),
-    "hull_tug": ("stubby heavy space tugboat hull, boxy bulldog-like body with a big front bumper", [80, 38]),
+    "hull_tug": ("stubby heavy hovering space tugboat hull, boxy armored body with a big front bumper and a tow hook, no wheels, no legs", [80, 38]),
     "hull_miner": ("mining spaceship hull with a big drill on the nose, sturdy body", [88, 36]),
     "hull_cargo": ("long cargo freighter spaceship hull, whale-like big container body", [108, 42]),
     "hull_fighter": ("sleek retro interceptor spaceship fuselage, long pointed nose", [92, 30]),
@@ -45,16 +45,26 @@ COCKPITS = {
     "cock_crystal": ("crystal dome spaceship cockpit made of faceted glowing glass", [32, 22]),
 }
 WINGS = {
-    "wing_stub": ("pair of tiny stubby spaceship wing fins", [30, 16]),
-    "wing_delta": ("triangular delta spaceship wing", [52, 22]),
-    "wing_swept": ("swept-back spaceship wing like an arrow", [54, 20]),
-    "wing_solar": ("spaceship solar sail wing with blue solar panels", [56, 24]),
+    "wing_stub": ("single small stubby rounded triangular fin plate with grey bolts, one detached spaceship part", [30, 16]),
+    "wing_delta": ("single large flat red metal plate shaped like a long right triangle, grey trim and rivets along the edges, one object", [52, 22]),
+    "wing_swept": ("single long thin slanted red metal blade shaped like a parallelogram, grey trim and rivets, one object", [54, 20]),
+    "wing_solar": ("single rectangular solar panel wing with blue photovoltaic cells on a short mounting arm, one detached part", [56, 24]),
 }
+## Graines de remplacement pour les assets dont le prompt a été corrigé après la revue des planches.
+RESEEDED: dict[str, list[int]] = {
+    "hull_tug": [111, 222, 333], "wing_stub": [111, 222, 333], "wing_delta": [444, 555, 666], "wing_swept": [444, 555, 666],
+    "wing_solar": [111, 222, 333], "client_06": [111, 222], "staff_08": [111, 222], "def_rust": [111, 222],
+    "wear_rust": [801, 802], "wear_scratch": [801, 802], "wear_dent": [801, 802], "wear_scorch": [801, 802],
+    "branch_diagnostic": [111, 222],
+}
+## Icônes dessinées à la main (symboles de lecture) : plus lisibles en 16x16 que les versions générées.
+HANDMADE_ICONS: tuple[str, ...] = ("ui_pause", "ui_play", "ui_fast", "ui_faster")
+## Décalcomanies d'usure dispersées sur fond blanc (détourage par les coins, toutes les taches gardées).
 WEAR = {
-    "wear_rust": "scattered orange and brown rust stains and corrosion patches",
-    "wear_scratch": "scattered light grey scratches and scuff marks",
-    "wear_dent": "scattered dark grey dents and bumps on metal",
-    "wear_scorch": "scattered black and dark brown burn marks and soot stains",
+    "wear_rust": "messy random splatter of orange and brown rust stains of irregular sizes and organic shapes, like paint splashes",
+    "wear_scratch": "messy random dark grey scratch lines of different lengths crossing at random angles, like a scratched surface",
+    "wear_dent": "messy random dark grey dents and dings of irregular sizes and shapes, scattered unevenly",
+    "wear_scorch": "messy random black soot smudges and burn splotches of irregular sizes and organic shapes",
 }
 CLIENTS = {
     "glorbian": "green gelatinous blob alien with big round eyes and a tiny bow tie",
@@ -62,7 +72,7 @@ CLIENTS = {
     "zoxxian": "purple octopus-like alien with tentacles, wearing a pearl necklace and a monocle",
     "plutonian": "rocky stone golem alien with glowing crystal eyes, wearing a flat cap",
     "velarian": "bird-like alien with blue and yellow feathers and aviator goggles",
-    "mmmbr": "sentient mushroom alien with a red cap with white spots and a friendly face",
+    "mmmbr": "sentient mushroom alien with a wide flat teal cap covered in glowing yellow freckles, a droopy stalk body and sleepy eyes",
     "silicoid": "living crystal alien made of white and teal crystals, elegant",
     "neonyx": "glowing orange-red lizard alien wearing a leather jacket",
     "misty": "ghostly gaseous cloud alien with a soft white mist body and two glowing eyes",
@@ -78,7 +88,7 @@ STAFF = {
     "staff_05": "small round robot scientist with one big eye, an antenna and tiny glasses",
     "staff_06": "orange furry alien with big ears wearing a headset",
     "staff_07": "tall pale alien painter with a beret and colorful paint stains",
-    "staff_08": "young mechanic with spiky hair and a red bandana",
+    "staff_08": "young mechanic with curly orange hair, freckles and a green welding cap",
     "staff_09": "grumpy old alien mechanic with a beard made of cables and a welding mask",
     "staff_10": "charming pink alien saleswoman with sunglasses and a big smile",
 }
@@ -105,14 +115,14 @@ ROLE_SUBJECTS = {
 }
 BRANCH_SUBJECTS = {
     "branch_atelier": "anvil and hammer", "branch_commerce": "shop sign with coins", "branch_perso": "color palette with brush",
-    "branch_rh": "group of three people", "branch_diagnostic": "stethoscope", "branch_lieux": "planet with a map pin",
+    "branch_rh": "group of three people", "branch_diagnostic": "handheld diagnostic scanner with a bright green screen and an orange grip", "branch_lieux": "planet with a map pin",
 }
 ITEM_SUBJECTS = {
     "item_keel": "glowing ancient metal beam", "item_heart": "glowing reactor core shaped like a heart",
     "item_sail": "shimmering golden solar sail", "item_star": "star-shaped cockpit seat glowing", "item_compass": "celestial brass compass with a star",
 }
 DEFECT_SUBJECTS = {
-    "def_rust": "rusty metal plate", "def_dent": "dented metal panel", "def_breach": "cracked hull with escaping air puff",
+    "def_rust": "small grey metal square plate with big orange rust spots", "def_dent": "dented metal panel", "def_breach": "cracked hull with escaping air puff",
     "def_misfire": "engine coughing black smoke", "def_plasma": "leaking blue plasma drop", "def_fuel": "cracked hose with duct tape",
     "def_nav": "confused compass with question mark", "def_canopy": "cracked glass window", "def_ai": "sulking computer screen face",
     "def_wing": "bent airplane wing", "def_wiring": "chewed electric cables with spark", "def_battery": "empty battery with red level",
@@ -168,9 +178,9 @@ def specs() -> list[dict[str, Any]]:
     for pid, (subj, size) in WINGS.items():
         part("wings", pid, subj + ", seen from the side", size, True)
     for wid, subj in WEAR.items():
-        out.append({"id": wid, "category": "wear", "out": f"ships/wear/{wid}.png", "w": 1344, "h": 768, "seeds": [101, 202],
-                    "prompt": f"{STYLE}, texture overlay of {subj} spread across the whole image, no object, {ISO}",
-                    "pp": {"mode": "sprite", "max": [96, 48], "outline": False, "fill": True}})
+        out.append({"id": wid, "category": "wear", "out": f"ships/wear/{wid}.png", "w": 1344, "h": 672, "seeds": [101, 202],
+                    "prompt": f"{STYLE}, {subj}, spread across the whole image, isolated on a plain white background, no text",
+                    "pp": {"mode": "sprite", "max": [96, 48], "mask": "corners", "min_component": 0.0, "outline": False, "crop": False, "pad": 0}})
     species = {s["id"]: s for s in _load("species.json")["species"]}
     for sid, subj in CLIENTS.items():
         pid = species[sid]["portrait"]
@@ -217,6 +227,9 @@ def specs() -> list[dict[str, Any]]:
     out.append({"id": "ui_button_src", "category": "ui", "out": "ui/_button_src.png", "w": 1024, "h": 1024, "seeds": [401, 402],
                 "prompt": f"{STYLE}, single wide rectangular sci-fi metal game button with orange beveled border and a dark steel face, no text, game UI element, front view, {ISO}",
                 "pp": {"mode": "sprite", "max": [32, 16], "outline": False}})
+    for spec in out:
+        if spec["id"] in RESEEDED:
+            spec["seeds"] = RESEEDED[spec["id"]]
     return out
 
 

@@ -184,10 +184,21 @@ def process(rgb_img: Image.Image, mask_img: Image.Image | None, spec: dict[str, 
     rgb = np.array(rgb_img.convert("RGB"))
     rgb = enhance(rgb, float(spec.get("contrast", 1.1)), float(spec.get("saturation", 1.15)))
     mode = spec.get("mode", "sprite")
-    if spec.get("orient") == "flame_left" and _warm_on_right(rgb):
-        rgb = rgb[:, ::-1].copy()
-        if mask_img is not None:
-            mask_img = mask_img.transpose(Image.FLIP_LEFT_RIGHT)
+    if spec.get("orient") == "flame_left":
+        a0 = _quick_alpha(rgb, mask_img)
+        ys0, xs0 = np.where(a0)
+        rotated = bool(len(xs0)) and (ys0.max() - ys0.min() + 1) > 1.25 * (xs0.max() - xs0.min() + 1)
+        if rotated:
+            # moteur dessiné à la verticale : rotation de 90° horaire (le haut passe à droite, la tuyère à gauche)
+            rgb = np.rot90(rgb, k=-1).copy()
+            a0 = np.rot90(a0, k=-1)
+            if mask_img is not None:
+                mask_img = mask_img.transpose(Image.ROTATE_270)
+        # Une fusée verticale a sa flamme en bas : après rotation elle est déjà à gauche.
+        if not rotated and _warm_on_right(rgb, a0):
+            rgb = rgb[:, ::-1].copy()
+            if mask_img is not None:
+                mask_img = mask_img.transpose(Image.FLIP_LEFT_RIGHT)
     if spec.get("mask") == "corners":
         mask_img = None
     if mode == "sprite":
@@ -251,6 +262,19 @@ def process(rgb_img: Image.Image, mask_img: Image.Image | None, spec: dict[str, 
     rgba = np.zeros((out_h, out_w, 4), dtype=np.uint8)
     rgba[..., :3] = pal[small_idx]
     rgba[..., 3] = np.where(small_a, 255, 0)
+    if spec.get("marks"):
+        # Calque d'usure : ne garder que la fraction la plus « marquée » de la texture
+        # (saturée pour la rouille, claire pour les rayures, sombre pour les bosses et la suie).
+        lab = srgb_to_oklab(rgba[..., :3])
+        crit = str(spec["marks"])
+        if crit == "saturated":
+            score = np.hypot(lab[..., 1], lab[..., 2])
+        elif crit == "bright":
+            score = lab[..., 0]
+        else:
+            score = -lab[..., 0]
+        thr = np.quantile(score, 1.0 - float(spec.get("keep_frac", 0.25)))
+        rgba[..., 3] = np.where(score >= thr, 255, 0)
     if mode == "sprite" and pad:
         padded = np.zeros((out_h + 2 * pad, out_w + 2 * pad, 4), dtype=np.uint8)
         padded[pad:pad + out_h, pad:pad + out_w] = rgba
@@ -276,14 +300,28 @@ def place_on_canvas(img: Image.Image, size: list[int], align: str) -> Image.Imag
     return canvas
 
 
-def _warm_on_right(rgb: np.ndarray) -> bool:
-    """Vrai si les pixels chauds/lumineux (flamme) sont majoritairement à droite."""
+def _warm_on_right(rgb: np.ndarray, alpha: np.ndarray | None = None) -> bool:
+    """Vrai si une flamme (pixels orange/jaune saturés et lumineux) est majoritairement à droite de l'objet."""
     hue, sat, val = hue_sat_val(rgb)
-    warm = (in_hue(hue, 10.0, 60.0) | in_hue(hue, 180.0, 300.0)) & (sat > 0.5) & (val > 0.6)
+    warm = in_hue(hue, 5.0, 60.0) & (sat > 0.55) & (val > 0.6)
+    if alpha is not None:
+        warm &= alpha
     ys, xs = np.where(warm)
-    if len(xs) < 50:
+    obj = int(alpha.sum()) if alpha is not None else rgb.shape[0] * rgb.shape[1]
+    if len(xs) < max(30, int(0.01 * obj)):
         return False
-    return float(xs.mean()) > rgb.shape[1] / 2
+    if alpha is not None and alpha.any():
+        cx = float(np.where(alpha)[1].mean())
+    else:
+        cx = rgb.shape[1] / 2
+    return float(xs.mean()) > cx
+
+
+def _quick_alpha(rgb: np.ndarray, mask_img: Image.Image | None) -> np.ndarray:
+    if mask_img is not None:
+        m = np.array(mask_img.convert("L").resize((rgb.shape[1], rgb.shape[0]), Image.BILINEAR))
+        return m >= 128
+    return bg_mask_from_corners(rgb)
 
 
 def palette_report(img: Image.Image) -> tuple[int, list[str]]:
