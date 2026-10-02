@@ -24,6 +24,7 @@ Multijoueur hors périmètre.
 | Police de symboles | `.venv/Scripts/python.exe tools/make_symbol_font.py` (sous-ensemble de Noto Sans Math) |
 | Captures d'écran | `python tools/screenshots.py [--window=2560x1440] [--ui-scale=2] [--only=garage,settings,tutorial,tooltip,resize]` (fenêtré, docs/screens/*.png en 1920×1080 par défaut) |
 | Kit Steam | `.venv/Scripts/python.exe tools/make_trailer.py`, `python tools/screenshots.py --steam`, `.venv/Scripts/python.exe tools/steam_assets.py` → docs/steam/ (voir docs/STEAM_STORE.md) |
+| Export Windows | `python tools/export_windows.py [--out=dossier] [--debug]` → `<Bureau>/Clunker Cosmos/` (exe + pck + ico, préréglage `export_presets.cfg`, modèles d'export 4.7.1 dans `%APPDATA%/Godot`, test de fumée du jeu exporté) |
 
 Godot : `%USERPROFILE%\Downloads\Godot_v4.7.1-stable_win64.exe\Godot_v4.7.1-stable_win64_console.exe`
 (localisé par `tools/godot.py`, sinon téléchargé dans `tools/godot/`). Python : `.venv` local (Pillow, numpy,

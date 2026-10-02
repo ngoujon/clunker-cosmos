@@ -6,8 +6,9 @@ Usage :
 1. Godot (fenêtré) lance `--tour=capsules` (scripts/ui/capsules.gd) : chaque visuel est composé avec les vrais
    assets (décors, vaisseaux peints par le shader du jeu, logo en Lilita One) directement à la taille finale
    → docs/steam/capsules/<nom>_<largeur>x<hauteur>.png aux tailles demandées par Steam.
-2. Copie de l'en-tête pour la bibliothèque (même taille), icône Windows multi-tailles `icon.ico`
-   et `icon.svg` du projet (icône de fenêtre) redessinée en pixels à partir de l'icône 64×64.
+2. Copie de l'en-tête pour la bibliothèque (même taille), icône Windows multi-tailles `icon.ico` (copiée à la
+   racine du projet : icône de l'exécutable exporté et de la barre des tâches) et `icon.svg` du projet (icône de
+   fenêtre des autres systèmes) redessinée en pixels à partir de l'icône 64×64.
 """
 from __future__ import annotations
 
@@ -61,8 +62,9 @@ def icons() -> None:
     sizes = [16, 24, 32, 48, 64, 128, 256]
     frames = [big.resize((s, s), Image.NEAREST) for s in sizes]
     frames[-1].save(OUT / "icon.ico", sizes=[(s, s) for s in sizes], append_images=frames[:-1])
+    shutil.copyfile(OUT / "icon.ico", ROOT / "icon.ico")
     (ROOT / "icon.svg").write_text(svg_from_pixels(base), encoding="utf-8", newline="\n")
-    print("icône :", (OUT / "icon.ico").relative_to(ROOT), "+ icon.svg du projet")
+    print("icône :", (OUT / "icon.ico").relative_to(ROOT), "+ icon.ico et icon.svg du projet")
 
 
 def main() -> int:

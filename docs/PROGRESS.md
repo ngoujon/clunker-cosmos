@@ -34,6 +34,9 @@
   (résolution logique fenêtre / k : 853×480 en 1440p par défaut, jusqu'à 1280×720), décors à leur propre échelle
   entière, bords de panneaux continus. Kit Steam régénéré (bande-annonce de 1 min 10 s avec son, captures avec
   la nouvelle interface, capsules).
+- [x] **J7 — Export Windows** (demande) : préréglage « Windows Desktop » (`export_presets.cfg`), icône `icon.ico`
+  dans l'exe et la barre des tâches, `tools/export_windows.py` → `<Bureau>/Clunker Cosmos/` (`Clunker Cosmos.exe`
+  109 Mo + `.pck` 11 Mo + `.ico`) ; le jeu exporté passe le test de fumée et s'affiche correctement en fenêtre.
 
 ## État actuel
 
@@ -46,6 +49,6 @@
 ## Prochaines étapes (hors périmètre de cette version)
 
 1. Écouter les musiques générées (choisies par mesures automatiques) et ajuster les volumes si besoin.
-2. Export Windows (modèles d'export Godot), test sur configuration minimale, envoi Steamworks
+2. Test de l'export Windows sur une configuration minimale, envoi Steamworks
    (voir `docs/STEAM_STORE.md`, section « Reste à faire »).
 3. Succès et Steam Cloud (GodotSteam), éventuellement macOS / Linux / Steam Deck.

@@ -206,3 +206,9 @@ Format : décision — raison (option la plus simple quand il y avait un doute).
     bord ; étirée sur les panneaux larges des grandes résolutions, elle devenait un trou. Au chargement du thème,
     la partie étirée de chaque ligne et colonne de bord prend sa couleur la plus fréquente
     (`UIKit.seamless_image`, testé) ; coins et fichiers d'assets inchangés, boutons non concernés.
+71. **Export Windows** (demande : exe dans un dossier du Bureau avec une icône) : modèles d'export 4.7.1 déjà
+    installés dans `%APPDATA%/Godot` (rien téléchargé). Exe 64 bits en release + `.pck` séparé (format habituel
+    pour Steam, moins de faux positifs antivirus qu'un pck intégré). Icône `icon.ico` multi-tailles intégrée par
+    Godot (sans rcedit) et utilisée pour la barre des tâches (`windows_native_icon`), copiée aussi dans le dossier
+    (raccourcis, icône du client Steam). Données JSON incluses explicitement, `build/` exclu ; tests laissés dans le
+    pck (80 Ko). Version 0.1.0 conservée (identique aux captures). L'outil vérifie le jeu exporté (test de fumée).

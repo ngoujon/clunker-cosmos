@@ -88,9 +88,9 @@ python tools/screenshots.py --steam                 # captures 1920×1080 FR + E
 | Écran | 1280×720 | 1920×1080 ou plus |
 | Notes | souris requise ; aucune connexion requise | |
 
-Ces valeurs viennent de la configuration du moteur (Godot 4.7, rendu Compatibility) et du poids du jeu
-(≈ 15 Mo de contenu dont 11 Mo d'audio, + ≈ 100 Mo de moteur une fois exporté) : le jeu est très léger.
-**À confirmer** sur une machine modeste après le premier export Windows.
+Ces valeurs viennent de la configuration du moteur (Godot 4.7, rendu Compatibility) et du poids du jeu exporté
+(120 Mo : exécutable de 109 Mo + données de 11 Mo, musiques comprises) : le jeu est très léger.
+**À confirmer** en lançant l'export Windows sur une machine modeste.
 
 Textes prêts à coller dans Steamworks :
 
@@ -269,10 +269,12 @@ modèles et licences : `docs/MODEL_LICENSES.md` ; synthèse : `docs/AI_DISCLOSUR
 
 1. **Compte Steamworks** (frais Steam Direct de 100 $ par jeu), création de l'application, informations légales
    et bancaires.
-2. **Export Windows** : installer les modèles d'export de Godot 4.7.1 (éditeur → *Gérer les modèles d'export*),
-   créer un préréglage « Windows Desktop », icône `docs/steam/capsules/icon.ico`, puis tester l'exécutable sur une
-   machine modeste (configuration minimale ci-dessus à confirmer).
-3. **Envoi du build** avec SteamPipe (SteamCMD) et options de lancement.
+2. **Export Windows** : fait. `python tools/export_windows.py` produit `Clunker Cosmos.exe` (64 bits, icône du jeu
+   intégrée) + `Clunker Cosmos.pck` dans `<Bureau>/Clunker Cosmos/`, avec `Clunker Cosmos.ico`. Reste à tester
+   l'exécutable sur une machine modeste (configuration minimale ci-dessus à confirmer).
+3. **Envoi du build** avec SteamPipe (SteamCMD) : le dépôt contient l'exe et le .pck, l'option de lancement
+   principale est `Clunker Cosmos.exe` ; `Clunker Cosmos.ico` sert d'icône du client Steam (Steamworks →
+   Ressources de la communauté).
 4. **Fiche** : textes ci-dessus, captures, capsules, bande-annonce, tags, configuration, langues, divulgation IA,
    questionnaire de contenu ; page « Bientôt disponible » publiée au moins 2 semaines avant la sortie (examen de
    Valve de quelques jours ouvrés pour la fiche puis pour le build).

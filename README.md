@@ -20,6 +20,15 @@ Commandes : clic gauche partout ; **Espace** pause ; **1-3** vitesse ; **Échap*
 **F11** plein écran ; **F12** capture. La **taille de l'interface** se règle dans les paramètres (automatique :
 853×480 en 1440p, 640×360 en 1080p ; jusqu'à 1280×720 en 1440p pour une interface plus fine).
 
+### Exécutable Windows
+
+```
+python tools/export_windows.py     # → <Bureau>/Clunker Cosmos/ : Clunker Cosmos.exe + .pck + .ico
+```
+Préréglage « Windows Desktop » d'`export_presets.cfg` (exe 64 bits avec l'icône du jeu, `.pck` à côté) ; il faut
+les modèles d'export de Godot 4.7.1 (éditeur → *Gérer les modèles d'export*). L'outil lance ensuite le test de
+fumée du jeu exporté. Pour jouer ou partager : copier tout le dossier (l'exe a besoin du `.pck` à côté de lui).
+
 ## Vérifications
 
 ```
@@ -43,7 +52,7 @@ tools/run_tests.sh --suite=unit    # tests unitaires seuls
 | `assets/` | sprites finaux (palette de 32 couleurs), musiques et bruitages, polices |
 | `art/` | palette, manifestes de traçabilité (images, audio), comparatifs de modèles |
 | `comfy/` | workflows ComfyUI (format API), liste des modèles, instantané `/object_info` |
-| `tools/` | pipeline d'art et d'audio (`pixelize.py`, `gen_assets.py`, `gen_audio.py`, `sfx_synth.py`), vérifications, captures |
+| `tools/` | pipeline d'art et d'audio (`pixelize.py`, `gen_assets.py`, `gen_audio.py`, `sfx_synth.py`), vérifications, captures, kit Steam, export Windows |
 | `tests/` | lanceur headless, suites unitaires, simulation, contrôle des assets |
 | `docs/` | GDD, décisions, avancement, licences, divulgation IA, captures, kit Steam |
 
