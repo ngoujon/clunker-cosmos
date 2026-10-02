@@ -7,6 +7,7 @@ const W: int = 480
 const H: int = 270
 const TOP_H: int = 20
 const NAV_H: int = 20
+const SETTINGS_PATH: String = "user://settings.cfg"
 const SCREEN_IDS: PackedStringArray = ["garage", "auctions", "sales", "staff", "research", "quests", "office"]
 const SCREEN_ICONS: Dictionary = {
 	"garage": "ui_garage", "auctions": "ui_auction", "sales": "ui_sales", "staff": "ui_staff",
@@ -65,7 +66,25 @@ func _ready() -> void:
 		add_child(_tour)
 		_tour.call("start", self, args)
 	else:
+		var cfg: ConfigFile = ConfigFile.new()
+		if cfg.load(SETTINGS_PATH) == OK and bool(cfg.get_value("display", "fullscreen", false)):
+			set_fullscreen(true, false)
 		show_title()
+
+
+## Plein écran (F11, Alt+Entrée ou paramètres), mémorisé dans user://settings.cfg.
+static func is_fullscreen() -> bool:
+	var mode: DisplayServer.WindowMode = DisplayServer.window_get_mode()
+	return mode == DisplayServer.WINDOW_MODE_FULLSCREEN or mode == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
+
+
+func set_fullscreen(on: bool, remember: bool = true) -> void:
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN if on else DisplayServer.WINDOW_MODE_WINDOWED)
+	if remember:
+		var cfg: ConfigFile = ConfigFile.new()
+		cfg.load(SETTINGS_PATH)
+		cfg.set_value("display", "fullscreen", on)
+		cfg.save(SETTINGS_PATH)
 
 
 static func parse_args() -> Dictionary:
@@ -345,7 +364,18 @@ func open_modal(content: Control, min_size: Vector2 = Vector2(300, 0)) -> Contro
 	modal_layer.add_child(layer)
 	_modal_stack.append(layer)
 	Game.hold += 1
+	_fit_modal.call_deferred(p)
 	return layer
+
+
+## Recentre la fenêtre quand les textes à retour à la ligne ont leur vraie hauteur (connue seulement
+## après une première mise en page) : sinon elle reste trop haute et déborde de l'écran.
+func _fit_modal(p: PanelContainer) -> void:
+	await get_tree().process_frame
+	if not is_instance_valid(p):
+		return
+	p.reset_size()
+	p.position = ((Vector2(W, H) - p.size) / 2.0).floor().max(Vector2.ZERO)
 
 
 func close_modal() -> void:
@@ -384,8 +414,8 @@ func show_report_popup(rep: Dictionary, offline: bool) -> void:
 	if offline:
 		v.add_child(UIKit.label(I18n.t("ui.offline.away", {"hours": int(rep.get("hours", 0))}), UIKit.C_DIM))
 	var grid: GridContainer = GridContainer.new()
-	grid.columns = 2
-	grid.add_theme_constant_override("h_separation", 12)
+	grid.columns = 4
+	grid.add_theme_constant_override("h_separation", 8)
 	var rows: Array[Array] = [
 		["ui.offline.sold", str(int(rep.get("sold", 0)))],
 		["ui.offline.revenue", UIKit.credits(int(rep.get("revenue", 0)))],
@@ -411,9 +441,10 @@ func show_report_popup(rep: Dictionary, offline: bool) -> void:
 				continue
 			lst.add_child(UIKit.wrap_label("• " + txt, 260))
 			n += 1
-			if n >= 8:
+			if n >= 30:
 				break
-		v.add_child(lst)
+		# Liste défilante de hauteur bornée : la fenêtre tient toujours dans l'écran.
+		v.add_child(UIKit.scroll(lst, Vector2(270, mini(n, 8) * 11)))
 	var ok_b: Button = UIKit.button(I18n.t("ui.ok"), close_modal)
 	ok_b.size_flags_horizontal = Control.SIZE_SHRINK_END
 	v.add_child(ok_b)
@@ -443,6 +474,9 @@ func open_settings() -> void:
 		close_modal()
 		I18n.set_locale("en")))
 	v.add_child(lang)
+	v.add_child(UIKit.button(I18n.t("ui.settings.to_windowed" if is_fullscreen() else "ui.settings.to_fullscreen"), func() -> void:
+		close_modal()
+		set_fullscreen(not is_fullscreen())))
 	v.add_child(UIKit.button(I18n.t("ui.settings.save"), func() -> void:
 		Game.save()
 		close_modal()
@@ -455,7 +489,7 @@ func open_settings() -> void:
 	v.add_child(UIKit.button(I18n.t("ui.settings.quit"), func() -> void:
 		Game.save()
 		get_tree().quit()))
-	v.add_child(UIKit.label(I18n.t("ui.settings.keys"), UIKit.C_DIM))
+	v.add_child(UIKit.wrap_label(I18n.t("ui.settings.keys"), 210, UIKit.C_DIM))
 	v.add_child(UIKit.button(I18n.t("ui.close"), close_modal))
 	open_modal(v, Vector2(220, 0))
 
@@ -470,10 +504,14 @@ func _on_locale(_loc: String) -> void:
 # --- Clavier -------------------------------------------------------------------
 
 func _unhandled_input(event: InputEvent) -> void:
-	if Game.model == null or not game_layer.visible:
-		return
 	var k: InputEventKey = event as InputEventKey
 	if k == null or not k.pressed or k.echo:
+		return
+	if k.keycode == KEY_F11 or (k.keycode == KEY_ENTER and k.alt_pressed):
+		set_fullscreen(not is_fullscreen())
+		get_viewport().set_input_as_handled()
+		return
+	if Game.model == null or not game_layer.visible:
 		return
 	match k.keycode:
 		KEY_SPACE:

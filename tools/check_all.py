@@ -261,6 +261,82 @@ def check_screens() -> None:
     report("Captures d'écran (docs/screens)", ok, f"{len(shots)} captures {sorted(sizes)}" + (f" ; manquantes : {missing}" if missing else "") + (f" ; trop petites : {small}" if small else ""))
 
 
+# --- 11. Kit Steam (vidéo, captures, capsules, fiche) -------------------------------------
+
+def mp4_info(path: Path) -> dict:
+    """Durée (s) et taille de la piste vidéo d'un MP4, lues dans les boîtes moov/mvhd et trak/tkhd."""
+    data = path.read_bytes()
+    info: dict = {"duration": 0.0, "video": (0, 0), "brand": data[8:12].decode("latin-1") if data[4:8] == b"ftyp" else ""}
+
+    def boxes(start: int, end: int):
+        i = start
+        while i + 8 <= end:
+            size, kind = struct.unpack(">I4s", data[i:i + 8])
+            head = 8
+            if size == 1:
+                size = struct.unpack(">Q", data[i + 8:i + 16])[0]
+                head = 16
+            elif size == 0:
+                size = end - i
+            if size < head:
+                return
+            yield kind.decode("latin-1"), i + head, i + size
+            i += size
+
+    for kind, b0, b1 in boxes(0, len(data)):
+        if kind != "moov":
+            continue
+        for k2, c0, c1 in boxes(b0, b1):
+            if k2 == "mvhd":
+                v = data[c0]
+                if v == 1:
+                    ts, dur = struct.unpack(">IQ", data[c0 + 20:c0 + 32])
+                else:
+                    ts, dur = struct.unpack(">II", data[c0 + 12:c0 + 20])
+                info["duration"] = dur / ts if ts else 0.0
+            elif k2 == "trak":
+                for k3, d0, d1 in boxes(c0, c1):
+                    if k3 == "tkhd":
+                        w, h = struct.unpack(">II", data[d1 - 8:d1])
+                        if w and h:
+                            info["video"] = (w >> 16, h >> 16)
+    return info
+
+
+def check_steam() -> None:
+    steam = ROOT / "docs" / "steam"
+    problems: list[str] = []
+    durations: list[str] = []
+    for lang in ("fr", "en"):
+        mp4 = steam / f"trailer_{lang}.mp4"
+        if not mp4.exists():
+            problems.append(f"{mp4.name} absent")
+            continue
+        info = mp4_info(mp4)
+        if info["video"] != (1920, 1080) or not (30.0 <= info["duration"] <= 180.0):
+            problems.append(f"{mp4.name} : {info}")
+        durations.append(f"{lang} {info['duration']:.1f} s")
+        shots = sorted((steam / "screenshots" / lang).glob("*.png"))
+        bad = [x.name for x in shots if png_size(x) != (1920, 1080)]
+        if len(shots) < 5 or bad:
+            problems.append(f"captures {lang} : {len(shots)} ({bad})")
+    caps = {"header_capsule_920x430": (920, 430), "small_capsule_462x174": (462, 174), "main_capsule_1232x706": (1232, 706),
+            "vertical_capsule_748x896": (748, 896), "library_capsule_600x900": (600, 900), "library_header_920x430": (920, 430),
+            "library_hero_3840x1240": (3840, 1240), "community_icon_184x184": (184, 184)}
+    for name, size in caps.items():
+        f = steam / "capsules" / f"{name}.png"
+        if not f.exists() or png_size(f) != size:
+            problems.append(f"capsule {name}")
+    md = ROOT / "docs" / "STEAM_STORE.md"
+    text = md.read_text(encoding="utf-8") if md.exists() else ""
+    for needed in ("Configuration requise", "Langues", "Description courte", "Divulgation de l'IA", "Tags"):
+        if needed not in text:
+            problems.append(f"STEAM_STORE.md sans « {needed} »")
+    report("Kit Steam (vidéos, captures, capsules, fiche)", not problems,
+           f"vidéos 1920×1080 ({', '.join(durations)}), captures FR/EN 1920×1080, {len(caps)} capsules, docs/STEAM_STORE.md"
+           + (f" ; problèmes : {problems}" if problems else ""))
+
+
 def main() -> int:
     t0 = time.time()
     print("Wreck & Resell — vérification complète", flush=True)
@@ -276,6 +352,7 @@ def main() -> int:
     check_workflows()
     check_docs()
     check_screens()
+    check_steam()
     failed = [n for n, ok, _ in RESULTS if not ok]
     print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} contrôles réussis en {time.time() - t0:.0f} s", flush=True)
     if failed:

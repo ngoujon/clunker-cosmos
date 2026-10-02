@@ -15,13 +15,15 @@ hors ligne. Mode **Histoire** (5 chapitres, 2 fins) ou **Classique**. Français 
    Godot_v4.7.1-stable_win64_console.exe --path .
    ```
 
-Commandes : clic gauche partout ; **Espace** pause ; **1-3** vitesse ; **Échap** menu ; **F12** capture.
+Commandes : clic gauche partout ; **Espace** pause ; **1-3** vitesse ; **Échap** menu ; **F11** plein écran ;
+**F12** capture.
 
 ## Vérifications
 
 ```
 python tools/check_all.py          # import, 120 tests headless, simulation 30 jours, chapitres 1-2,
-                                    # test de fumée de l'UI, assets, manifeste, workflows, docs, captures
+                                    # test de fumée de l'UI, assets, manifeste, workflows, docs, captures,
+                                    # kit Steam
 python tools/screenshots.py        # captures du vrai jeu dans docs/screens/
 tools/run_tests.sh --suite=unit    # tests unitaires seuls
 ```
@@ -58,11 +60,23 @@ Régénérer l'art (ComfyUI sur `127.0.0.1:8188`) :
 .venv/Scripts/python.exe tools/gen_assets.py build      # assets/ + manifeste + divulgation
 ```
 
+## Kit Steam
+
+Bande-annonce FR/EN, captures 1920×1080, capsules et fiche magasin (textes FR/EN, configuration requise,
+langues, tags, divulgation IA, reste à faire) : **[docs/STEAM_STORE.md](docs/STEAM_STORE.md)**, fichiers dans
+`docs/steam/`. Tout est rendu par le jeu lui-même :
+```
+.venv/Scripts/python.exe tools/make_trailer.py      # vidéos (Movie Maker de Godot + ffmpeg du venv)
+python tools/screenshots.py --steam                 # captures FR + EN
+.venv/Scripts/python.exe tools/steam_assets.py      # capsules et icônes
+```
+
 ## Documentation
 
 - [docs/GDD.md](docs/GDD.md) — game design
 - [docs/DECISIONS.md](docs/DECISIONS.md) — choix faits en autonomie
 - [docs/PROGRESS.md](docs/PROGRESS.md) — avancement
+- [docs/STEAM_STORE.md](docs/STEAM_STORE.md) — fiche et kit Steam
 - [CLAUDE.md](CLAUDE.md) — mémo technique pour l'assistant de code
 
 Hors périmètre de cette version : audio, multijoueur.

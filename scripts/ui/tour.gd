@@ -3,7 +3,9 @@ extends Node
 ##   smoke    (headless) construit chaque écran sur une partie avancée, déclenche les principales
 ##            interactions et imprime « ##RESULT {json} » (vérifié par tools/check_all.py) ;
 ##   screens  (fenêtré) enregistre des captures PNG de chaque écran dans --out (×--scale) ;
-##   trailer  (fenêtré, avec --write-movie) joue une séquence scénarisée pour la vidéo promotionnelle.
+##   steam    (fenêtré) captures pour la fiche magasin Steam, sur une partie mise en scène (--lang, --out, --scale) ;
+##   trailer  (fenêtré, avec --write-movie) joue une séquence scénarisée pour la vidéo promotionnelle ;
+##   capsules (fenêtré) rend les visuels de la page Steam (scripts/ui/capsules.gd).
 
 const DEMO_SEED: int = 20261
 const DEMO_DAYS: int = 14
@@ -18,12 +20,19 @@ func start(p_main: MainUI, p_args: Dictionary) -> void:
 	args = p_args
 	Game.persist = false
 	var mode: String = str(args.get("tour", "smoke"))
+	if mode != "smoke":
+		# Captures et vidéo : la vraie souris (survols, infobulles) ne doit pas apparaître à l'image.
+		main.get_viewport().gui_disable_input = true
+	if args.has("lang"):
+		I18n.set_locale(str(args["lang"]), false)
 	match mode:
 		"screens":
 			_screens.call_deferred()
-		"trailer":
-			var trailer_script: GDScript = load("res://scripts/ui/trailer.gd")
-			var tr: Node = trailer_script.new()
+		"steam":
+			_steam.call_deferred()
+		"trailer", "capsules":
+			var script: GDScript = load("res://scripts/ui/%s.gd" % mode)
+			var tr: Node = script.new()
 			add_child(tr)
 			tr.call("run", main, self)
 		_:
@@ -171,6 +180,12 @@ func _screens() -> void:
 		main.dialogue.show_dialogue({"quest": "m2_04", "phase": "start", "lines": [{"speaker": "bolt", "key": "dlg.m1_02.start.1"}]})
 		main.dialogue.finish_typing()
 		await capture("08_dialogue")
+	if only.contains("settings"):
+		# Uniquement sur demande (--only=settings) : vérification visuelle de la fenêtre des paramètres.
+		main.dialogue.advance()
+		main.open_settings()
+		await frames(2)
+		await capture("10_settings")
 	get_tree().quit(0)
 
 
@@ -208,3 +223,103 @@ func _prepare(m: GameModel, id: String) -> void:
 				if not c.quest.is_empty():
 					ss.selected_client = c.id
 					break
+
+
+# --- Captures pour la fiche Steam -------------------------------------------------
+
+## Partie de démonstration enrichie : garage agrandi et plein, tous les lieux ouverts, quelques
+## technologies accordées (comme une récompense de quête), un vaisseau vedette repeint.
+func steam_model() -> GameModel:
+	var m: GameModel = demo_model(16, DEMO_SEED)
+	for loc: String in Content.db.location_order:
+		m.unlock("location:" + loc)
+	var cost: int = m.garage_upgrade_cost()
+	if cost > 0:
+		m.credits += cost
+		m.act_upgrade_garage()
+	for i: int in 8:
+		var avail: Array[String] = ResearchSystem.available(m)
+		if avail.is_empty():
+			break
+		ResearchSystem.grant(m, avail[i % avail.size()])
+	AuctionSystem.generate_day(m)
+	for l: AuctionLot in m.lots:
+		if not l.closed and l.player_max > 0:
+			l.player_max = 0
+	var locs: PackedStringArray = ["opalia", "nebula", "tartarus", "kryo7"]
+	var k: int = 0
+	while m.free_slots(true) > 0 and k < 8:
+		var w: Ship = ShipFactory.make_wreck(m, locs[k % locs.size()])
+		for d: ShipDefect in w.defects:
+			d.known = true
+		m.ships.append(w)
+		k += 1
+	m.dialogue_queue.clear()
+	return m
+
+
+## Capture « propre » : sans les notifications des actions de mise en scène.
+func steam_capture(name: String) -> void:
+	for c: Node in main.toasts.get_children():
+		c.queue_free()
+	await frames(1)
+	await capture(name)
+
+
+func _steam() -> void:
+	main.auto_dialogues = false
+	main.show_title()
+	await frames(20)
+	await steam_capture("01_title")
+	var m: GameModel = steam_model()
+	Game.use_model(m)
+	Game.set_speed(0)
+	main.start_game()
+	await frames(2)
+	# Garage : le plus beau vaisseau, repeint et presque remis à neuf.
+	var star: Ship = null
+	for s: Ship in m.ships:
+		if star == null or s.base_value(m.db) > star.base_value(m.db):
+			star = s
+	if star != null:
+		star.paint = "paint_gold"
+		star.wear = minf(star.wear, 0.12)
+		main.selected_ship = star.id
+	open_screen("garage")
+	await steam_capture("02_garage")
+	# Enchères au Nébula Bazar : meilleur lot, scanné.
+	var auc: AuctionScreen = main.screen("auctions") as AuctionScreen
+	var best: AuctionLot = null
+	for l: AuctionLot in m.lots:
+		if not l.closed and l.location == "nebula" and (best == null or l.ship.base_value(m.db) > best.ship.base_value(m.db)):
+			best = l
+	if best != null:
+		m.credits += 1000
+		m.act_scan(best.id)
+		auc.location = best.location
+		auc.selected_lot = best.id
+	open_screen("auctions")
+	await steam_capture("03_auctions")
+	_prepare(m, "sales")
+	open_screen("sales")
+	await steam_capture("04_sales")
+	open_screen("staff")
+	await steam_capture("05_staff")
+	_prepare(m, "research")
+	open_screen("research")
+	await steam_capture("06_research")
+	main.selected_ship = -1
+	open_screen("garage")
+	main.dialogue.show_dialogue({"quest": "m1_04", "phase": "start", "lines": [{"speaker": "lustre", "key": "dlg.m1_04.start.1"}]})
+	main.dialogue.finish_typing()
+	await steam_capture("07_story")
+	main.dialogue.advance()
+	main.show_report_popup(OfflineSim.run_hours(m, 24), true)
+	m.dialogue_queue.clear()
+	await frames(3)
+	await steam_capture("08_offline")
+	main.close_all_modals()
+	_prepare(m, "quests")
+	open_screen("quests")
+	await steam_capture("09_quests")
+	get_tree().quit(0)

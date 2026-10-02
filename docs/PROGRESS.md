@@ -22,19 +22,21 @@
   `ship_part.gdshader` (peinture par palette-swap + calque d'usure) ; manifeste et divulgation IA à jour.
 - [x] **J4 — Vérifications** : `tools/check_all.py` → `ALL CHECKS PASSED` (11 contrôles), 9 captures du vrai jeu
   dans `docs/screens/` relues et corrigées, README, GDD, DECISIONS, MODEL_LICENSES, AI_DISCLOSURE.
-- [ ] **J5 — Kit Steam** (demande ajoutée par l'utilisateur, à faire APRÈS J4) : vidéo promotionnelle
-  publiable sur Steam (MP4 H.264 1920×1080, muette car audio hors périmètre), captures pour la fiche magasin
-  (1920×1080, ×4 nearest), et `docs/STEAM_STORE.md` (descriptions FR/EN, configuration requise, langues,
-  tags, divulgation IA, éléments restant à fournir).
+- [x] **J5 — Kit Steam** (demande ajoutée par l'utilisateur) : bande-annonce FR et EN rendue par le jeu
+  (`docs/steam/trailer_fr.mp4`, `trailer_en.mp4` : 1 min 08 s, 1920×1080, H.264), 9 captures 1920×1080 par
+  langue, capsules et icônes provisoires, `docs/STEAM_STORE.md` (fiche FR/EN, configuration requise, langues,
+  tags, divulgation IA, reste à faire). Ajouts au jeu : plein écran (F11), icône BOLT, rapport hors-ligne borné.
 
 ## État actuel
 
-- `python tools/check_all.py` : 11/11 contrôles, `ALL CHECKS PASSED`, code de sortie 0.
+- `python tools/check_all.py` : 12/12 contrôles (dont le kit Steam), `ALL CHECKS PASSED`, code de sortie 0.
 - Tests headless : 120/120 (11 suites). Simulation 30 j (graine 7, mode classique) : 54 ventes, résultat
   d'exploitation 327 752 ¢, 0 erreur. Histoire (graine 11) : chapitres 1 et 2 bouclés au jour 8.
 - Assets : 180 fichiers validés (palette de 32 couleurs), 209 entrées de manifeste dont 197 générées.
 
-## Prochaines étapes
+## Prochaines étapes (hors périmètre de cette version)
 
-1. J5 — kit Steam : `tools/make_trailer.py` (Movie Maker de Godot → MP4 H.264 1920×1080 FR et EN),
-   captures 1920×1080 (`python tools/screenshots.py --steam`), `docs/STEAM_STORE.md`.
+1. Audio (musique, bruitages) puis bande-annonce sonorisée.
+2. Export Windows (modèles d'export Godot), test sur configuration minimale, envoi Steamworks
+   (voir `docs/STEAM_STORE.md`, section « Reste à faire »).
+3. Succès et Steam Cloud (GodotSteam), éventuellement macOS / Linux / Steam Deck.

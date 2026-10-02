@@ -209,8 +209,8 @@
   "en": "Save and quit"
  },
  "ui.settings.keys": {
-  "fr": "Espace : pause · 1-3 : vitesse · F12 : capture",
-  "en": "Space: pause · 1-3: speed · F12: screenshot"
+  "fr": "Espace : pause · 1-3 : vitesse · F11 : plein écran · F12 : capture",
+  "en": "Space: pause · 1-3: speed · F11: fullscreen · F12: screenshot"
  },
  "ui.dialogue.skip": {
   "fr": "Passer",
@@ -1711,5 +1711,13 @@
  "trailer.langs": {
   "fr": "Français · English",
   "en": "English · Français"
+ },
+ "ui.settings.to_fullscreen": {
+  "fr": "Plein écran (F11)",
+  "en": "Fullscreen (F11)"
+ },
+ "ui.settings.to_windowed": {
+  "fr": "Mode fenêtré (F11)",
+  "en": "Windowed (F11)"
  }
 }

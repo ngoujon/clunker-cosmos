@@ -32,7 +32,7 @@ func _ready() -> void:
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_child(sub)
 	var menu: VBoxContainer = UIKit.vbox([], 3)
-	if Game.has_save():
+	if Game.has_save() and Game.persist:
 		menu.add_child(_menu_button("ui.menu.continue", _continue, "ui_play"))
 	menu.add_child(_menu_button("ui.menu.new_story", func() -> void: _new_game(true), "ui_quests", "ui.menu.story_desc"))
 	menu.add_child(_menu_button("ui.menu.new_classic", func() -> void: _new_game(false), "ui_garage", "ui.menu.classic_desc"))

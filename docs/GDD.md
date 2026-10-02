@@ -130,7 +130,7 @@ et les clients des 12 espèces.
 
 Barre du haut (crédits, RP, réputation, dette, jour/heure, vitesse), navigation en bas (Garage, Enchères, Ventes,
 Équipe, Labo, Quêtes, Bureau), notifications, boîte de dialogue avec portrait, rapports, menu (langue, sauvegarde).
-Raccourcis : Espace (pause), 1-3 (vitesse), Échap (menu), F12 (capture).
+Raccourcis : Espace (pause), 1-3 (vitesse), Échap (menu), F11 ou Alt+Entrée (plein écran), F12 (capture).
 
 ## 11. Technique
 

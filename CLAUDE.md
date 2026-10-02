@@ -18,6 +18,7 @@ renderer GL Compatibility. Audio et multijoueur hors périmètre.
 | Validation des assets | `tools/run_tests.sh --suite=assets` |
 | Générer l'art (ComfyUI sur :8188) | `.venv/Scripts/python.exe tools/gen_assets.py generate` puis `sheets`, `build` |
 | Captures d'écran | `python tools/screenshots.py` (lance le jeu fenêtré, écrit docs/screens/*.png) |
+| Kit Steam | `.venv/Scripts/python.exe tools/make_trailer.py`, `python tools/screenshots.py --steam`, `.venv/Scripts/python.exe tools/steam_assets.py` → docs/steam/ (voir docs/STEAM_STORE.md) |
 
 Godot : `%USERPROFILE%\Downloads\Godot_v4.7.1-stable_win64.exe\Godot_v4.7.1-stable_win64_console.exe`
 (localisé par `tools/godot.py`, sinon téléchargé dans `tools/godot/`). Python : `.venv` local (Pillow, numpy) ;
@@ -34,7 +35,9 @@ L'éditeur Godot de l'utilisateur peut être ouvert sur le projet : ne jamais tu
   - `ContentDB` charge `data/*.json` ; les textes bilingues `{fr,en}` deviennent des clés (`part.<id>.name`…).
 - `scripts/autoload/` — `Content` (ContentDB), `I18n` (TranslationServer FR/EN), `Game` (partie courante,
   temps réel, sauvegarde `user://saves/slot1.json`, hors-ligne au chargement).
-- `scripts/ui/` + `scenes/` — interface construite en code (thème 9-slice, police Tiny5).
+- `scripts/ui/` + `scenes/` — interface construite en code (thème 9-slice, police Tiny5). Visites automatiques
+  `res://scenes/main.tscn -- --tour=smoke|screens|steam|trailer|capsules` (`tour.gd`, `trailer.gd`, `capsules.gd`) :
+  `Game.persist=false` (jamais d'écriture de la sauvegarde du joueur) et souris réelle ignorée hors `smoke`.
 - `data/` — tout le contenu (JSON) : config d'équilibrage, pièces, défauts, personnalisation, espèces,
   personnel, lieux, arbre techno, histoire, quêtes, textes UI.
 - `tests/` — `runner.tscn` (suites unit/sim/story/assets), `TestCase`, `tests/unit/test_*.gd`.

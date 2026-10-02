@@ -107,3 +107,29 @@ Format : décision — raison (option la plus simple quand il y avait un doute).
 
 28. Départ : 8 000 ¢, dette 60 000 ¢ (2 500 ¢/semaine), réputation 30. Les PNJ misent 42-66 % de la valeur
     réelle de l'épave. Le jeu doit rester rentable pour un joueur raisonnable (simulation : >10 ventes/mois).
+
+## Kit Steam
+
+43. **Bande-annonce rendue par le jeu** (Movie Maker de Godot, `--fixed-fps 30`) : une séquence scénarisée
+    (`scripts/ui/trailer.gd`) pilote la vraie interface (signaux des boutons) avec un faux curseur dessiné en
+    pixels. Les images sont celles du viewport (480×270), agrandies ×4 au plus proche voisin : pixels nets et
+    rendu déterministe, en FR et en EN.
+44. **ffmpeg du paquet `imageio-ffmpeg` installé dans le venv** (rien hors du projet) ; H.264 High CRF 12,
+    yuv420p BT.709 (le ×4 tombe sur la grille 2×2 du 4:2:0 : aucune bavure de couleur) ; piste AAC muette, car
+    l'audio est hors périmètre (Steam lance de toute façon les vidéos sans le son).
+45. **Parties mises en scène pour la vitrine** (vidéo et captures Steam) : garage agrandi et rempli, crédits
+    ajoutés, mises automatiques de la démo retirées, technologies accordées comme une récompense de quête. Les
+    écrans restent ceux du jeu, sans retouche. La souris réelle est ignorée pendant les visites (sinon des
+    infobulles parasites apparaissaient à l'image).
+46. **Capsules provisoires composées avec les assets du jeu** dans un SubViewport (taille de base × facteur
+    entier) : logo Tiny5 à une taille multiple de 8, aucun autre texte (règles Steam), une épave d'origine à
+    côté du même vaisseau remis à neuf pour résumer la boucle de jeu.
+47. **Icône du jeu = BOLT** (portrait existant) : `icon.svg` du projet remplacé par une version « pixel »
+    (un rectangle par suite de pixels, net à toute taille) et `icon.ico` multi-tailles pour l'export Windows ;
+    l'icône Godot par défaut ne convient pas à un jeu publié.
+48. **Plein écran** (F11, Alt+Entrée, bouton des paramètres) mémorisé dans `user://settings.cfg` : attendu sur
+    PC. Le rapport hors-ligne a une liste d'événements défilante et les fenêtres modales sont recentrées après
+    mise en page (la vidéo a montré un rapport qui débordait de l'écran).
+49. **Configuration requise déduite** des exigences de Godot 4.7 (rendu Compatibility, OpenGL 3.3) et du poids du
+    jeu, à confirmer après le premier export : les modèles d'export s'installent hors du projet, donc aucun
+    exécutable n'a été produit ici.
