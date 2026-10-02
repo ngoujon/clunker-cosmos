@@ -1,0 +1,17 @@
+{
+  "_comment": "Palette globale unique de Wreck & Resell (32 couleurs, conçue pour le projet). Les 3 couleurs 'primer' sont réservées aux zones peignables : le shader palette-swap les remplace par la rampe de la peinture choisie. Aucun autre pixel ne doit les utiliser.",
+  "name": "wreck-resell-32",
+  "colors": [
+    "#0d0e14", "#2a2b3d", "#4a4d66", "#8a8fa6", "#c8cbd6", "#f2f0e6",
+    "#6b1e2a", "#b5303a", "#e8655a",
+    "#7a3618", "#d9652a", "#f5a05a",
+    "#8a5a1c", "#e0a42a", "#f5dc6a",
+    "#1d4a32", "#2f8a4a", "#7ccf5e",
+    "#14404a", "#1f7a80", "#4cc6c0",
+    "#1f2a5c", "#2f56b0", "#5aa0e8",
+    "#3a1f5c", "#6b3aa0", "#a774d8",
+    "#d0508e", "#f59ac6",
+    "#3c4a3e", "#5d6e57", "#8a9a7a"
+  ],
+  "primer": ["#3c4a3e", "#5d6e57", "#8a9a7a"]
+}

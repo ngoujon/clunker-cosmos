@@ -1,0 +1,5 @@
+{
+  "_comment": "Textes d'interface FR/EN. Les clés sont utilisées telles quelles par tr().",
+  "ui.title": {"fr": "Wreck & Resell", "en": "Wreck & Resell"},
+  "ui.subtitle": {"fr": "Garage orbital d'occasion", "en": "Orbital used-ship garage"}
+}

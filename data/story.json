@@ -1,0 +1,139 @@
+{
+ "_comment": "Personnages, chapitres et fins de l'histoire de Wreck & Resell. Textes FR/EN.",
+ "characters": {
+  "bolt": {
+   "name": {
+    "fr": "BOLT",
+    "en": "BOLT"
+   },
+   "portrait": "story_bolt",
+   "title": {
+    "fr": "Bureau d'Optimisation Logistique et Technique, IA de bord du garage",
+    "en": "Bureau of Optimized Logistics and Tinkering, the garage's onboard AI"
+   }
+  },
+  "odile": {
+   "name": {
+    "fr": "Tante Odile",
+    "en": "Aunt Odile"
+   },
+   "portrait": "story_odile",
+   "title": {
+    "fr": "« la Clé », garagiste légendaire et disparue",
+    "en": "“the Wrench”, legendary (and missing) mechanic"
+   }
+  },
+  "lustre": {
+   "name": {
+    "fr": "Augustin Lustre",
+    "en": "Augustin Lustre"
+   },
+   "portrait": "story_lustre",
+   "title": {
+    "fr": "Directeur régional de Galax-Auto",
+    "en": "Regional Director of Galax-Auto"
+   }
+  },
+  "inspector": {
+   "name": {
+    "fr": "Inspectrice Plimsoll",
+    "en": "Inspector Plimsoll"
+   },
+   "portrait": "story_inspector",
+   "title": {
+    "fr": "Bureau Galactique de la Consommation",
+    "en": "Galactic Consumer Bureau"
+   }
+  },
+  "narrator": {
+   "name": {
+    "fr": "Narration",
+    "en": "Narrator"
+   },
+   "portrait": "",
+   "title": {
+    "fr": "Voix off",
+    "en": "Voice-over"
+   }
+  }
+ },
+ "chapters": [
+  {
+   "number": 1,
+   "title": {
+    "fr": "L'Héritage",
+    "en": "The Inheritance"
+   },
+   "summary": {
+    "fr": "Un garage orbital, une IA sarcastique et 60 000 crédits de dettes : bienvenue dans la famille.",
+    "en": "An orbital garage, a sarcastic AI and 60,000 credits of debt: welcome to the family."
+   }
+  },
+  {
+   "number": 2,
+   "title": {
+    "fr": "Les affaires reprennent",
+    "en": "Back in Business"
+   },
+   "summary": {
+    "fr": "Recruter, chercher, conquérir Kryo-7… et survivre aux holo-pubs de Galax-Auto.",
+    "en": "Hire, research, conquer Kryo-7… and survive Galax-Auto's holo-ads."
+   }
+  },
+  {
+   "number": 3,
+   "title": {
+    "fr": "Le Marché noir",
+    "en": "The Black Market"
+   },
+   "summary": {
+    "fr": "Le Nébula Bazar, ses bonnes affaires douteuses et une inspectrice au stylo à quatre couleurs.",
+    "en": "The Nebula Bazaar, its shady bargains and an inspector with a four-color pen."
+   }
+  },
+  {
+   "number": 4,
+   "title": {
+    "fr": "Le Cimetière",
+    "en": "The Graveyard"
+   },
+   "summary": {
+    "fr": "À Tartarus, les vaisseaux viennent mourir. Vous venez les ressusciter.",
+    "en": "At Tartarus, ships come to die. You come to raise them."
+   }
+  },
+  {
+   "number": 5,
+   "title": {
+    "fr": "L'Aurore",
+    "en": "The Aurora"
+   },
+   "summary": {
+    "fr": "Cinq pièces, une lune de luxe, une tante retrouvée et un choix qui change tout.",
+    "en": "Five pieces, a luxury moon, a found aunt and a choice that changes everything."
+   }
+  }
+ ],
+ "endings": {
+  "independence": {
+   "title": {
+    "fr": "Indépendance",
+    "en": "Independence"
+   },
+   "text": {
+    "fr": "L'Aurore s'élève au-dessus de Ferropolis et toute la galaxie retient son souffle (sauf les Brumeux, qui n'en ont pas). Les dons des fans de vieux coucous et la prime de la Société des Vaisseaux Historiques effacent la dette de Galax-Auto jusqu'au dernier crédit. Tante Odile reprend sa place à l'établi, BOLT repeint l'enseigne « Pièces & Miracles » en lettres dorées, et Augustin Lustre est muté à la succursale d'un astéroïde inhabité. Le garage reste à vous : libre, bruyant et légèrement rouillé.",
+    "en": "The Aurora rises above Ferropolis and the whole galaxy holds its breath (except the Mistlings, who don't have any). Donations from vintage-ship fans and a bounty from the Historic Starship Society wipe out the Galax-Auto debt down to the last credit. Aunt Odile takes back her spot at the workbench, BOLT repaints the “Parts & Miracles” sign in gold letters, and Augustin Lustre gets transferred to the branch office on an uninhabited asteroid. The garage stays yours: free, noisy and slightly rusty."
+   }
+  },
+  "franchise": {
+   "title": {
+    "fr": "Franchise",
+    "en": "The Franchise"
+   },
+   "text": {
+    "fr": "Galax-Auto vire 150 000 crédits sur votre compte et efface la dette d'un coup de stylo doré. L'Aurore devient un panneau publicitaire volant qui clignote « Galax-Auto, l'avenir en plastique ». Le garage s'appelle désormais « Galax-Auto Express – Pièces & Miracles », et BOLT doit chanter le jingle de la marque toutes les heures. Tante Odile vous envoie une carte postale d'une planète lointaine : « Tu es riche. Je suis fière (un peu). »",
+    "en": "Galax-Auto wires 150,000 credits to your account and erases the debt with a golden pen. The Aurora becomes a flying billboard that blinks “Galax-Auto: the future, in plastic.” The garage is now called “Galax-Auto Express – Parts & Miracles”, and BOLT has to sing the company jingle every hour. Aunt Odile sends you a postcard from a faraway planet: “You're rich. I'm proud (a little).”"
+   }
+  }
+ }
+}

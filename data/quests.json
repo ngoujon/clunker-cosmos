@@ -1,0 +1,3461 @@
+{
+ "_comment": "Quêtes de Wreck & Resell. kind main = histoire (mode Histoire seulement, démarrage auto) ; kind side = commandes et défis facultatifs (tous modes). Schéma : scripts/core/quest_system.gd.",
+ "quests": [
+  {
+   "id": "m1_01",
+   "kind": "main",
+   "chapter": 1,
+   "giver": "bolt",
+   "title": {
+    "fr": "Un héritage rouillé",
+    "en": "A Rusty Inheritance"
+   },
+   "desc": {
+    "fr": "Tante Odile a disparu en vous léguant son garage orbital… et sa dette envers Galax-Auto. BOLT, l'IA de bord, vous conseille de commencer par acheter une épave à la casse de Ferropolis.",
+    "en": "Aunt Odile vanished, leaving you her orbital garage… and her debt to Galax-Auto. BOLT, the onboard AI, suggests you start by buying a wreck at the Ferropolis Scrapyard."
+   },
+   "trigger": [],
+   "objectives": [
+    {
+     "type": "buy_wrecks",
+     "count": 1,
+     "text": {
+      "fr": "Acheter une épave aux enchères",
+      "en": "Buy a wreck at auction"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "rp",
+     "amount": 5
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "narrator",
+     "text": {
+      "fr": "Station orbitale de Ferropolis. Ça sent l'huile, le café froid et les mauvaises décisions.",
+      "en": "Ferropolis orbital station. It smells of oil, cold coffee and bad decisions."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Ah. Vous devez être la personne qui hérite. Je suis BOLT, Bureau d'Optimisation Logistique et Technique. Je gère ce garage depuis la disparition de votre tante. Enfin, « gérer »… je regarde la poussière tomber.",
+      "en": "Ah. You must be the heir. I am BOLT, Bureau of Optimized Logistics and Tinkering. I've been running this garage since your aunt vanished. Well, “running”… I watch the dust settle."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Bonne nouvelle : le garage est à vous. Mauvaise nouvelle : la dette aussi. 60 000 crédits envers Galax-Auto, payables chaque semaine. Avec intérêts moraux.",
+      "en": "Good news: the garage is yours. Bad news: so is the debt. 60,000 credits owed to Galax-Auto, payable weekly. With emotional interest."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Le principe est simple : on achète des épaves, on les répare, on les revend plus cher. Allez voir les enchères de la casse. Et scannez avant de miser : certains défauts se cachent mieux que votre tante.",
+      "en": "The idea is simple: buy wrecks, fix them, sell them for more. Go check out the scrapyard auctions. And scan before you bid: some defects hide better than your aunt."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Félicitations, vous possédez maintenant un tas de ferraille officiel. Votre tante serait fière. Ou horrifiée. Probablement les deux.",
+      "en": "Congratulations, you now own an official pile of scrap. Your aunt would be proud. Or horrified. Probably both."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Dans l'atelier, chaque défaut connu peut être réparé, maquillé… ou simplement signalé au client. Je recommande de réparer. Les clients adorent les vaisseaux qui volent.",
+      "en": "In the workshop, every known defect can be repaired, covered up… or simply disclosed to the buyer. I recommend repairing. Customers love ships that actually fly."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m1_02",
+   "kind": "main",
+   "chapter": 1,
+   "giver": "bolt",
+   "title": {
+    "fr": "Clé à molette en main",
+    "en": "Wrench in Hand"
+   },
+   "desc": {
+    "fr": "Votre épave a plus de problèmes qu'un Krrkt dans une usine d'insecticide. Réparez trois défauts pour vous faire la main.",
+    "en": "Your wreck has more problems than a Krrkt in a bug-spray factory. Repair three defects to get the hang of it."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m1_01"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "repair_defects",
+     "count": 3,
+     "text": {
+      "fr": "Réparer 3 défauts",
+      "en": "Repair 3 defects"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 300
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Votre épave a des problèmes. Comme vous, mais en plus réparable.",
+      "en": "Your wreck has problems. Like you, but more fixable."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Choisissez un défaut et lancez la réparation : vous travaillez de 8 h à 20 h. Si ça ne va pas assez vite, cliquez sur « Coup de main ». Oui, le coup de main, c'est vous.",
+      "en": "Pick a defect and start the repair: you work from 8:00 to 20:00. If it's too slow, click “Lend a hand”. Yes, the hand is yours."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Trois défauts réparés et aucun doigt perdu. Je mets à jour votre dossier : « sait tenir une clé dans le bon sens ».",
+      "en": "Three defects fixed and no fingers lost. Updating your file: “can hold a wrench the right way up.”"
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Votre tante avait caché 300 crédits dans une boîte à biscuits marquée « urgences ». Je décrète que c'est une urgence.",
+      "en": "Your aunt hid 300 credits in a cookie tin labeled “emergencies”. I hereby declare this an emergency."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m1_03",
+   "kind": "main",
+   "chapter": 1,
+   "giver": "bolt",
+   "title": {
+    "fr": "Premier client",
+    "en": "First Customer"
+   },
+   "desc": {
+    "fr": "Des clients aliens attendent au comptoir. Vendez votre premier vaisseau, à un prix qui ne fasse fuir personne.",
+    "en": "Alien customers are waiting at the counter. Sell your first ship at a price that doesn't scare anyone away."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m1_02"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "sell_ships",
+     "count": 1,
+     "text": {
+      "fr": "Vendre un vaisseau",
+      "en": "Sell a ship"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "reputation",
+     "amount": 3
+    },
+    {
+     "type": "rp",
+     "amount": 5
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Il y a du monde au comptoir. Enfin, « du monde »… un Glorbien s'est collé à la porte vitrée et n'arrive plus à repartir.",
+      "en": "There are customers at the counter. Well, “customers”… a Glorbian got stuck to the glass door and can't leave."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Proposez un vaisseau à un client. Trop cher, il refuse ; trop bas, je pleure. Au juste prix, tout le monde sourit. Et regardez ses goûts : couleur, classe, options.",
+      "en": "Offer a ship to a client. Too high and they refuse; too low and I cry. At a fair price, everyone smiles. And check their tastes: color, class, options."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Vendu ! Le client est reparti en klaxonnant. Ou alors c'était le moteur. On ne le saura jamais.",
+      "en": "Sold! The client left honking. Or maybe that was the engine. We'll never know."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Chaque vente améliore votre réputation et rapporte un peu de recherche. Oui, vendre des vaisseaux d'occasion, c'est de la science.",
+      "en": "Every sale boosts your reputation and earns a little research. Yes, selling used ships is a science."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m1_04",
+   "kind": "main",
+   "chapter": 1,
+   "giver": "lustre",
+   "title": {
+    "fr": "Un sourire trop brillant",
+    "en": "A Smile Too Shiny"
+   },
+   "desc": {
+    "fr": "Augustin Lustre, de Galax-Auto, vient réclamer son dû. Remboursez la première échéance de 2 500 crédits (prélevée automatiquement tous les 7 jours, ou payable en avance).",
+    "en": "Augustin Lustre from Galax-Auto has come to collect. Repay the first 2,500-credit installment (automatically charged every 7 days, or payable early)."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m1_03"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "debt_paid_total",
+     "value": 2500,
+     "text": {
+      "fr": "Rembourser 2 500 crédits à Galax-Auto",
+      "en": "Repay 2,500 credits to Galax-Auto"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "flag",
+     "id": "met_lustre"
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "lustre",
+     "text": {
+      "fr": "Bonjour, bonjour ! Augustin Lustre, directeur régional de Galax-Auto. Quel charmant… tas de rouille vous avez là.",
+      "en": "Hello, hello! Augustin Lustre, Regional Director of Galax-Auto. What a charming… pile of rust you have here."
+     }
+    },
+    {
+     "speaker": "lustre",
+     "text": {
+      "fr": "Galax-Auto vous propose de racheter ce garage pour la généreuse somme de 12 crédits et un porte-clés collector. Non ? Quel dommage.",
+      "en": "Galax-Auto would like to buy this garage for the generous sum of 12 credits and a collector's keychain. No? What a pity."
+     }
+    },
+    {
+     "speaker": "lustre",
+     "text": {
+      "fr": "Alors je vous rappelle les échéances de votre tante : 2 500 crédits par semaine, prélevés automatiquement tous les 7 jours. Vous pouvez aussi payer en avance… si vous aimez les choses exotiques, comme la solvabilité.",
+      "en": "Then allow me to remind you of your aunt's installments: 2,500 credits a week, automatically charged every 7 days. You may also pay early… if you enjoy exotic things, like solvency."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Il est parti. J'ai désinfecté la poignée de la porte. Deux fois.",
+      "en": "He's gone. I disinfected the door handle. Twice."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "lustre",
+     "text": {
+      "fr": "Paiement reçu. Quel dommage… je veux dire : quelle joie ! À la semaine prochaine.",
+      "en": "Payment received. What a shame… I mean: what a joy! See you next week."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Il sourit avec 48 dents. Je les ai comptées. Méfiez-vous des gens qui ont plus de dents que de scrupules.",
+      "en": "He smiles with 48 teeth. I counted. Beware of people with more teeth than scruples."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m1_05",
+   "kind": "main",
+   "chapter": 1,
+   "giver": "odile",
+   "title": {
+    "fr": "Le carnet de la Clé",
+    "en": "The Wrench's Notebook"
+   },
+   "desc": {
+    "fr": "Un holo-message de Tante Odile parle de l'Aurore, un vaisseau légendaire démonté en cinq pièces. La première, la Quille, est aux enchères à Ferropolis.",
+    "en": "A holo-message from Aunt Odile mentions the Aurora, a legendary ship split into five pieces. The first one, the Keel, is up for auction at Ferropolis."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m1_04"
+    }
+   ],
+   "on_start": [
+    {
+     "type": "special_lot",
+     "id": "aurora_keel"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "has_item",
+     "id": "aurora_keel",
+     "text": {
+      "fr": "Obtenir la Quille de l'Aurore (lot spécial à Ferropolis)",
+      "en": "Get the Aurora's Keel (special lot at Ferropolis)"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "rp",
+     "amount": 10
+    },
+    {
+     "type": "credits",
+     "amount": 500
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "En rangeant le bureau, j'ai trouvé un holo-message de votre tante. Il était caché sous trois tasses et un sandwich fossilisé.",
+      "en": "While tidying the office, I found a holo-message from your aunt. It was hidden under three mugs and a fossilized sandwich."
+     }
+    },
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "Si tu écoutes ce message, c'est que j'ai disparu. Ou que BOLT fouille encore dans mes affaires. BOLT, arrête ça tout de suite.",
+      "en": "If you're hearing this, I've disappeared. Or BOLT is snooping through my things again. BOLT, stop that right now."
+     }
+    },
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "Je cherche l'Aurore, le plus beau vaisseau jamais construit. On l'a démontée, et ses pièces dorment dans cinq épaves, aux quatre coins de la galaxie. Enfin, aux cinq coins.",
+      "en": "I'm looking for the Aurora, the most beautiful ship ever built. She was taken apart, and her pieces sleep in five wrecks, in the four corners of the galaxy. Well, five corners."
+     }
+    },
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "La première, la Quille Ancestrale, se trouve dans une épave de la casse de Ferropolis. Achète-la avant que Galax-Auto n'y mette ses gros doigts.",
+      "en": "The first one, the Ancestral Keel, is inside a wreck at the Ferropolis Scrapyard. Buy it before Galax-Auto gets its fat fingers on it."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Le lot vient justement d'apparaître aux enchères de Ferropolis. Je dis ça, je ne dis rien. Si, en fait, je le dis : achetez-le.",
+      "en": "The lot just popped up at the Ferropolis auctions. Just saying. Actually, no, I'm really saying it: buy it."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "La Quille de l'Aurore ! Elle est tiède. Elle ronronne. Je n'aime pas les objets qui ronronnent.",
+      "en": "The Aurora's Keel! It's warm. It purrs. I don't like objects that purr."
+     }
+    },
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "(suite du message) …et si tu as trouvé la Quille, c'est que tu as de la suite dans les idées. Continue. Les autres pièces t'attendent.",
+      "en": "(message continues) …and if you found the Keel, you clearly don't give up easily. Keep going. The other pieces are waiting for you."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Prochaine étape : faire tourner ce garage pour de bon. Vous ne pouvez pas tout faire avec deux mains. Enfin si, mais je refuse de regarder.",
+      "en": "Next step: get this garage running for real. You can't do everything with two hands. Well, you can, but I refuse to watch."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m2_01",
+   "kind": "main",
+   "chapter": 2,
+   "giver": "bolt",
+   "title": {
+    "fr": "Recrutement galactique",
+    "en": "Galactic Recruitment"
+   },
+   "desc": {
+    "fr": "Le garage a besoin de bras, de tentacules ou de pseudopodes. Embauchez de quoi avoir au moins deux employés.",
+    "en": "The garage needs arms, tentacles or pseudopods. Hire enough to have at least two employees."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m1_05"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "staff_at_least",
+     "count": 2,
+     "text": {
+      "fr": "Avoir au moins 2 employés",
+      "en": "Have at least 2 employees"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 500
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Vous ne pouvez pas réparer, vendre, enchérir et chercher en même temps. J'ai vérifié : vous n'avez que deux bras. Conception très limitée.",
+      "en": "You can't repair, sell, bid and research at the same time. I checked: you only have two arms. Very limited design."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Le vivier de candidats se renouvelle chaque jour dans l'onglet RH. Un mécanicien et un vendeur feraient des merveilles. Évitez ceux qui écrivent « maladroit » dans leurs qualités.",
+      "en": "The candidate pool refreshes every day in the HR tab. A mechanic and a salesperson would work wonders. Avoid anyone who lists “clumsy” as a strength."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Deux employés ! Le garage ressemble presque à une entreprise. Je leur ai fait signer le règlement intérieur. Article 1 : on ne débranche pas BOLT.",
+      "en": "Two employees! The garage almost looks like a business. I had them sign the house rules. Article 1: nobody unplugs BOLT."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Vérifiez leurs postes et leurs règles de priorité. Un employé sans poste, c'est un employé qui fait la sieste. Et ils adorent la sieste.",
+      "en": "Check their stations and priority rules. An employee without a station is an employee taking a nap. And they love naps."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m2_02",
+   "kind": "main",
+   "chapter": 2,
+   "giver": "bolt",
+   "title": {
+    "fr": "Le savoir, c'est du profit",
+    "en": "Knowledge Is Profit"
+   },
+   "desc": {
+    "fr": "Les notes d'Odile forment un véritable arbre technologique. Débloquez deux technologies avec des points de recherche et des crédits.",
+    "en": "Odile's notes form a real technology tree. Unlock two technologies with research points and credits."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m2_01"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "research_count",
+     "count": 2,
+     "text": {
+      "fr": "Débloquer 2 technologies",
+      "en": "Unlock 2 technologies"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "rp",
+     "amount": 10
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Votre tante avait un arbre technologique. Pas un vrai arbre, rassurez-vous : la dernière plante de la station est morte de désespoir.",
+      "en": "Your aunt had a technology tree. Not a real tree, don't worry: the station's last plant died of despair."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Dépensez des points de recherche et des crédits pour débloquer deux technologies. Chaque branche améliore une partie du garage. Choisissez bien. Ou au hasard, comme d'habitude.",
+      "en": "Spend research points and credits to unlock two technologies. Each branch improves part of the garage. Choose wisely. Or randomly, as usual."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Deux technologies ! Le garage gagne en efficacité, et vous en respect de ma part. Pas beaucoup. Mais un peu.",
+      "en": "Two technologies! The garage gets more efficient, and you get a little more respect from me. Not much. But some."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Astuce : un chercheur au labo produit des points de recherche toute la journée. Moi, je produis surtout des remarques.",
+      "en": "Tip: a researcher in the lab produces research points all day long. I mostly produce remarks."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m2_03",
+   "kind": "main",
+   "chapter": 2,
+   "giver": "odile",
+   "title": {
+    "fr": "Cap sur Kryo-7",
+    "en": "Course for Kryo-7"
+   },
+   "desc": {
+    "fr": "Selon Odile, le Cœur de l'Aurore bat dans les anneaux gelés de Kryo-7. Débloquez le permis d'enchères (branche Lieux).",
+    "en": "According to Odile, the Aurora's Heart beats in the frozen rings of Kryo-7. Unlock the auction permit (Locations branch)."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m2_02"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "location_unlocked",
+     "id": "kryo7",
+     "text": {
+      "fr": "Débloquer l'accès à Kryo-7 (branche Lieux)",
+      "en": "Unlock access to Kryo-7 (Locations branch)"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 800
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "(holo-message n° 2) Le Cœur de l'Aurore bat quelque part dans les anneaux de Kryo-7. Il faut un permis pour y enchérir. Les douaniers sont des bonshommes de glace très à cheval sur la paperasse.",
+      "en": "(holo-message #2) The Aurora's Heart is beating somewhere in the rings of Kryo-7. You need a permit to bid there. The customs officers are snowmen who are very strict about paperwork."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Le « Permis de Kryo-7 » se débloque dans la branche Lieux de l'arbre. Prévoyez une écharpe. Pour vous, pas pour moi : je n'ai pas de cou.",
+      "en": "The “Kryo-7 permit” is unlocked in the Locations branch of the tree. Bring a scarf. For you, not me: I don't have a neck."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Accès à Kryo-7 obtenu ! Les épaves y sont bien conservées, mais l'électronique a froid. Comme mon cœur quand Lustre appelle.",
+      "en": "Kryo-7 access granted! The wrecks there are well preserved, but the electronics are chilly. Like my heart whenever Lustre calls."
+     }
+    },
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "(holo-message n° 2, suite) Et pense à scanner les lots là-bas : le froid cache très bien les fissures.",
+      "en": "(holo-message #2, continued) And remember to scan the lots there: the cold hides cracks very well."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m2_04",
+   "kind": "main",
+   "chapter": 2,
+   "giver": "odile",
+   "title": {
+    "fr": "Un cœur sous la glace",
+    "en": "A Heart on Ice"
+   },
+   "desc": {
+    "fr": "Un cargo gelé contenant le Cœur de l'Aurore est aux enchères à Kryo-7. Galax-Auto est aussi sur le coup.",
+    "en": "A frozen freighter holding the Aurora's Heart is up for auction at Kryo-7. Galax-Auto is on it too."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m2_03"
+    }
+   ],
+   "on_start": [
+    {
+     "type": "special_lot",
+     "id": "aurora_heart"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "has_item",
+     "id": "aurora_heart",
+     "text": {
+      "fr": "Obtenir le Cœur de l'Aurore (lot spécial à Kryo-7)",
+      "en": "Get the Aurora's Heart (special lot at Kryo-7)"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "rp",
+     "amount": 20
+    },
+    {
+     "type": "reputation",
+     "amount": 5
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Un cargo gelé passe aux enchères à Kryo-7. D'après le carnet, le Cœur de l'Aurore est toujours à bord. Et il bat. Encore un objet qui fait des choses qu'un objet ne devrait pas faire.",
+      "en": "A frozen freighter is going up for auction at Kryo-7. According to the notebook, the Aurora's Heart is still aboard. And it's beating. Yet another object doing things objects shouldn't do."
+     }
+    },
+    {
+     "speaker": "lustre",
+     "text": {
+      "fr": "Tiens, tiens… On s'intéresse aux vieux cargos ? Galax-Auto aussi. Que le meilleur gagne. C'est-à-dire nous.",
+      "en": "Well, well… Interested in old freighters? So is Galax-Auto. May the best one win. Meaning us."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Le Cœur de l'Aurore est à nous ! Il bat à 72 pulsations par minute. Je lui ai demandé de baisser le volume. Il a battu plus fort.",
+      "en": "The Aurora's Heart is ours! It beats at 72 pulses per minute. I asked it to turn the volume down. It beat louder."
+     }
+    },
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "(holo-message n° 3) Bravo. Méfie-toi de Galax-Auto : ils veulent transformer l'Aurore en panneau publicitaire volant. Ne les laisse pas faire.",
+      "en": "(holo-message #3) Well done. Beware of Galax-Auto: they want to turn the Aurora into a flying billboard. Don't let them."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m2_05",
+   "kind": "main",
+   "chapter": 2,
+   "giver": "lustre",
+   "title": {
+    "fr": "Campagne de dénigrement",
+    "en": "Smear Campaign"
+   },
+   "desc": {
+    "fr": "Galax-Auto inonde la galaxie de holo-pubs moqueuses contre votre garage. Répondez par la qualité : vendez trois vaisseaux et atteignez 40 de réputation.",
+    "en": "Galax-Auto floods the galaxy with holo-ads mocking your garage. Answer with quality: sell three ships and reach 40 reputation."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m2_04"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "sell_ships",
+     "count": 3,
+     "text": {
+      "fr": "Vendre 3 vaisseaux",
+      "en": "Sell 3 ships"
+     }
+    },
+    {
+     "type": "reputation_at_least",
+     "value": 40,
+     "text": {
+      "fr": "Atteindre 40 de réputation",
+      "en": "Reach 40 reputation"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 1500
+    },
+    {
+     "type": "flag",
+     "id": "ch2_done"
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Alerte. Galax-Auto diffuse des holo-pubs : « Garage Odile : les vaisseaux qui font pschitt ». C'est diffamatoire. Et un peu vrai pour le modèle de mardi.",
+      "en": "Alert. Galax-Auto is running holo-ads: “Odile's Garage: ships that go fizzle.” That's defamatory. And slightly true for Tuesday's model."
+     }
+    },
+    {
+     "speaker": "lustre",
+     "text": {
+      "fr": "Rien de personnel ! C'est le marché. Un marché que nous possédons à 94 %.",
+      "en": "Nothing personal! It's just the market. A market we own 94% of."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Répondons par l'excellence : vendez trois vaisseaux et faites grimper la réputation à 40. Rien ne vexe plus un concurrent qu'un client satisfait.",
+      "en": "Let's answer with excellence: sell three ships and push our reputation to 40. Nothing annoys a competitor more than a happy customer."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Réputation restaurée ! Les clients disent que Galax-Auto vend des vaisseaux en plastique et que nous vendons des vaisseaux « avec une âme ». Et un peu de rouille. Mais surtout une âme.",
+      "en": "Reputation restored! Customers say Galax-Auto sells plastic ships and we sell ships “with a soul.” And a bit of rust. But mostly a soul."
+     }
+    },
+    {
+     "speaker": "lustre",
+     "text": {
+      "fr": "Hmph. Profitez-en. Le Nébula Bazar n'est pas un endroit pour les amateurs… ni pour les honnêtes gens.",
+      "en": "Hmph. Enjoy it while it lasts. The Nebula Bazaar is no place for amateurs… or for honest people."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Il vient de nous donner un indice. Il est vraiment très mauvais en méchant.",
+      "en": "He just gave us a hint. He's really terrible at being a villain."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m3_01",
+   "kind": "main",
+   "chapter": 3,
+   "giver": "odile",
+   "title": {
+    "fr": "Contacts douteux",
+    "en": "Shady Contacts"
+   },
+   "desc": {
+    "fr": "La Voile de l'Aurore a été revendue au Nébula Bazar, le marché noir le plus coloré de la galaxie. Obtenez-y vos entrées (branche Lieux).",
+    "en": "The Aurora's Sail was resold at the Nebula Bazaar, the galaxy's most colorful black market. Get yourself in (Locations branch)."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m2_05"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "location_unlocked",
+     "id": "nebula",
+     "text": {
+      "fr": "Débloquer l'accès au Nébula Bazar (branche Lieux)",
+      "en": "Unlock access to the Nebula Bazaar (Locations branch)"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 1000
+    },
+    {
+     "type": "rp",
+     "amount": 10
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "(holo-message n° 4) La Voile de l'Aurore a fini au Nébula Bazar. Là-bas, tout s'achète : les pièces, les silences, et parfois les deux en lot.",
+      "en": "(holo-message #4) The Aurora's Sail ended up at the Nebula Bazaar. Everything is for sale there: parts, silence, and sometimes both as a bundle."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Débloquez « Contacts au Nébula Bazar » dans la branche Lieux. Et gardez une main sur votre portefeuille. L'autre aussi.",
+      "en": "Unlock “Nebula Bazaar contacts” in the Locations branch. And keep one hand on your wallet. The other one too."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Bienvenue au Nébula Bazar. Les défauts y sont mieux cachés que les vendeurs. Scannez tout. Deux fois.",
+      "en": "Welcome to the Nebula Bazaar. Defects hide better than the sellers there. Scan everything. Twice."
+     }
+    },
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "(holo-message n° 4, suite) Au Bazar, tout le monde te proposera de « maquiller » tes défauts. Souviens-toi : le Bureau a une excellente mémoire.",
+      "en": "(holo-message #4, continued) At the Bazaar, everyone will offer to “touch up” your defects. Remember: the Bureau has an excellent memory."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m3_02",
+   "kind": "main",
+   "chapter": 3,
+   "giver": "inspector",
+   "title": {
+    "fr": "L'œil du Bureau",
+    "en": "The Bureau's Eye"
+   },
+   "desc": {
+    "fr": "Le Bureau Galactique de la Consommation enquête sur des vaisseaux « maquillés ». Prouvez votre honnêteté : trois ventes sans aucun défaut dissimulé.",
+    "en": "The Galactic Consumer Bureau is investigating “touched-up” ships. Prove your honesty: three sales with no covered-up defects."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m3_01"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "sell_ships",
+     "count": 3,
+     "honest": true,
+     "text": {
+      "fr": "Vendre 3 vaisseaux sans défaut dissimulé",
+      "en": "Sell 3 ships with no covered-up defects"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "reputation",
+     "amount": 5
+    },
+    {
+     "type": "credits",
+     "amount": 1200
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "inspector",
+     "text": {
+      "fr": "Inspectrice Plimsoll, Bureau Galactique de la Consommation. On me signale des vaisseaux maquillés dans le secteur. Je n'accuse personne. Je note juste votre nom. En gras.",
+      "en": "Inspector Plimsoll, Galactic Consumer Bureau. I've had reports of touched-up ships in this sector. I'm not accusing anyone. I'm just writing down your name. In bold."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Elle a un stylo à quatre couleurs. Mauvais signe. Vendons trois vaisseaux sans rien dissimuler, histoire de prouver qu'on est des gens bien.",
+      "en": "She has a four-color pen. Bad sign. Let's sell three ships without hiding anything, just to prove we're good people."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "inspector",
+     "text": {
+      "fr": "Trois ventes irréprochables. Tant d'honnêteté, c'est presque suspect. Je vous garde à l'œil quand même.",
+      "en": "Three flawless sales. So much honesty is almost suspicious. I'm keeping an eye on you anyway."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Elle a souri. Ou alors c'était une crampe.",
+      "en": "She smiled. Or it was a cramp."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m3_03",
+   "kind": "main",
+   "chapter": 3,
+   "giver": "inspector",
+   "title": {
+    "fr": "Bouche-à-oreille",
+    "en": "Word of Mouth"
+   },
+   "desc": {
+    "fr": "Au Bazar, personne ne fait confiance à personne. Atteignez 50 de réputation pour que les clients vous prennent au sérieux.",
+    "en": "At the Bazaar, nobody trusts anybody. Reach 50 reputation so customers take you seriously."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m3_02"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "reputation_at_least",
+     "value": 50,
+     "text": {
+      "fr": "Atteindre 50 de réputation",
+      "en": "Reach 50 reputation"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "rp",
+     "amount": 15
+    },
+    {
+     "type": "credits",
+     "amount": 1500
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Au Bazar, la confiance se gagne en vendant bien et en ne mentant pas. Deux concepts révolutionnaires dans le coin.",
+      "en": "At the Bazaar, trust is earned by selling well and not lying. Two revolutionary concepts around here."
+     }
+    },
+    {
+     "speaker": "inspector",
+     "text": {
+      "fr": "Le Bureau publie un classement des garages. Vous êtes actuellement 412e. Sur 413. Le 413e a explosé.",
+      "en": "The Bureau publishes a garage ranking. You're currently 412th. Out of 413. Number 413 exploded."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "50 de réputation ! Les marchands du Bazar nous saluent. Enfin, ils saluent nos portefeuilles, mais c'est un début.",
+      "en": "Reputation 50! The Bazaar merchants greet us. Well, they greet our wallets, but it's a start."
+     }
+    },
+    {
+     "speaker": "inspector",
+     "text": {
+      "fr": "Vous voilà 37e au classement. Ne prenez pas la grosse tête : le 36e vend des grille-pains.",
+      "en": "You're now ranked 37th. Don't let it go to your head: number 36 sells toasters."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m3_04",
+   "kind": "main",
+   "chapter": 3,
+   "giver": "odile",
+   "title": {
+    "fr": "La Voile d'Aube",
+    "en": "The Dawn Sail"
+   },
+   "desc": {
+    "fr": "Un yacht louche du Nébula Bazar cache la Voile de l'Aurore dans sa soute. Remportez le lot.",
+    "en": "A shady yacht at the Nebula Bazaar hides the Aurora's Sail in its hold. Win the lot."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m3_03"
+    }
+   ],
+   "on_start": [
+    {
+     "type": "special_lot",
+     "id": "aurora_sail"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "has_item",
+     "id": "aurora_sail",
+     "text": {
+      "fr": "Obtenir la Voile de l'Aurore (lot spécial au Nébula Bazar)",
+      "en": "Get the Aurora's Sail (special lot at the Nebula Bazaar)"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "rp",
+     "amount": 25
+    },
+    {
+     "type": "employee",
+     "template": "emp_pixie"
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Un yacht louche vient d'apparaître au Nébula Bazar. Le vendeur jure qu'il n'a « jamais servi ». Il a 400 ans et une cicatrice en forme de comète.",
+      "en": "A shady yacht just appeared at the Nebula Bazaar. The seller swears it's “never been used.” It's 400 years old and has a comet-shaped scar."
+     }
+    },
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "(holo-message n° 5) La Voile est pliée dans la soute de ce yacht. Elle est plus fine qu'une excuse de Galax-Auto. Ne la froisse pas.",
+      "en": "(holo-message #5) The Sail is folded in that yacht's hold. It's thinner than a Galax-Auto apology. Don't crease it."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "La Voile de l'Aurore ! Trois pièces sur cinq. Et une star de la vente du Bazar, Pixie Vroum, a démissionné pour nous rejoindre. Pixie dit qu'on dégage « une bonne énergie ». Pixie n'a pas encore vu les toilettes.",
+      "en": "The Aurora's Sail! Three pieces out of five. And a star salesperson from the Bazaar, Pixie Vroum, quit to join us. Pixie says we give off “good energy.” Pixie hasn't seen the bathroom yet."
+     }
+    },
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "(holo-message n° 6) Trois pièces… Tu avances vite. Plus vite que moi, à vrai dire. Ça m'agace un peu.",
+      "en": "(holo-message #6) Three pieces… You're moving fast. Faster than I did, frankly. It's a bit annoying."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m3_05",
+   "kind": "main",
+   "chapter": 3,
+   "giver": "lustre",
+   "title": {
+    "fr": "Plus grand que ça",
+    "en": "Room to Grow"
+   },
+   "desc": {
+    "fr": "Lustre se moque de la taille de votre garage. Agrandissez-le au niveau 2.",
+    "en": "Lustre mocks the size of your garage. Expand it to level 2."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m3_04"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "garage_level",
+     "value": 2,
+     "text": {
+      "fr": "Agrandir le garage au niveau 2",
+      "en": "Expand the garage to level 2"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 2000
+    },
+    {
+     "type": "reputation",
+     "amount": 3
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "lustre",
+     "text": {
+      "fr": "Félicitations pour vos petites trouvailles. Mais votre garage est si… petit. Galax-Auto a des hangars de la taille d'une lune. Une petite lune, mais quand même.",
+      "en": "Congratulations on your little finds. But your garage is so… small. Galax-Auto has hangars the size of a moon. A small moon, but still."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Il nous provoque. Et ça marche. Agrandissez le garage au niveau 2 : plus de place pour les vaisseaux et pour l'équipe.",
+      "en": "He's provoking us. And it's working. Expand the garage to level 2: more room for ships and for the crew."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Garage agrandi ! On a même un placard à balais. Je l'ai rebaptisé « salle de réunion ».",
+      "en": "Garage expanded! We even have a broom closet. I renamed it the “meeting room.”"
+     }
+    },
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "(holo-message n° 7) Si tu en es là, il est temps de visiter le Cimetière de Tartarus. Là où les vaisseaux vont mourir… et où j'ai caché autre chose.",
+      "en": "(holo-message #7) If you've made it this far, it's time to visit the Tartarus Graveyard. Where ships go to die… and where I hid something else."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m4_01",
+   "kind": "main",
+   "chapter": 4,
+   "giver": "bolt",
+   "title": {
+    "fr": "Cartes de Tartarus",
+    "en": "Charts of Tartarus"
+   },
+   "desc": {
+    "fr": "Le Cimetière de Tartarus regorge d'épaves très abîmées et très bon marché. Débloquez ses cartes (branche Lieux).",
+    "en": "The Tartarus Graveyard is packed with badly damaged, very cheap wrecks. Unlock its charts (Locations branch)."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m3_05"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "location_unlocked",
+     "id": "tartarus",
+     "text": {
+      "fr": "Débloquer l'accès à Tartarus (branche Lieux)",
+      "en": "Unlock access to Tartarus (Locations branch)"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 1500
+    },
+    {
+     "type": "rp",
+     "amount": 15
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Le Cimetière de Tartarus : des milliers d'épaves, un silence de mort et une réception radio épouvantable. Mon endroit préféré pour ne pas y aller.",
+      "en": "The Tartarus Graveyard: thousands of wrecks, deathly silence and terrible radio reception. My favorite place not to go."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Débloquez « Cartes de Tartarus » dans la branche Lieux. Et emportez des piles de rechange. Les fantômes adorent vider les piles.",
+      "en": "Unlock “Tartarus charts” in the Locations branch. And bring spare batteries. Ghosts love draining batteries."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Accès à Tartarus obtenu. Les épaves y sont très abîmées et très bon marché. Comme mes blagues.",
+      "en": "Tartarus access granted. The wrecks there are badly damaged and very cheap. Like my jokes."
+     }
+    },
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "(holo-message n° 7, suite) À Tartarus, les épaves ont beaucoup de défauts, mais elles ne coûtent presque rien. Un bon mécanicien y vaut de l'or.",
+      "en": "(holo-message #7, continued) At Tartarus, wrecks have lots of defects, but they cost next to nothing. A good mechanic is worth gold there."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m4_02",
+   "kind": "main",
+   "chapter": 4,
+   "giver": "bolt",
+   "title": {
+    "fr": "Une vraie équipe",
+    "en": "A Real Crew"
+   },
+   "desc": {
+    "fr": "Ressusciter les épaves de Tartarus demande du monde. Réunissez une équipe d'au moins cinq employés.",
+    "en": "Raising Tartarus wrecks from the dead takes people. Build a crew of at least five employees."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m4_01"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "staff_at_least",
+     "count": 5,
+     "text": {
+      "fr": "Avoir au moins 5 employés",
+      "en": "Have at least 5 employees"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "employee",
+     "template": "emp_grizzle"
+    },
+    {
+     "type": "credits",
+     "amount": 1000
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Tartarus, c'est du gros œuvre. Il nous faut au moins cinq employés. Ou quatre et un Glorbien très motivé.",
+      "en": "Tartarus is heavy-duty work. We need at least five employees. Or four and one very motivated Glorbian."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Pensez aux règles de priorité : un mécanicien « Critiques d'abord » à Tartarus, c'est une assurance-vie.",
+      "en": "Mind the priority rules: a “Critical first” mechanic at Tartarus is basically life insurance."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Cinq employés ! Et une sixième recrue frappe déjà à la porte : Grizzle Tôle-Fine, le bras droit de votre tante pendant vingt ans. Ça râle, mais ça répare tout.",
+      "en": "Five employees! And a sixth recruit is already knocking: Grizzle Tôle-Fine, your aunt's right hand for twenty years. Grumbles a lot, fixes everything."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Grizzle a déjà réorganisé mes étagères. Sans me demander. Je sens qu'on va très bien s'entendre. Ou pas du tout.",
+      "en": "Grizzle has already reorganized my shelves. Without asking. I can tell we'll get along great. Or not at all."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m4_03",
+   "kind": "main",
+   "chapter": 4,
+   "giver": "odile",
+   "title": {
+    "fr": "Le Chasseur fantôme",
+    "en": "The Ghost Fighter"
+   },
+   "desc": {
+    "fr": "Le Cockpit-Étoile de l'Aurore est monté sur un chasseur que tout le monde croit hanté, aux enchères de Tartarus.",
+    "en": "The Aurora's Star Cockpit is mounted on a fighter everyone thinks is haunted, up for auction at Tartarus."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m4_02"
+    }
+   ],
+   "on_start": [
+    {
+     "type": "special_lot",
+     "id": "aurora_star"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "has_item",
+     "id": "aurora_star",
+     "text": {
+      "fr": "Obtenir le Cockpit-Étoile (lot spécial à Tartarus)",
+      "en": "Get the Star Cockpit (special lot at Tartarus)"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "rp",
+     "amount": 30
+    },
+    {
+     "type": "reputation",
+     "amount": 5
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "(holo-message n° 8) Le Cockpit-Étoile est monté sur un chasseur que tout le monde croit hanté. Il n'est pas hanté. C'est juste son klaxon qui gémit.",
+      "en": "(holo-message #8) The Star Cockpit is mounted on a fighter everyone thinks is haunted. It isn't haunted. Its horn just moans."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Le lot est aux enchères à Tartarus. Galax-Auto a envoyé trois acheteurs en lunettes noires. Dans l'espace. Ridicule.",
+      "en": "The lot is up at Tartarus. Galax-Auto sent three buyers in sunglasses. In space. Ridiculous."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Le Cockpit-Étoile ! Le siège le plus confortable de l'univers. J'ai posé un capteur dessus : il a soupiré de bonheur.",
+      "en": "The Star Cockpit! The comfiest seat in the universe. I put a sensor on it: it sighed with joy."
+     }
+    },
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "(holo-message n° 9) Quatre pièces… Il ne manque que la Boussole Céleste. Elle est sur Opalia, la lune des riches. Je t'y attends peut-être.",
+      "en": "(holo-message #9) Four pieces… Only the Celestial Compass is missing. It's on Opalia, the moon of the rich. I might be waiting for you there."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "« Peut-être » ? Les tantes, c'est comme les vieux vaisseaux : jamais là quand on les cherche.",
+      "en": "“Might”? Aunts are like old ships: never there when you need them."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m4_04",
+   "kind": "main",
+   "chapter": 4,
+   "giver": "lustre",
+   "title": {
+    "fr": "Solder les comptes",
+    "en": "Settling Accounts"
+   },
+   "desc": {
+    "fr": "Montrez à Galax-Auto que le garage est solide : remboursez 20 000 crédits au total (échéances comprises).",
+    "en": "Show Galax-Auto the garage is solid: repay 20,000 credits in total (installments included)."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m4_03"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "debt_paid_total",
+     "value": 20000,
+     "text": {
+      "fr": "Rembourser 20 000 crédits au total",
+      "en": "Repay 20,000 credits in total"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "reputation",
+     "amount": 5
+    },
+    {
+     "type": "rp",
+     "amount": 20
+    },
+    {
+     "type": "employee",
+     "template": "emp_doc"
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "lustre",
+     "text": {
+      "fr": "Vous remboursez la dette… C'est contrariant. Galax-Auto comptait sur votre faillite pour boucler son plan trimestriel.",
+      "en": "You're paying off the debt… How annoying. Galax-Auto was counting on your bankruptcy to hit its quarterly plan."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Montrons-lui qu'on tient la route : 20 000 crédits remboursés au total. Vous pouvez payer en avance depuis l'écran du garage.",
+      "en": "Let's show him we're solid: 20,000 credits repaid in total. You can pay early from the garage screen."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "20 000 crédits remboursés ! Lustre a fait une drôle de tête. J'ai pris une capture d'écran. Pour l'art.",
+      "en": "20,000 credits repaid! Lustre made a funny face. I took a screenshot. For art's sake."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Autre bonne nouvelle : Doc Fusible, une vieille connaissance d'Odile, rejoint le labo. Le Doc ne dort jamais et invente des trucs en mangeant.",
+      "en": "More good news: Doc Fusible, an old friend of Odile's, is joining the lab. The Doc never sleeps and invents things while eating."
+     }
+    },
+    {
+     "speaker": "lustre",
+     "text": {
+      "fr": "Ce n'est pas fini. Opalia est un club très fermé, et j'en suis le président d'honneur. Hé hé hé.",
+      "en": "This isn't over. Opalia is a very exclusive club, and I'm its honorary president. Heh heh heh."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m5_01",
+   "kind": "main",
+   "chapter": 5,
+   "giver": "bolt",
+   "title": {
+    "fr": "L'invitation d'Opalia",
+    "en": "The Opalia Invitation"
+   },
+   "desc": {
+    "fr": "La dernière pièce de l'Aurore se trouve sur Opalia, la lune des enchères de prestige. Obtenez une invitation (branche Lieux).",
+    "en": "The Aurora's last piece is on Opalia, the moon of prestige auctions. Get an invitation (Locations branch)."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m4_04"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "location_unlocked",
+     "id": "opalia",
+     "text": {
+      "fr": "Débloquer l'accès à Opalia (branche Lieux)",
+      "en": "Unlock access to Opalia (Locations branch)"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 3000
+    },
+    {
+     "type": "rp",
+     "amount": 20
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Opalia : champagne, smokings et épaves presque neuves. Il faut une invitation pour y enchérir. Elle se débloque dans la branche Lieux… et suppose un peu de crédit galactique.",
+      "en": "Opalia: champagne, tuxedos and nearly-new wrecks. You need an invitation to bid there. It's unlocked in the Locations branch… and requires a bit of galactic credit."
+     }
+    },
+    {
+     "speaker": "lustre",
+     "text": {
+      "fr": "Opalia ? Vous ? Haha ! Les invités doivent porter une cravate. Vous n'avez même pas de cou. Ah non, pardon, ça, c'est votre IA.",
+      "en": "Opalia? You? Haha! Guests must wear a tie. You don't even have a neck. Oh, sorry, that's your AI."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Je vais le pixeliser.",
+      "en": "I'm going to pixelate him."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Invitation obtenue ! J'ai réservé une table près du buffet. Pour l'espionnage. Et pour le buffet.",
+      "en": "Invitation secured! I booked a table near the buffet. For espionage. And for the buffet."
+     }
+    },
+    {
+     "speaker": "lustre",
+     "text": {
+      "fr": "Une invitation ? Grrr. Bon. Sachez qu'au buffet d'Opalia, les petits-fours se mangent avec une pince. Ne vous ridiculisez pas.",
+      "en": "An invitation? Grrr. Fine. Just so you know, at Opalia's buffet, canapés are eaten with tongs. Don't embarrass yourself."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m5_02",
+   "kind": "main",
+   "chapter": 5,
+   "giver": "lustre",
+   "title": {
+    "fr": "La Boussole Céleste",
+    "en": "The Celestial Compass"
+   },
+   "desc": {
+    "fr": "Le lot de prestige « Boussole Céleste » passe aux enchères sur Opalia. Lustre est au premier rang.",
+    "en": "The prestige lot “Celestial Compass” goes under the hammer on Opalia. Lustre is in the front row."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m5_01"
+    }
+   ],
+   "on_start": [
+    {
+     "type": "special_lot",
+     "id": "aurora_compass"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "has_item",
+     "id": "aurora_compass",
+     "text": {
+      "fr": "Obtenir la Boussole Céleste (lot spécial à Opalia)",
+      "en": "Get the Celestial Compass (special lot at Opalia)"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "rp",
+     "amount": 30
+    },
+    {
+     "type": "reputation",
+     "amount": 5
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Le lot « Boussole Céleste » passe aux enchères ce soir sur Opalia. Lustre est au premier rang avec un chéquier de la taille d'une porte.",
+      "en": "The “Celestial Compass” lot is up tonight on Opalia. Lustre is in the front row with a checkbook the size of a door."
+     }
+    },
+    {
+     "speaker": "lustre",
+     "text": {
+      "fr": "Que le plus riche gagne. Ah, mais c'est déjà décidé.",
+      "en": "May the richest win. Oh, but that's already settled."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "LA BOUSSOLE ! Lustre a mangé son nœud papillon de rage. C'était un nœud papillon en chocolat, mais quand même.",
+      "en": "THE COMPASS! Lustre ate his bow tie in rage. It was a chocolate bow tie, but still."
+     }
+    },
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "(en direct, cette fois !) Allô ? Ça marche, ce truc ? Bravo, chef ! Rassemble les cinq pièces. J'arrive.",
+      "en": "(live this time!) Hello? Is this thing on? Well done, boss! Gather the five pieces. I'm on my way."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m5_03",
+   "kind": "main",
+   "chapter": 5,
+   "giver": "odile",
+   "title": {
+    "fr": "Le puzzle de l'Aurore",
+    "en": "The Aurora Puzzle"
+   },
+   "desc": {
+    "fr": "Réunissez les cinq pièces de l'Aurore et prouvez à l'Assurance Galactique que le garage a 30 000 crédits en caisse avant le vol d'essai.",
+    "en": "Gather the Aurora's five pieces and prove to Galactic Insurance that the garage has 30,000 credits in the bank before the test flight."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m5_02"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "items_count",
+     "count": 5,
+     "prefix": "aurora_",
+     "text": {
+      "fr": "Posséder les 5 pièces de l'Aurore",
+      "en": "Own all 5 pieces of the Aurora"
+     }
+    },
+    {
+     "type": "credits_at_least",
+     "value": 30000,
+     "text": {
+      "fr": "Avoir 30 000 crédits en caisse",
+      "en": "Have 30,000 credits in the bank"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "rp",
+     "amount": 40
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "Me voilà ! Enfin, mon hologramme. Mon vrai corps est coincé dans une navette en panne derrière la lune. La honte, pour une garagiste.",
+      "en": "Here I am! Well, my hologram. My actual body is stuck in a broken-down shuttle behind the moon. How embarrassing for a mechanic."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Odile ! Vous m'avez manqué. Enfin, votre manie de ranger les boulons dans des boîtes à biscuits m'a manqué.",
+      "en": "Odile! I missed you. Well, I missed your habit of storing bolts in cookie tins."
+     }
+    },
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "Il faut les cinq pièces et prouver à l'Assurance Galactique qu'on a 30 000 crédits en caisse. Sinon, pas de vol d'essai. La paperasse, même ici…",
+      "en": "We need all five pieces and proof for Galactic Insurance that we have 30,000 credits in the bank. Otherwise, no test flight. Paperwork, even out here…"
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "La Quille, le Cœur, la Voile, le Cockpit-Étoile et la Boussole… L'Aurore est presque prête. J'en ai les boulons qui tremblent.",
+      "en": "The Keel, the Heart, the Sail, the Star Cockpit and the Compass… The Aurora is almost ready. My bolts are shaking."
+     }
+    },
+    {
+     "speaker": "lustre",
+     "text": {
+      "fr": "Pas si vite ! Galax-Auto vous offre 150 000 crédits pour l'Aurore, et j'efface la dette. Réfléchissez bien. Ou pas du tout, c'est encore mieux.",
+      "en": "Not so fast! Galax-Auto offers you 150,000 credits for the Aurora, and I'll wipe the debt. Think carefully. Or don't think at all, that's even better."
+     }
+    }
+   ]
+  },
+  {
+   "id": "m5_final",
+   "kind": "main",
+   "chapter": 5,
+   "giver": "odile",
+   "title": {
+    "fr": "L'Aurore se lève",
+    "en": "The Aurora Rises"
+   },
+   "desc": {
+    "fr": "Garder l'Aurore et l'indépendance du garage, ou la vendre à Galax-Auto pour une fortune ? C'est votre garage, c'est votre choix.",
+    "en": "Keep the Aurora and the garage's independence, or sell her to Galax-Auto for a fortune? It's your garage, it's your call."
+   },
+   "trigger": [
+    {
+     "type": "quest_done",
+     "id": "m5_03"
+    }
+   ],
+   "objectives": [
+    {
+     "type": "choice",
+     "text": {
+      "fr": "Décider du destin de l'Aurore",
+      "en": "Decide the Aurora's fate"
+     }
+    }
+   ],
+   "rewards": [],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Voilà le moment. Garder l'Aurore et notre liberté, ou la vendre à Galax-Auto pour une fortune… et un uniforme à paillettes.",
+      "en": "Here's the moment. Keep the Aurora and our freedom, or sell her to Galax-Auto for a fortune… and a sequined uniform."
+     }
+    },
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "C'est ton garage maintenant. Choisis avec ton cœur. Et un peu avec ta calculatrice.",
+      "en": "It's your garage now. Choose with your heart. And a little with your calculator."
+     }
+    },
+    {
+     "speaker": "lustre",
+     "text": {
+      "fr": "Choisissez avec votre portefeuille. Il est tellement plus raisonnable que votre cœur.",
+      "en": "Choose with your wallet. It's so much more reasonable than your heart."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "odile",
+     "text": {
+      "fr": "Merci pour tout. Et maintenant, si quelqu'un pouvait venir dépanner ma navette derrière la lune… Allô ? Il y a quelqu'un ?",
+      "en": "Thank you for everything. Now, if someone could come and fix my shuttle behind the moon… Hello? Anyone there?"
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Quoi qu'il arrive, le garage reste ouvert. Les épaves n'attendent pas, et moi non plus. Au travail !",
+      "en": "Whatever happens, the garage stays open. The wrecks won't wait, and neither will I. Back to work!"
+     }
+    }
+   ],
+   "choices": [
+    {
+     "label": {
+      "fr": "Garder l'Aurore et l'indépendance du garage",
+      "en": "Keep the Aurora and the garage's independence"
+     },
+     "flag": "ending_independence",
+     "effects": [
+      {
+       "type": "ending",
+       "id": "independence"
+      },
+      {
+       "type": "debt_reduction",
+       "amount": 999999
+      },
+      {
+       "type": "reputation",
+       "amount": 20
+      }
+     ]
+    },
+    {
+     "label": {
+      "fr": "Vendre l'Aurore à Galax-Auto",
+      "en": "Sell the Aurora to Galax-Auto"
+     },
+     "flag": "ending_franchise",
+     "effects": [
+      {
+       "type": "ending",
+       "id": "franchise"
+      },
+      {
+       "type": "credits",
+       "amount": 150000
+      },
+      {
+       "type": "debt_reduction",
+       "amount": 999999
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s_hire_first",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "bolt",
+   "title": {
+    "fr": "Un coup de main bienvenu",
+    "en": "A Welcome Helping Hand"
+   },
+   "desc": {
+    "fr": "BOLT suggère d'embaucher quelqu'un avant que vous ne fusionniez avec l'établi.",
+    "en": "BOLT suggests hiring someone before you merge with the workbench."
+   },
+   "trigger": [
+    {
+     "type": "day_at_least",
+     "value": 2
+    }
+   ],
+   "deadline_days": 8,
+   "objectives": [
+    {
+     "type": "hire",
+     "count": 1,
+     "text": {
+      "fr": "Embaucher un employé",
+      "en": "Hire an employee"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 200
+    },
+    {
+     "type": "rp",
+     "amount": 3
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Petite suggestion : embaucher quelqu'un. Je ne dis pas que vous travaillez mal. Je dis que vous êtes la seule paire de mains du garage. Moi, je n'en ai pas.",
+      "en": "Small suggestion: hire someone. I'm not saying you work badly. I'm saying you're the only pair of hands in this garage. I don't have any."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Le vivier de candidats est dans l'onglet RH. Il change tous les jours, comme l'humeur des Krrkt.",
+      "en": "The candidate pool is in the HR tab. It changes every day, like Krrkt moods."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Bienvenue à notre nouvelle recrue ! Je lui ai montré la machine à café. Elle n'existe pas encore, mais je lui ai montré l'emplacement.",
+      "en": "Welcome to our new recruit! I showed them the coffee machine. It doesn't exist yet, but I showed them where it'll go."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Pensez à vérifier son poste et sa règle de priorité dans l'onglet RH. Sinon, la recrue fera la sieste.",
+      "en": "Remember to check their station and priority rule in the HR tab. Otherwise, the recruit will take a nap."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Toujours personne ? Très bien. Je continuerai à me parler à moi-même. Comme d'habitude.",
+      "en": "Still nobody? Fine. I'll keep talking to myself. As usual."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_scan_training",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "bolt",
+   "title": {
+    "fr": "Œil de lynx",
+    "en": "Sharp Eyes"
+   },
+   "desc": {
+    "fr": "Scannez trois lots aux enchères pour apprendre à repérer les défauts cachés avant d'acheter.",
+    "en": "Scan three auction lots to learn how to spot hidden defects before buying."
+   },
+   "trigger": [
+    {
+     "type": "day_at_least",
+     "value": 3
+    }
+   ],
+   "deadline_days": 6,
+   "objectives": [
+    {
+     "type": "scan_lots",
+     "count": 3,
+     "text": {
+      "fr": "Scanner 3 lots aux enchères",
+      "en": "Scan 3 auction lots"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "rp",
+     "amount": 8
+    },
+    {
+     "type": "credits",
+     "amount": 150
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Acheter sans scanner, c'est comme traverser une ceinture d'astéroïdes les yeux fermés. Ça marche une fois.",
+      "en": "Buying without scanning is like crossing an asteroid belt with your eyes closed. It works once."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Scannez trois lots. Les défauts cachés coûtent cher après la vente : retours SAV, réputation en berne, inspectrice en colère.",
+      "en": "Scan three lots. Hidden defects get expensive after the sale: warranty claims, bruised reputation, angry inspector."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Trois scans ! Vous voyez maintenant à travers la tôle. Pas à travers les murs, n'essayez pas.",
+      "en": "Three scans! You can now see through sheet metal. Not through walls, don't try."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Bonus : chaque scan rapporte un peu de recherche. La curiosité paie. Parfois.",
+      "en": "Bonus: every scan earns a little research. Curiosity pays. Sometimes."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Pas de scans ? D'accord. J'allumerai des bougies pour les retours SAV.",
+      "en": "No scans? Fine. I'll light candles for the warranty claims."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_blorb_family",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "glorbian",
+   "title": {
+    "fr": "La navette des Blorb",
+    "en": "The Blorbs' Shuttle"
+   },
+   "desc": {
+    "fr": "La famille Blorb (deux parents, trente-sept petits) cherche un vaisseau familial vert en bon état.",
+    "en": "The Blorb family (two parents, thirty-seven little ones) wants a green family ship in good shape."
+   },
+   "trigger": [
+    {
+     "type": "day_at_least",
+     "value": 3
+    }
+   ],
+   "deadline_days": 8,
+   "objectives": [
+    {
+     "type": "deliver_order",
+     "species": "glorbian",
+     "client_name": "Blorb Gluboub",
+     "budget": 6500,
+     "criteria": {
+      "tags": [
+       "familial"
+      ],
+      "color": "vert",
+      "max_known_open": 1
+     },
+     "text": {
+      "fr": "Livrer un vaisseau familial vert (1 défaut connu max)",
+      "en": "Deliver a green family ship (max 1 known defect)"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 400
+    },
+    {
+     "type": "reputation",
+     "amount": 3
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "glorbian",
+     "text": {
+      "fr": "Blobjour ! Nous sommes la famille Blorb : deux parents et trente-sept petits. Il nous faut un vaisseau familial. Vert, pour cacher les taches.",
+      "en": "Blobhello! We're the Blorb family: two parents and thirty-seven little ones. We need a family ship. Green, to hide the stains."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Familial, ça veut dire navette, moteur ionique, bulle panoramique… ou un siège bébé six tentacules. Prévoyez des housses. Beaucoup de housses.",
+      "en": "Family means shuttle, ion engine, panoramic bubble… or a six-tentacle baby seat. Bring seat covers. Lots of seat covers."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "glorbian",
+     "text": {
+      "fr": "Il est parfait ! Les petits l'ont déjà léché de partout. Chez nous, c'est un compliment.",
+      "en": "It's perfect! The little ones have already licked it all over. Where we come from, that's a compliment."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Je vais désinfecter le comptoir. Puis le quartier.",
+      "en": "I'll disinfect the counter. Then the neighborhood."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "glorbian",
+     "text": {
+      "fr": "Nous avons acheté un vaisseau ailleurs. Il est jaune. Les petits sont tristes. Et collants.",
+      "en": "We bought a ship elsewhere. It's yellow. The little ones are sad. And sticky."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_mmmbr_thrift",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "mmmbr",
+   "title": {
+    "fr": "Petit budget, grand cœur",
+    "en": "Small Budget, Big Heart"
+   },
+   "desc": {
+    "fr": "Un champignon sentient cherche un vaisseau économique qui ne tombe pas en morceaux.",
+    "en": "A sentient mushroom is looking for a thrifty ship that won't fall apart."
+   },
+   "trigger": [
+    {
+     "type": "day_at_least",
+     "value": 4
+    }
+   ],
+   "deadline_days": 10,
+   "objectives": [
+    {
+     "type": "deliver_order",
+     "species": "mmmbr",
+     "client_name": "Mmom Shroum",
+     "budget": 5200,
+     "criteria": {
+      "tags": [
+       "economique"
+      ],
+      "max_known_open": 2
+     },
+     "text": {
+      "fr": "Livrer un vaisseau économique (2 défauts connus max)",
+      "en": "Deliver a thrifty ship (max 2 known defects)"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 300
+    },
+    {
+     "type": "reputation",
+     "amount": 4
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "mmmbr",
+     "text": {
+      "fr": "Mmmbonjour. Je voudrais un vaisseau économique. Je pousse dans le noir, je mange du compost, mes besoins sont modestes.",
+      "en": "Mmmhello. I'd like a thrifty ship. I grow in the dark, I eat compost, my needs are modest."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Un client qui ne réclame pas de minibar. Chérissons ce moment.",
+      "en": "A client who doesn't want a minibar. Let's cherish this moment."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "mmmbr",
+     "text": {
+      "fr": "Mmmerci. Il consomme moins qu'une spore. Je vais en parler à toute ma colonie. Nous sommes quatre millions.",
+      "en": "Mmmthanks. It uses less fuel than a spore. I'll tell my whole colony. There are four million of us."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Quatre millions de champignons satisfaits. Le bouche-à-oreille va être… fongique.",
+      "en": "Four million satisfied mushrooms. Word of mouth is going to be… fungal."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "mmmbr",
+     "text": {
+      "fr": "Mmmtant pis. J'irai à pied. Enfin, je pousserai jusque là-bas.",
+      "en": "Mmmoh well. I'll walk. Well, I'll grow my way there."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_krrkt_tug",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "krrkt",
+   "title": {
+    "fr": "Un remorqueur qui tient la route",
+    "en": "A Tug That Holds Up"
+   },
+   "desc": {
+    "fr": "Un client Krrkt veut un remorqueur ou une foreuse impeccable. Il croque les comptoirs des tricheurs.",
+    "en": "A Krrkt client wants a flawless tug or miner. They chew up cheaters' counters."
+   },
+   "trigger": [
+    {
+     "type": "day_at_least",
+     "value": 5
+    }
+   ],
+   "deadline_days": 9,
+   "objectives": [
+    {
+     "type": "deliver_order",
+     "species": "krrkt",
+     "client_name": "Tchik Krrrt",
+     "budget": 8500,
+     "criteria": {
+      "class": [
+       "tug",
+       "miner"
+      ],
+      "honest": true,
+      "max_known_open": 0
+     },
+     "text": {
+      "fr": "Livrer un remorqueur ou une foreuse sans défaut connu ni maquillé",
+      "en": "Deliver a tug or miner with no known or covered-up defects"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 600
+    },
+    {
+     "type": "reputation",
+     "amount": 4
+    },
+    {
+     "type": "rp",
+     "amount": 5
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "krrkt",
+     "text": {
+      "fr": "Tchk tchk. Je veux un remorqueur solide. Si je trouve un défaut maquillé, je mange votre comptoir. Tchk.",
+      "en": "Tchk tchk. I want a sturdy tug. If I find a covered-up defect, I eat your counter. Tchk."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "C'est du sérieux. La dernière fois, un concessionnaire a perdu son bureau. Et sa chaise. Et son stagiaire. Non, le stagiaire va bien.",
+      "en": "This is serious. Last time, a dealer lost a desk. And a chair. And an intern. No, the intern's fine."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "krrkt",
+     "text": {
+      "fr": "Tchk ! Aucun défaut. Votre comptoir peut vivre. Pour l'instant.",
+      "en": "Tchk! No defects. Your counter may live. For now."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Le comptoir vous remercie. Moi aussi.",
+      "en": "The counter thanks you. So do I."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "krrkt",
+     "text": {
+      "fr": "Tchk. Trop lent. Je vais chez Galax-Auto. Leurs comptoirs sont en plastique. Moins bons.",
+      "en": "Tchk. Too slow. I'm going to Galax-Auto. Their counters are plastic. Less tasty."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_paint_job",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "bolt",
+   "title": {
+    "fr": "Atelier arc-en-ciel",
+    "en": "Rainbow Workshop"
+   },
+   "desc": {
+    "fr": "BOLT n'en peut plus du gris apprêt. Repeignez trois vaisseaux.",
+    "en": "BOLT can't stand primer grey anymore. Repaint three ships."
+   },
+   "trigger": [
+    {
+     "type": "day_at_least",
+     "value": 7
+    }
+   ],
+   "deadline_days": 8,
+   "objectives": [
+    {
+     "type": "customize",
+     "count": 3,
+     "kind": "paint",
+     "text": {
+      "fr": "Repeindre 3 vaisseaux",
+      "en": "Repaint 3 ships"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "rp",
+     "amount": 6
+    },
+    {
+     "type": "credits",
+     "amount": 300
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Tous nos vaisseaux sont couleur apprêt. On dirait un enterrement de grille-pains. Repeignez-en trois, par pitié.",
+      "en": "All our ships are primer-colored. It looks like a toaster funeral. Repaint three of them, please."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Regardez les couleurs préférées des clients : un vaisseau de la bonne couleur se vend mieux. C'est de la psychologie. Ou de la peinture. Les deux.",
+      "en": "Check clients' favorite colors: a ship in the right color sells better. That's psychology. Or paint. Both."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Trois vaisseaux repeints ! L'atelier ressemble enfin à une boîte de crayons. Une boîte de crayons qui sent le solvant.",
+      "en": "Three ships repainted! The workshop finally looks like a box of crayons. A box of crayons that smells of solvent."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Avec quelqu'un à la cabine de peinture, ça se ferait tout seul, selon les goûts des clients. Je dis ça pour votre dos.",
+      "en": "With someone in the paint booth, this would happen automatically, following client tastes. I'm saying this for your back's sake."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Toujours gris. Je vais finir par me repeindre moi-même.",
+      "en": "Still grey. I'm going to end up painting myself."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_velarian_race",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "velarian",
+   "title": {
+    "fr": "Le bolide du dimanche",
+    "en": "Sunday Speedster"
+   },
+   "desc": {
+    "fr": "Un Vélarien pressé veut un vaisseau rapide et sportif, avec des flammes. Surtout les flammes.",
+    "en": "A Velarian in a hurry wants a fast, sporty ship with flames. Especially the flames."
+   },
+   "trigger": [
+    {
+     "type": "day_at_least",
+     "value": 6
+    },
+    {
+     "type": "reputation_at_least",
+     "value": 32
+    }
+   ],
+   "deadline_days": 8,
+   "objectives": [
+    {
+     "type": "deliver_order",
+     "species": "velarian",
+     "client_name": "Pippitt Viel",
+     "budget": 9000,
+     "criteria": {
+      "tags": [
+       "rapide",
+       "sportif"
+      ],
+      "options": [
+       "opt_flames"
+      ]
+     },
+     "text": {
+      "fr": "Livrer un vaisseau rapide et sportif avec décalcomanies flammes",
+      "en": "Deliver a fast, sporty ship with flame decals"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 700
+    },
+    {
+     "type": "reputation",
+     "amount": 3
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "velarian",
+     "text": {
+      "fr": "Vite-vite-vite ! Je veux un vaisseau rapide, sportif, avec des flammes dessus. Les flammes, ça va plus vite, tout le monde le sait !",
+      "en": "Quick-quick-quick! I want a fast, sporty ship with flames on it. Flames make it faster, everybody knows that!"
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Scientifiquement, les flammes ajoutent 0 % de vitesse. Commercialement, elles ajoutent 100 % de client content.",
+      "en": "Scientifically, flames add 0% speed. Commercially, they add 100% happy customer."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "velarian",
+     "text": {
+      "fr": "Il va si vite que j'ai déjà oublié la raison de ma visite ! Merci-merci !",
+      "en": "It's so fast I've already forgotten why I came! Thanks-thanks!"
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Et c'est reparti à Mach 12. Sans payer le parking. Ah si, c'est payé. Ouf.",
+      "en": "And off they go at Mach 12. Without paying for parking. Oh wait, it's paid. Phew."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "velarian",
+     "text": {
+      "fr": "Trop lent, trop lent ! J'ai trouvé un bolide ailleurs. Il avait des flammes ET des éclairs.",
+      "en": "Too slow, too slow! I found a speedster elsewhere. It had flames AND lightning bolts."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_plutonian_cargo",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "plutonian",
+   "title": {
+    "fr": "Une soute pour mes cailloux",
+    "en": "A Hold for My Pebbles"
+   },
+   "desc": {
+    "fr": "Un collectionneur ploutonien a besoin d'un cargo avec galerie magnétique pour transporter sa collection.",
+    "en": "A Plutonian collector needs a freighter with a magnetic roof rack to haul a collection."
+   },
+   "trigger": [
+    {
+     "type": "day_at_least",
+     "value": 8
+    },
+    {
+     "type": "sales_at_least",
+     "value": 3
+    }
+   ],
+   "deadline_days": 10,
+   "objectives": [
+    {
+     "type": "deliver_order",
+     "species": "plutonian",
+     "client_name": "Grondum Borkk",
+     "budget": 11000,
+     "criteria": {
+      "class": [
+       "cargo"
+      ],
+      "options": [
+       "opt_rack"
+      ],
+      "max_known_open": 1
+     },
+     "text": {
+      "fr": "Livrer un cargo avec galerie magnétique (1 défaut connu max)",
+      "en": "Deliver a freighter with a magnetic roof rack (max 1 known defect)"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 900
+    },
+    {
+     "type": "reputation",
+     "amount": 4
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "plutonian",
+     "text": {
+      "fr": "Bon… jour. Je… collectionne… les cailloux. Il me faut… un cargo. Avec… une galerie.",
+      "en": "Hel… lo. I… collect… pebbles. I need… a freighter. With… a roof rack."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Prenez votre temps. De toute façon, une phrase lui prend trois jours.",
+      "en": "Take your time. A sentence takes them three days anyway."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "plutonian",
+     "text": {
+      "fr": "Par… fait. Mes cailloux… seront… heureux.",
+      "en": "Per… fect. My pebbles… will be… happy."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Félicitations. On vient de rendre heureuses quatre tonnes de cailloux.",
+      "en": "Congratulations. We just made four tons of pebbles happy."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "plutonian",
+     "text": {
+      "fr": "Trop… tard. Les cailloux… sont… partis… à pied.",
+      "en": "Too… late. The pebbles… left… on foot."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_misty_comfort",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "misty",
+   "title": {
+    "fr": "Un nuage de confort",
+    "en": "A Cloud of Comfort"
+   },
+   "desc": {
+    "fr": "Un Brumeux, être gazeux et délicat, veut un vaisseau confortable peint en bleu.",
+    "en": "A Mistling, a delicate gaseous being, wants a comfortable ship painted blue."
+   },
+   "trigger": [
+    {
+     "type": "day_at_least",
+     "value": 9
+    }
+   ],
+   "deadline_days": 9,
+   "objectives": [
+    {
+     "type": "deliver_order",
+     "species": "misty",
+     "client_name": "Fffoua Hhee",
+     "budget": 9500,
+     "criteria": {
+      "tags": [
+       "confort"
+      ],
+      "color": "bleu"
+     },
+     "text": {
+      "fr": "Livrer un vaisseau confortable peint en bleu",
+      "en": "Deliver a comfortable ship painted blue"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 800
+    },
+    {
+     "type": "reputation",
+     "amount": 4
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "misty",
+     "text": {
+      "fr": "Fffhh… Je suis un nuage. J'aime le confort, le bleu, et ne pas être aspiré par les ventilations.",
+      "en": "Fffhh… I'm a cloud. I like comfort, the color blue, and not getting sucked into air vents."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Note pour l'équipe : ne pas allumer la climatisation pendant la visite.",
+      "en": "Note to the team: do not switch on the air conditioning during the visit."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "misty",
+     "text": {
+      "fr": "Fffparfait. Je flotte de bonheur. Littéralement.",
+      "en": "Fffperfect. I'm floating with joy. Literally."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Ses crédits sont un peu humides, mais ils sont valables.",
+      "en": "Their credits are a little damp, but they're valid."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "misty",
+     "text": {
+      "fr": "Fffdommage. Ma patience s'est évaporée. Et moi avec.",
+      "en": "Fffpity. My patience evaporated. And me with it."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_silicoid_shine",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "silicoid",
+   "title": {
+    "fr": "Reflets impeccables",
+    "en": "Flawless Reflections"
+   },
+   "desc": {
+    "fr": "Un client siliçoïde exige un vaisseau blanc, lustré à la perfection, sur une coque de gamme 2 ou plus.",
+    "en": "A Silicoid client demands a white ship polished to perfection, on a tier 2+ hull."
+   },
+   "trigger": [
+    {
+     "type": "day_at_least",
+     "value": 10
+    },
+    {
+     "type": "reputation_at_least",
+     "value": 38
+    }
+   ],
+   "deadline_days": 10,
+   "objectives": [
+    {
+     "type": "deliver_order",
+     "species": "silicoid",
+     "client_name": "Kraystal Sili",
+     "budget": 14000,
+     "criteria": {
+      "color": "blanc",
+      "max_wear": 0.05,
+      "min_tier": 2
+     },
+     "text": {
+      "fr": "Livrer un vaisseau blanc lustré (usure nulle, coque de gamme 2+)",
+      "en": "Deliver a polished white ship (no wear, tier 2+ hull)"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 1200
+    },
+    {
+     "type": "reputation",
+     "amount": 5
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "silicoid",
+     "text": {
+      "fr": "Mon corps est de cristal pur. Je veux un vaisseau blanc dans lequel admirer mes facettes. Pas une rayure. Pas une.",
+      "en": "My body is pure crystal. I want a white ship I can admire my facets in. Not one scratch. Not one."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Une peinture blanche puis un lustrage nanomoléculaire : ça devrait briller assez pour aveugler un astronome.",
+      "en": "White paint, then a nanomolecular polish: it should shine bright enough to blind an astronomer."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "silicoid",
+     "text": {
+      "fr": "Magnifique. Je me vois en quatre mille exemplaires. C'est exactement ce que je voulais.",
+      "en": "Magnificent. I can see four thousand of me. Exactly what I wanted."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Merci de ne pas réfracter la lumière dans mes capteurs.",
+      "en": "Please stop refracting light into my sensors."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "silicoid",
+     "text": {
+      "fr": "Trop terne. Je vais me refléter ailleurs.",
+      "en": "Too dull. I shall reflect elsewhere."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_clean_record",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "inspector",
+   "title": {
+    "fr": "Casier vierge",
+    "en": "Clean Record"
+   },
+   "desc": {
+    "fr": "Passez un contrôle du Bureau Galactique de la Consommation sans la moindre amende pour obtenir le label « Garage Honnête ».",
+    "en": "Pass a Galactic Consumer Bureau inspection without a single fine to earn the “Honest Garage” label."
+   },
+   "trigger": [
+    {
+     "type": "sales_at_least",
+     "value": 5
+    }
+   ],
+   "objectives": [
+    {
+     "type": "survive_inspection",
+     "count": 1,
+     "text": {
+      "fr": "Passer un contrôle du Bureau sans amende",
+      "en": "Pass a Bureau inspection with no fine"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "reputation",
+     "amount": 6
+    },
+    {
+     "type": "modifier",
+     "op": "mul",
+     "stat": "inspection_chance",
+     "value": 0.85
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "inspector",
+     "text": {
+      "fr": "Le Bureau procède à des contrôles aléatoires. Si le vôtre est irréprochable, vous recevrez le label « Garage Honnête ». Il est en papier recyclé.",
+      "en": "The Bureau carries out random inspections. If yours is flawless, you'll receive the “Honest Garage” label. It's made of recycled paper."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Elle dit « aléatoire », mais elle a relu notre dossier deux fois. Restons honnêtes : c'est encore la meilleure stratégie.",
+      "en": "She says “random,” but she's reread our file twice. Let's stay honest: it's still the best strategy."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "inspector",
+     "text": {
+      "fr": "Contrôle terminé : rien à signaler. C'est rare. Voici votre label. Ne le plastifiez pas, c'est interdit.",
+      "en": "Inspection complete: nothing to report. That's rare. Here's your label. Don't laminate it, that's forbidden."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Je l'ai encadré. Le cadre est en plastique. Personne ne doit le savoir.",
+      "en": "I framed it. The frame is plastic. Nobody must know."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "inspector",
+     "text": {
+      "fr": "Dossier classé. Pour l'instant.",
+      "en": "File closed. For now."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_nebula_temptation",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "neonyx",
+   "title": {
+    "fr": "Le maquilleur du Bazar",
+    "en": "The Bazaar's Makeover Artist"
+   },
+   "desc": {
+    "fr": "Un trafiquant du Nébula Bazar paie grassement pour « embellir discrètement » des vaisseaux. Tentant… et risqué.",
+    "en": "A Nebula Bazaar dealer pays handsomely to “discreetly improve” ships. Tempting… and risky."
+   },
+   "trigger": [
+    {
+     "type": "location_unlocked",
+     "id": "nebula"
+    }
+   ],
+   "deadline_days": 7,
+   "objectives": [
+    {
+     "type": "conceal_defects",
+     "count": 3,
+     "text": {
+      "fr": "Dissimuler 3 défauts",
+      "en": "Cover up 3 defects"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 1500
+    },
+    {
+     "type": "reputation",
+     "amount": -2
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "neonyx",
+     "text": {
+      "fr": "Pssst. Je finance les « embellissements discrets ». Vous maquillez trois défauts, je vous paie. Personne ne saura rien. Sauf moi. Et mes cousins.",
+      "en": "Psst. I fund “discreet improvements.” You cover up three defects, I pay you. Nobody will know. Except me. And my cousins."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Je vais faire semblant de ne pas avoir entendu. Mais j'enregistre tout. C'est ma passion.",
+      "en": "I'll pretend I didn't hear that. But I'm recording everything. It's my passion."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "neonyx",
+     "text": {
+      "fr": "Parfait. Voici votre enveloppe. Elle brille un peu dans le noir, c'est normal.",
+      "en": "Perfect. Here's your envelope. It glows a little in the dark, that's normal."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Bravo. Vous avez gagné 1 500 crédits et un nouvel ami : le remords. Et peut-être une inspectrice.",
+      "en": "Congratulations. You've earned 1,500 credits and a new friend: remorse. And maybe an inspector."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "neonyx",
+     "text": {
+      "fr": "Trop honnête ? Quel gâchis. Je repasserai.",
+      "en": "Too honest? What a waste. I'll drop by again."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Aucun risque : j'ai changé la serrure.",
+      "en": "No chance. I changed the locks."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_big_week",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "bolt",
+   "title": {
+    "fr": "Semaine record",
+    "en": "Record Week"
+   },
+   "desc": {
+    "fr": "BOLT lance un défi : 30 000 crédits de ventes en une semaine.",
+    "en": "BOLT sets a challenge: 30,000 credits in sales within a week."
+   },
+   "trigger": [
+    {
+     "type": "day_at_least",
+     "value": 14
+    },
+    {
+     "type": "sales_at_least",
+     "value": 6
+    }
+   ],
+   "deadline_days": 7,
+   "objectives": [
+    {
+     "type": "earn_sales",
+     "value": 30000,
+     "text": {
+      "fr": "Réaliser 30 000 crédits de ventes",
+      "en": "Make 30,000 credits in sales"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 2500
+    },
+    {
+     "type": "rp",
+     "amount": 15
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Défi : 30 000 crédits de ventes en une semaine. Si on réussit, je m'offre une mise à jour. Et vous, une prime.",
+      "en": "Challenge: 30,000 credits in sales within a week. If we pull it off, I get a software update. And you get a bonus."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Conseil : des vaisseaux bien réparés, de la bonne couleur, proposés aux bons clients. Et un vendeur charmeur, ça ne gâche rien.",
+      "en": "Tip: well-repaired ships, in the right color, offered to the right clients. A charming salesperson doesn't hurt either."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Semaine record ! J'ai installé ma mise à jour. Je suis maintenant 3 % plus sarcastique.",
+      "en": "Record week! I installed my update. I'm now 3% more sarcastic."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Et voici votre prime. Ne la dépensez pas tout de suite en peinture rose. Enfin, si vous voulez.",
+      "en": "And here's your bonus. Don't spend it all on pink paint right away. Well, unless you want to."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Pas cette fois. Je garde ma vieille version. Elle a des bugs, mais elle a du caractère.",
+      "en": "Not this time. I'll keep my old version. It has bugs, but it has character."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_neonyx_flames",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "neonyx",
+   "title": {
+    "fr": "Plus de flammes !",
+    "en": "More Flames!"
+   },
+   "desc": {
+    "fr": "Un Néonyx fluorescent veut un vaisseau sportif rouge, avec néons et flammes. Beaucoup de flammes.",
+    "en": "A glowing Neonyx wants a red sporty ship with neons and flames. Lots of flames."
+   },
+   "trigger": [
+    {
+     "type": "research_node",
+     "id": "pe_3"
+    }
+   ],
+   "deadline_days": 9,
+   "objectives": [
+    {
+     "type": "deliver_order",
+     "species": "neonyx",
+     "client_name": "Sazurka Nyx",
+     "budget": 13000,
+     "criteria": {
+      "color": "rouge",
+      "tags": [
+       "sportif"
+      ],
+      "options": [
+       "opt_neon",
+       "opt_flames"
+      ]
+     },
+     "text": {
+      "fr": "Livrer un vaisseau sportif rouge avec néons et flammes",
+      "en": "Deliver a red sporty ship with neons and flames"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 1000
+    },
+    {
+     "type": "reputation",
+     "amount": 4
+    },
+    {
+     "type": "rp",
+     "amount": 10
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "neonyx",
+     "text": {
+      "fr": "Ssss… Je brille dans le noir et je veux un vaisseau qui brille encore plus. Rouge. Avec des néons. Et des flammes. Beaucoup de flammes.",
+      "en": "Ssss… I glow in the dark, and I want a ship that glows even more. Red. With neons. And flames. Lots of flames."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Prévoyez des lunettes de soleil pour l'équipe. Et un extincteur, par principe.",
+      "en": "Get sunglasses for the crew. And a fire extinguisher, on principle."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "neonyx",
+     "text": {
+      "fr": "Ssssublime ! On me verra depuis trois systèmes solaires.",
+      "en": "Ssssublime! They'll see me from three solar systems away."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Les astronomes du secteur vont nous détester.",
+      "en": "The sector's astronomers are going to hate us."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "neonyx",
+     "text": {
+      "fr": "Pas assez de flammes, pas assez vite. Ssss… adieu.",
+      "en": "Not enough flames, not fast enough. Ssss… farewell."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_tetrapter_pink",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "tetrapter",
+   "title": {
+    "fr": "Rose, mais avec classe",
+    "en": "Pink, But Classy"
+   },
+   "desc": {
+    "fr": "Un Tétraptère au goût très sûr veut un vaisseau de prestige peint en rose.",
+    "en": "A Tetrapter with impeccable taste wants a prestige ship painted pink."
+   },
+   "trigger": [
+    {
+     "type": "research_node",
+     "id": "pe_2"
+    },
+    {
+     "type": "day_at_least",
+     "value": 12
+    }
+   ],
+   "deadline_days": 9,
+   "objectives": [
+    {
+     "type": "deliver_order",
+     "species": "tetrapter",
+     "client_name": "Flalia Tétrou",
+     "budget": 15000,
+     "criteria": {
+      "color": "rose",
+      "tags": [
+       "prestige"
+      ]
+     },
+     "text": {
+      "fr": "Livrer un vaisseau de prestige peint en rose",
+      "en": "Deliver a prestige ship painted pink"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 1200
+    },
+    {
+     "type": "reputation",
+     "amount": 5
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "tetrapter",
+     "text": {
+      "fr": "Bonjour. Chez les Tétraptères, on juge tout. Votre nuancier, par exemple : décevant. Je veux un vaisseau rose, mais prestigieux.",
+      "en": "Hello. We Tetrapters judge everything. Your color chart, for instance: disappointing. I want a pink ship, but a prestigious one."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Le prestige, c'est une coque d'exploration, un distordeur, un dôme de cristal… ou un bon lustrage. Le rose est dans le nuancier étendu.",
+      "en": "Prestige means an explorer hull, a warp engine, a crystal dome… or a good polish. Pink is in the extended color chart."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "tetrapter",
+     "text": {
+      "fr": "Acceptable. C'est le plus beau compliment de mon espèce.",
+      "en": "Acceptable. That's my species' highest compliment."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Deux battements d'ailes. Je crois que c'est de la joie.",
+      "en": "Two wing flaps. I think that means joy."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "tetrapter",
+     "text": {
+      "fr": "Trop tard. J'ai trouvé un rose plus rose ailleurs.",
+      "en": "Too late. I found a pinker pink elsewhere."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_glutton_snacks",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "glutton",
+   "title": {
+    "fr": "Une soute à goûters",
+    "en": "A Snack Hold"
+   },
+   "desc": {
+    "fr": "Un Gloutonien veut un vaisseau spacieux avec mini-bar, pour ses goûters et les goûters de ses goûters.",
+    "en": "A Gluttonian wants a roomy ship with a minibar, for snacks and the snacks' snacks."
+   },
+   "trigger": [
+    {
+     "type": "research_node",
+     "id": "pe_4"
+    }
+   ],
+   "deadline_days": 10,
+   "objectives": [
+    {
+     "type": "deliver_order",
+     "species": "glutton",
+     "client_name": "Goulou Namf",
+     "budget": 15000,
+     "criteria": {
+      "tags": [
+       "spacieux"
+      ],
+      "options": [
+       "opt_minibar"
+      ]
+     },
+     "text": {
+      "fr": "Livrer un vaisseau spacieux équipé d'un mini-bar",
+      "en": "Deliver a roomy ship with a minibar"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 1300
+    },
+    {
+     "type": "reputation",
+     "amount": 4
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "glutton",
+     "text": {
+      "fr": "Miam. Je veux un vaisseau spacieux pour mes goûters. Et un mini-bar. Pour les goûters des goûters.",
+      "en": "Yum. I want a roomy ship for my snacks. And a minibar. For my snacks' snacks."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Certains achètent un vaisseau pour voyager. D'autres achètent un garde-manger à réacteurs.",
+      "en": "Some people buy a ship to travel. Others buy a jet-powered pantry."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "glutton",
+     "text": {
+      "fr": "Parfait ! J'ai déjà mangé le manuel d'utilisation. Il était délicieux.",
+      "en": "Perfect! I already ate the user manual. Delicious."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "On imprimera un autre manuel. En plus épais.",
+      "en": "We'll print another manual. A thicker one."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "glutton",
+     "text": {
+      "fr": "Trop long. J'ai eu faim. J'ai mangé mon ancien vaisseau.",
+      "en": "Took too long. I got hungry. I ate my old ship."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_zoxxian_luxury",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "zoxxian",
+   "title": {
+    "fr": "Huit tentacules de luxe",
+    "en": "Eight Tentacles of Luxury"
+   },
+   "desc": {
+    "fr": "Un Zoxxien fortuné veut un yacht ou un explorateur violet, avec une sellerie digne de son rang.",
+    "en": "A wealthy Zoxxian wants a purple yacht or explorer with upholstery worthy of their rank."
+   },
+   "trigger": [
+    {
+     "type": "research_node",
+     "id": "pe_4"
+    },
+    {
+     "type": "research_node",
+     "id": "pe_2"
+    }
+   ],
+   "deadline_days": 8,
+   "objectives": [
+    {
+     "type": "deliver_order",
+     "species": "zoxxian",
+     "client_name": "Quassia Zoxx",
+     "budget": 26000,
+     "criteria": {
+      "class": [
+       "yacht",
+       "explorer"
+      ],
+      "color": "violet",
+      "options": [
+       "opt_leather"
+      ]
+     },
+     "text": {
+      "fr": "Livrer un yacht ou un explorateur violet avec sellerie simili-Vlorg",
+      "en": "Deliver a purple yacht or explorer with faux-Vlorg upholstery"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 2000
+    },
+    {
+     "type": "reputation",
+     "amount": 6
+    },
+    {
+     "type": "rare_wreck",
+     "location": "nebula"
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "zoxxian",
+     "text": {
+      "fr": "Huit tentacules, huit cartes de crédit, un seul désir : un yacht violet avec une sellerie digne de mon rang.",
+      "en": "Eight tentacles, eight credit cards, one desire: a purple yacht with upholstery worthy of my rank."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Client de luxe en approche. Sortez les beaux tournevis.",
+      "en": "Luxury client incoming. Bring out the nice screwdrivers."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "zoxxian",
+     "text": {
+      "fr": "Divin. Pour vous remercier, voici une épave rare dénichée au Nébula Bazar. Elle est déjà dans votre hangar.",
+      "en": "Divine. As thanks, here's a rare wreck I found at the Nebula Bazaar. It's already in your hangar."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Une épave rare offerte. Les tentacules, ça a du bon.",
+      "en": "A free rare wreck. Tentacles have their perks."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "zoxxian",
+     "text": {
+      "fr": "Je ne patiente jamais plus de huit jours. Un par tentacule.",
+      "en": "I never wait more than eight days. One per tentacle."
+     }
+    }
+   ]
+  },
+  {
+   "id": "s_android_speed",
+   "kind": "side",
+   "chapter": 0,
+   "giver": "android",
+   "title": {
+    "fr": "Calcul d'efficacité",
+    "en": "Efficiency Calculation"
+   },
+   "desc": {
+    "fr": "Un androïde exigeant veut un vaisseau rapide haut de gamme équipé d'un pilote automatique.",
+    "en": "A demanding android wants a fast high-end ship with an autopilot."
+   },
+   "trigger": [
+    {
+     "type": "research_node",
+     "id": "pe_7"
+    }
+   ],
+   "deadline_days": 10,
+   "objectives": [
+    {
+     "type": "deliver_order",
+     "species": "android",
+     "client_name": "KX-9 Unité Rb0",
+     "budget": 30000,
+     "criteria": {
+      "tags": [
+       "rapide"
+      ],
+      "options": [
+       "opt_autopilot"
+      ],
+      "min_tier": 3
+     },
+     "text": {
+      "fr": "Livrer un vaisseau rapide (gamme 3+) avec pilote automatique",
+      "en": "Deliver a fast ship (tier 3+) with autopilot"
+     }
+    }
+   ],
+   "rewards": [
+    {
+     "type": "credits",
+     "amount": 2500
+    },
+    {
+     "type": "reputation",
+     "amount": 6
+    },
+    {
+     "type": "rp",
+     "amount": 20
+    }
+   ],
+   "dialogue_start": [
+    {
+     "speaker": "android",
+     "text": {
+      "fr": "SALUTATIONS. JE REQUIERS UN VAISSEAU RAPIDE, HAUT DE GAMME, AVEC PILOTE AUTOMATIQUE. PROBABILITÉ DE SATISFACTION ACTUELLE : 12 %.",
+      "en": "GREETINGS. I REQUIRE A FAST, HIGH-END SHIP WITH AUTOPILOT. CURRENT SATISFACTION PROBABILITY: 12%."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Enfin quelqu'un qui parle ma langue. Mais en majuscules. Ça me donne mal aux circuits.",
+      "en": "Finally someone who speaks my language. But in all caps. It hurts my circuits."
+     }
+    }
+   ],
+   "dialogue_end": [
+    {
+     "speaker": "android",
+     "text": {
+      "fr": "SATISFACTION : 100 %. ANOMALIE DÉTECTÉE : CONTENTEMENT. MISE À JOUR DE MON AVIS : CINQ ÉTOILES.",
+      "en": "SATISFACTION: 100%. ANOMALY DETECTED: CONTENTMENT. UPDATING MY REVIEW: FIVE STARS."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Cinq étoiles d'un androïde. Je l'encadre à côté du label du Bureau.",
+      "en": "Five stars from an android. I'm framing it next to the Bureau label."
+     }
+    }
+   ],
+   "dialogue_fail": [
+    {
+     "speaker": "android",
+     "text": {
+      "fr": "DÉLAI DÉPASSÉ. PROBABILITÉ DE RETOUR : 0,4 %.",
+      "en": "DEADLINE EXCEEDED. PROBABILITY OF RETURN: 0.4%."
+     }
+    }
+   ]
+  }
+ ]
+}

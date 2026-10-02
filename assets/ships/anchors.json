@@ -1,0 +1,306 @@
+{
+ "hull_shuttle": {
+  "engine": [
+   3,
+   16
+  ],
+  "cockpit": [
+   50,
+   4
+  ],
+  "wings": [
+   31,
+   21
+  ],
+  "size": [
+   76,
+   34
+  ]
+ },
+ "hull_courier": {
+  "engine": [
+   3,
+   14
+  ],
+  "cockpit": [
+   53,
+   4
+  ],
+  "wings": [
+   33,
+   18
+  ],
+  "size": [
+   80,
+   30
+  ]
+ },
+ "hull_tug": {
+  "engine": [
+   3,
+   18
+  ],
+  "cockpit": [
+   53,
+   4
+  ],
+  "wings": [
+   33,
+   23
+  ],
+  "size": [
+   80,
+   38
+  ]
+ },
+ "hull_miner": {
+  "engine": [
+   3,
+   17
+  ],
+  "cockpit": [
+   58,
+   4
+  ],
+  "wings": [
+   36,
+   22
+  ],
+  "size": [
+   88,
+   36
+  ]
+ },
+ "hull_cargo": {
+  "engine": [
+   3,
+   20
+  ],
+  "cockpit": [
+   72,
+   4
+  ],
+  "wings": [
+   45,
+   26
+  ],
+  "size": [
+   108,
+   42
+  ]
+ },
+ "hull_fighter": {
+  "engine": [
+   3,
+   14
+  ],
+  "cockpit": [
+   61,
+   4
+  ],
+  "wings": [
+   38,
+   18
+  ],
+  "size": [
+   92,
+   30
+  ]
+ },
+ "hull_yacht": {
+  "engine": [
+   3,
+   18
+  ],
+  "cockpit": [
+   66,
+   4
+  ],
+  "wings": [
+   41,
+   23
+  ],
+  "size": [
+   100,
+   38
+  ]
+ },
+ "hull_explorer": {
+  "engine": [
+   3,
+   21
+  ],
+  "cockpit": [
+   76,
+   4
+  ],
+  "wings": [
+   47,
+   27
+  ],
+  "size": [
+   114,
+   44
+  ]
+ },
+ "eng_putt": {
+  "mount": [
+   22,
+   9
+  ],
+  "size": [
+   26,
+   20
+  ]
+ },
+ "eng_ion": {
+  "mount": [
+   24,
+   9
+  ],
+  "size": [
+   28,
+   20
+  ]
+ },
+ "eng_twin": {
+  "mount": [
+   28,
+   11
+  ],
+  "size": [
+   32,
+   24
+  ]
+ },
+ "eng_plasma": {
+  "mount": [
+   30,
+   11
+  ],
+  "size": [
+   34,
+   24
+  ]
+ },
+ "eng_fusion": {
+  "mount": [
+   30,
+   11
+  ],
+  "size": [
+   34,
+   24
+  ]
+ },
+ "eng_warp": {
+  "mount": [
+   32,
+   12
+  ],
+  "size": [
+   36,
+   26
+  ]
+ },
+ "cock_box": {
+  "mount": [
+   12,
+   14
+  ],
+  "size": [
+   26,
+   18
+  ]
+ },
+ "cock_bubble": {
+  "mount": [
+   13,
+   16
+  ],
+  "size": [
+   28,
+   20
+  ]
+ },
+ "cock_visor": {
+  "mount": [
+   14,
+   12
+  ],
+  "size": [
+   30,
+   16
+  ]
+ },
+ "cock_armored": {
+  "mount": [
+   14,
+   16
+  ],
+  "size": [
+   30,
+   20
+  ]
+ },
+ "cock_lounge": {
+  "mount": [
+   16,
+   16
+  ],
+  "size": [
+   34,
+   20
+  ]
+ },
+ "cock_crystal": {
+  "mount": [
+   15,
+   18
+  ],
+  "size": [
+   32,
+   22
+  ]
+ },
+ "wing_stub": {
+  "mount": [
+   15,
+   5
+  ],
+  "size": [
+   30,
+   16
+  ]
+ },
+ "wing_delta": {
+  "mount": [
+   27,
+   7
+  ],
+  "size": [
+   52,
+   22
+  ]
+ },
+ "wing_swept": {
+  "mount": [
+   29,
+   6
+  ],
+  "size": [
+   54,
+   20
+  ]
+ },
+ "wing_solar": {
+  "mount": [
+   30,
+   8
+  ],
+  "size": [
+   56,
+   24
+  ]
+ }
+}

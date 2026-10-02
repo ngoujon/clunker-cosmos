@@ -1,0 +1,44 @@
+{
+  "_comment": "Lieux d'enchères. tiers = poids par tier de pièces ; defects = [min,max] ; visible_mult multiplie la visibilité des défauts ; price_mult agit sur les mises des PNJ ; unlocked par défaut ou via l'arbre (effet unlock location:<id>).",
+  "locations": [
+    {"id": "ferropolis", "background": "loc_ferropolis", "unlocked": true, "tiers": {"1": 6, "2": 3, "3": 1, "4": 0}, "defects": [3, 6], "visible_mult": 1.0, "price_mult": 1.0, "client_tier": 0,
+     "name": {"fr": "Casse de Ferropolis", "en": "Ferropolis Scrapyard"},
+     "desc": {"fr": "La plus grande casse du secteur. Ça sent l'huile et les bonnes affaires.", "en": "The sector's biggest scrapyard. Smells of oil and bargains."}},
+    {"id": "kryo7", "background": "loc_kryo7", "unlocked": false, "tiers": {"1": 3, "2": 5, "3": 2, "4": 0}, "defects": [2, 5], "visible_mult": 0.9, "price_mult": 1.0, "client_tier": 1,
+     "name": {"fr": "Anneaux de Kryo-7", "en": "Kryo-7 Rings"},
+     "desc": {"fr": "Épaves congelées dans la glace. Bien conservées, mais l'électronique a froid.", "en": "Wrecks frozen in ice. Well preserved, but the electronics are chilly."}},
+    {"id": "nebula", "background": "loc_nebula", "unlocked": false, "tiers": {"1": 1, "2": 4, "3": 4, "4": 1}, "defects": [3, 6], "visible_mult": 0.6, "price_mult": 0.82, "client_tier": 1,
+     "name": {"fr": "Nébula Bazar", "en": "Nebula Bazaar"},
+     "desc": {"fr": "Le marché noir le plus coloré de la galaxie. Rien n'y est ce qu'il paraît.", "en": "The most colorful black market in the galaxy. Nothing is what it seems."}},
+    {"id": "tartarus", "background": "loc_tartarus", "unlocked": false, "tiers": {"1": 0, "2": 3, "3": 5, "4": 2}, "defects": [5, 8], "visible_mult": 0.85, "price_mult": 0.75, "client_tier": 2,
+     "name": {"fr": "Cimetière de Tartarus", "en": "Tartarus Graveyard"},
+     "desc": {"fr": "Là où les vaisseaux viennent mourir. Et où les garagistes viennent les ressusciter.", "en": "Where ships come to die. And where mechanics come to raise them."}},
+    {"id": "opalia", "background": "loc_opalia", "unlocked": false, "tiers": {"1": 0, "2": 1, "3": 4, "4": 5}, "defects": [1, 3], "visible_mult": 1.1, "price_mult": 1.2, "client_tier": 3,
+     "name": {"fr": "Lune d'Opalia", "en": "Opalia Moon"},
+     "desc": {"fr": "Enchères de prestige. Champagne obligatoire, épaves (presque) neuves.", "en": "Prestige auctions. Champagne mandatory, wrecks (almost) new."}}
+  ],
+  "special_lots": [
+    {"id": "aurora_keel", "location": "ferropolis", "item": "aurora_keel", "parts": {"hull": "hull_explorer", "engine": "eng_putt", "cockpit": "cock_box", "wings": "wing_stub"},
+     "defects": [["d_rust", 2], ["d_breach", 2], ["d_dent", 1]], "price_mult": 0.3,
+     "name": {"fr": "Épave n°7 : « Quille Ancestrale »", "en": "Wreck #7: \"Ancestral Keel\""}},
+    {"id": "aurora_heart", "location": "kryo7", "item": "aurora_heart", "parts": {"hull": "hull_cargo", "engine": "eng_fusion", "cockpit": "cock_armored", "wings": "wing_swept"},
+     "defects": [["d_battery", 2], ["d_wiring", 1], ["d_rust", 1]], "price_mult": 0.35,
+     "name": {"fr": "Cargo gelé « Cœur Battant »", "en": "Frozen freighter \"Beating Heart\""}},
+    {"id": "aurora_sail", "location": "nebula", "item": "aurora_sail", "parts": {"hull": "hull_yacht", "engine": "eng_ion", "cockpit": "cock_lounge", "wings": "wing_solar"},
+     "defects": [["d_nav_bug", 2], ["d_sulky_ai", 2], ["d_toilet", 1]], "price_mult": 0.45,
+     "name": {"fr": "Yacht louche « Voile d'Aube »", "en": "Shady yacht \"Dawn Sail\""}},
+    {"id": "aurora_star", "location": "tartarus", "item": "aurora_star", "parts": {"hull": "hull_fighter", "engine": "eng_plasma", "cockpit": "cock_crystal", "wings": "wing_delta"},
+     "defects": [["d_plasma_leak", 2], ["d_bent_wing", 2], ["d_breach", 1]], "price_mult": 0.5,
+     "name": {"fr": "Chasseur fantôme « Cockpit-Étoile »", "en": "Ghost fighter \"Star Cockpit\""}},
+    {"id": "aurora_compass", "location": "opalia", "item": "aurora_compass", "parts": {"hull": "hull_explorer", "engine": "eng_warp", "cockpit": "cock_crystal", "wings": "wing_solar"},
+     "defects": [["d_gravity", 1], ["d_nav_bug", 1]], "price_mult": 0.55,
+     "name": {"fr": "Lot de prestige « Boussole Céleste »", "en": "Prestige lot \"Celestial Compass\""}}
+  ],
+  "items": {
+    "aurora_keel": {"icon": "item_keel", "name": {"fr": "Quille de l'Aurore", "en": "Aurora's Keel"}, "desc": {"fr": "Une poutre de métal inconnu, tiède au toucher.", "en": "A beam of unknown metal, warm to the touch."}},
+    "aurora_heart": {"icon": "item_heart", "name": {"fr": "Cœur de l'Aurore", "en": "Aurora's Heart"}, "desc": {"fr": "Un réacteur qui bat comme un cœur. C'est perturbant.", "en": "A reactor that beats like a heart. It's unsettling."}},
+    "aurora_sail": {"icon": "item_sail", "name": {"fr": "Voile de l'Aurore", "en": "Aurora's Sail"}, "desc": {"fr": "Une toile solaire plus fine qu'une excuse de Galax-Auto.", "en": "A solar sail thinner than a Galax-Auto apology."}},
+    "aurora_star": {"icon": "item_star", "name": {"fr": "Cockpit-Étoile", "en": "Star Cockpit"}, "desc": {"fr": "Le poste de pilotage le plus confortable de l'univers.", "en": "The comfiest cockpit in the universe."}},
+    "aurora_compass": {"icon": "item_compass", "name": {"fr": "Boussole Céleste", "en": "Celestial Compass"}, "desc": {"fr": "Elle indique toujours la maison. Ou le prochain buffet.", "en": "It always points home. Or to the next buffet."}}
+  }
+}

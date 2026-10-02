@@ -1,0 +1,95 @@
+{
+  "_comment": "Modèles utilisés/évalués pour l'art de Wreck & Resell. Licences détaillées dans docs/MODEL_LICENSES.md.",
+  "models": [
+    {
+      "id": "sdxl_base",
+      "file": "sd_xl_base_1.0.safetensors",
+      "folder": "checkpoints",
+      "url": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors",
+      "size": 6938078334,
+      "license": "CreativeML Open RAIL++-M",
+      "track": "sdxl_pixel"
+    },
+    {
+      "id": "pixel_art_xl",
+      "file": "pixel-art-xl.safetensors",
+      "folder": "loras",
+      "url": "https://huggingface.co/nerijs/pixel-art-xl/resolve/main/pixel-art-xl.safetensors",
+      "size": 170543052,
+      "license": "CreativeML Open RAIL-M",
+      "track": "sdxl_pixel"
+    },
+    {
+      "id": "birefnet",
+      "file": "birefnet.safetensors",
+      "folder": "background_removal",
+      "url": "https://huggingface.co/Comfy-Org/BiRefNet/resolve/main/background_removal/birefnet.safetensors",
+      "size": 444473596,
+      "license": "MIT",
+      "track": "all"
+    },
+    {
+      "id": "flux1_schnell_fp8",
+      "file": "flux1-schnell-fp8.safetensors",
+      "folder": "checkpoints",
+      "url": "https://huggingface.co/Comfy-Org/flux1-schnell/resolve/main/flux1-schnell-fp8.safetensors",
+      "size": 17236328572,
+      "license": "Apache-2.0",
+      "track": "flux_schnell"
+    },
+    {
+      "id": "z_image_turbo",
+      "file": "z_image_turbo_bf16.safetensors",
+      "folder": "diffusion_models",
+      "url": "https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/diffusion_models/z_image_turbo_bf16.safetensors",
+      "size": 12309866400,
+      "license": "Apache-2.0",
+      "track": "z_image"
+    },
+    {
+      "id": "qwen_3_4b",
+      "file": "qwen_3_4b.safetensors",
+      "folder": "text_encoders",
+      "url": "https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/text_encoders/qwen_3_4b.safetensors",
+      "size": 8044982048,
+      "license": "Apache-2.0",
+      "track": "z_image"
+    },
+    {
+      "id": "flux_ae",
+      "file": "ae.safetensors",
+      "folder": "vae",
+      "url": "https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/vae/ae.safetensors",
+      "size": 335304388,
+      "license": "Apache-2.0",
+      "track": "z_image"
+    },
+    {
+      "id": "qwen_image_2512_fp8",
+      "file": "qwen_image_2512_fp8_e4m3fn.safetensors",
+      "folder": "diffusion_models",
+      "url": "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_2512_fp8_e4m3fn.safetensors",
+      "size": 20430679144,
+      "license": "Apache-2.0",
+      "track": "qwen_image"
+    },
+    {
+      "id": "qwen_25_vl_7b_fp8",
+      "file": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "folder": "text_encoders",
+      "url": "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "size": 9384670680,
+      "license": "Apache-2.0",
+      "track": "qwen_image"
+    },
+    {
+      "id": "qwen_image_vae",
+      "file": "qwen_image_vae.safetensors",
+      "folder": "vae",
+      "url": "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors",
+      "size": 253806246,
+      "license": "Apache-2.0",
+      "track": "qwen_image"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+ "z_image": {
+  "hull_1101": "90x48 9 couleurs",
+  "engine_1101": "24x32 8 couleurs",
+  "portrait_1101": "44x48 3 couleurs",
+  "icon_1101": "22x24 2 couleurs",
+  "background_1101": "480x270 20 couleurs",
+  "hull_2202": "92x48 11 couleurs",
+  "engine_2202": "40x17 8 couleurs",
+  "portrait_2202": "43x48 3 couleurs",
+  "icon_2202": "21x24 3 couleurs",
+  "background_2202": "480x270 27 couleurs"
+ },
+ "flux_schnell": {
+  "hull_1101": "96x42 14 couleurs",
+  "engine_1101": "40x12 11 couleurs",
+  "portrait_1101": "30x48 7 couleurs",
+  "icon_1101": "24x10 5 couleurs",
+  "background_1101": "480x270 25 couleurs",
+  "hull_2202": "96x43 12 couleurs",
+  "engine_2202": "40x28 9 couleurs",
+  "portrait_2202": "30x48 7 couleurs",
+  "icon_2202": "19x24 3 couleurs",
+  "background_2202": "480x270 28 couleurs"
+ },
+ "sdxl_pixel": {
+  "hull_1101": "96x28 17 couleurs",
+  "engine_1101": "14x32 11 couleurs",
+  "portrait_1101": "33x48 15 couleurs",
+  "icon_1101": "11x24 11 couleurs",
+  "background_1101": "480x270 25 couleurs",
+  "hull_2202": "96x40 16 couleurs",
+  "engine_2202": "35x32 11 couleurs",
+  "portrait_2202": "48x48 18 couleurs",
+  "icon_2202": "10x24 8 couleurs",
+  "background_2202": "480x270 24 couleurs"
+ },
+ "qwen_image": {
+  "hull_1101": "82x48 14 couleurs",
+  "engine_1101": "40x19 11 couleurs",
+  "portrait_1101": "43x48 9 couleurs",
+  "icon_1101": "23x24 6 couleurs",
+  "background_1101": "480x270 24 couleurs",
+  "hull_2202": "75x48 14 couleurs",
+  "engine_2202": "40x19 10 couleurs",
+  "portrait_2202": "45x48 8 couleurs",
+  "icon_2202": "24x24 6 couleurs",
+  "background_2202": "480x270 24 couleurs"
+ }
+}

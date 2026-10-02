@@ -1,0 +1,19 @@
+# Godot 4+
+.godot/
+/android/
+/build/
+*.tmp
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Outils téléchargés / générés localement
+/tools/godot/
+/art/raw/
+/art/compare/raw/
+/comfy/output/
+/sim_out/
+/art/compare/px/
+/art/review/

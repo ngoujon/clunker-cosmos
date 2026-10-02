@@ -1,0 +1,56 @@
+{
+  "_comment": "Rôles des employés, règles de priorité et traits. Les modificateurs de traits s'appliquent à l'employé (speed, fatigue, morale_daily, salary, sale_bonus, research, valuation_noise, break_chance, xp, reveal, parts_cost, morale_floor).",
+  "roles": [
+    {"id": "buyer", "icon": "role_buyer", "base_salary": 70, "rules": ["best_margin", "cheapest", "rare_first"],
+     "name": {"fr": "Acheteur", "en": "Buyer"},
+     "desc": {"fr": "Scanne les lots et enchérit à votre place.", "en": "Scans lots and bids on your behalf."}},
+    {"id": "mechanic", "icon": "role_mechanic", "base_salary": 80, "rules": ["critical_first", "quick_first", "value_first", "oldest_first"],
+     "name": {"fr": "Mécanicien", "en": "Mechanic"},
+     "desc": {"fr": "Répare (ou maquille) les défauts selon votre politique.", "en": "Repairs (or hides) defects according to your policy."}},
+    {"id": "bodyworker", "icon": "role_bodyworker", "base_salary": 75, "rules": ["order_first", "best_value", "quick_first"],
+     "name": {"fr": "Carrossier", "en": "Body artist"},
+     "desc": {"fr": "Peint et personnalise selon les goûts des clients.", "en": "Paints and customizes to match client tastes."}},
+    {"id": "seller", "icon": "role_seller", "base_salary": 75, "rules": ["max_price", "quick_sale", "order_first"],
+     "name": {"fr": "Vendeur", "en": "Salesperson"},
+     "desc": {"fr": "Négocie avec les clients et conclut les ventes.", "en": "Haggles with clients and closes deals."}},
+    {"id": "researcher", "icon": "role_researcher", "base_salary": 85, "rules": ["steady", "crunch"],
+     "name": {"fr": "Chercheur", "en": "Researcher"},
+     "desc": {"fr": "Produit des points de recherche.", "en": "Produces research points."}}
+  ],
+  "rules": {
+    "best_margin": {"name": {"fr": "Meilleure marge", "en": "Best margin"}, "desc": {"fr": "Vise les lots les plus rentables.", "en": "Targets the most profitable lots."}},
+    "cheapest": {"name": {"fr": "Petits prix", "en": "Bargains"}, "desc": {"fr": "Préfère les lots les moins chers.", "en": "Prefers the cheapest lots."}},
+    "rare_first": {"name": {"fr": "Raretés d'abord", "en": "Rarities first"}, "desc": {"fr": "Fonce sur les épaves rares et haut de gamme.", "en": "Goes for rare and high-tier wrecks."}},
+    "critical_first": {"name": {"fr": "Critiques d'abord", "en": "Critical first"}, "desc": {"fr": "Traite d'abord les défauts dangereux et graves.", "en": "Handles dangerous, severe defects first."}},
+    "quick_first": {"name": {"fr": "Rapide d'abord", "en": "Quick first"}, "desc": {"fr": "Enchaîne les petits travaux.", "en": "Chains quick jobs."}},
+    "value_first": {"name": {"fr": "Valeur d'abord", "en": "Value first"}, "desc": {"fr": "Commence par ce qui rapporte le plus.", "en": "Starts with what pays the most."}},
+    "oldest_first": {"name": {"fr": "Premier arrivé", "en": "First come"}, "desc": {"fr": "Termine un vaisseau avant le suivant.", "en": "Finishes one ship before the next."}},
+    "order_first": {"name": {"fr": "Commandes d'abord", "en": "Orders first"}, "desc": {"fr": "Priorité aux vaisseaux destinés aux commandes.", "en": "Prioritizes ships meant for orders."}},
+    "best_value": {"name": {"fr": "Plus-value max", "en": "Max upside"}, "desc": {"fr": "Personnalise les vaisseaux les plus chers.", "en": "Customizes the most valuable ships."}},
+    "max_price": {"name": {"fr": "Prix fort", "en": "Top price"}, "desc": {"fr": "Négocie dur, quitte à attendre.", "en": "Haggles hard, even if it takes time."}},
+    "quick_sale": {"name": {"fr": "Vente express", "en": "Quick sale"}, "desc": {"fr": "Vend vite, à prix raisonnable.", "en": "Sells fast at a fair price."}},
+    "steady": {"name": {"fr": "Rythme régulier", "en": "Steady pace"}, "desc": {"fr": "Production normale, fatigue normale.", "en": "Normal output, normal fatigue."}},
+    "crunch": {"name": {"fr": "Crunch", "en": "Crunch"}, "desc": {"fr": "+30 % de recherche, fatigue doublée.", "en": "+30% research, double fatigue."}}
+  },
+  "traits": [
+    {"id": "speedy", "mods": {"speed": 1.2, "fatigue": 1.1}, "name": {"fr": "Rapide", "en": "Speedy"}, "desc": {"fr": "Travaille vite. Se fatigue un peu plus.", "en": "Works fast. Tires a bit faster."}},
+    {"id": "perfectionist", "mods": {"speed": 0.9, "reveal": 0.15}, "name": {"fr": "Perfectionniste", "en": "Perfectionist"}, "desc": {"fr": "Plus lent, mais déniche les défauts cachés.", "en": "Slower, but sniffs out hidden defects."}},
+    {"id": "clumsy", "mods": {"break_chance": 0.06, "salary": 0.85}, "name": {"fr": "Maladroit", "en": "Clumsy"}, "desc": {"fr": "Pas cher. Cabosse parfois ce qu'il répare.", "en": "Cheap. Sometimes dents what they fix."}},
+    {"id": "insomniac", "mods": {"fatigue": 0.6}, "name": {"fr": "Insomniaque", "en": "Insomniac"}, "desc": {"fr": "Ne dort jamais. Ne se fatigue presque pas.", "en": "Never sleeps. Barely gets tired."}},
+    {"id": "grumpy", "mods": {"morale_daily": -1.5, "speed": 1.05}, "name": {"fr": "Râleur", "en": "Grumpy"}, "desc": {"fr": "Efficace, mais râle tout le temps.", "en": "Efficient, but always complaining."}},
+    {"id": "cheerful", "mods": {"morale_daily": 1.5}, "name": {"fr": "Joyeux", "en": "Cheerful"}, "desc": {"fr": "Sifflote en travaillant. Garde le moral.", "en": "Whistles while working. Stays upbeat."}},
+    {"id": "charming", "mods": {"sale_bonus": 0.06}, "name": {"fr": "Charmeur", "en": "Charming"}, "desc": {"fr": "Les clients paient plus. Ils ne savent pas pourquoi.", "en": "Clients pay more. They don't know why."}},
+    {"id": "thrifty", "mods": {"parts_cost": 0.88, "salary": 0.92}, "name": {"fr": "Économe", "en": "Thrifty"}, "desc": {"fr": "Récupère chaque boulon. Coûte moins cher.", "en": "Saves every bolt. Costs less."}},
+    {"id": "genius", "mods": {"research": 1.35, "salary": 1.15}, "name": {"fr": "Génie", "en": "Genius"}, "desc": {"fr": "Brillant. Et le sait.", "en": "Brilliant. And knows it."}},
+    {"id": "keen_eye", "mods": {"valuation_noise": 0.5, "reveal": 0.05}, "name": {"fr": "Flair", "en": "Keen eye"}, "desc": {"fr": "Estime la valeur d'une épave au premier coup d'œil.", "en": "Values a wreck at first glance."}},
+    {"id": "ambitious", "mods": {"xp": 1.5, "salary": 1.1}, "name": {"fr": "Ambitieux", "en": "Ambitious"}, "desc": {"fr": "Apprend vite, veut être payé en conséquence.", "en": "Learns fast, wants to be paid for it."}},
+    {"id": "fragile", "mods": {"fatigue": 1.3, "salary": 0.9}, "name": {"fr": "Fragile", "en": "Delicate"}, "desc": {"fr": "Se fatigue vite. Demande moins.", "en": "Tires quickly. Asks for less."}},
+    {"id": "loyal", "mods": {"morale_floor": 40.0}, "name": {"fr": "Loyal", "en": "Loyal"}, "desc": {"fr": "Ne démissionnera jamais. Même pas un lundi.", "en": "Will never quit. Not even on a Monday."}},
+    {"id": "chatty", "mods": {"speed": 0.92, "sale_bonus": 0.03}, "name": {"fr": "Bavard", "en": "Chatty"}, "desc": {"fr": "Parle beaucoup. Vend un peu mieux.", "en": "Talks a lot. Sells a bit better."}}
+  ],
+  "templates": [
+    {"id": "emp_grizzle", "role": "mechanic", "level": 4, "traits": ["loyal", "grumpy"], "portrait": "staff_09", "name": "Grizzle Tôle-Fine", "salary": 95},
+    {"id": "emp_pixie", "role": "seller", "level": 4, "traits": ["charming", "cheerful"], "portrait": "staff_10", "name": "Pixie Vroum", "salary": 95},
+    {"id": "emp_doc", "role": "researcher", "level": 5, "traits": ["genius", "insomniac"], "portrait": "staff_05", "name": "Doc Fusible", "salary": 120}
+  ]
+}
