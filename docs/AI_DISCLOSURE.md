@@ -5,13 +5,15 @@ workflow, post-traitement, empreinte SHA-256) de chaque fichier se trouve dans `
 
 ## Résumé pour la page Steam (section « AI Generated Content Disclosure »)
 
-> **Pre-generated content** : all 2D pixel art (spaceship parts, wear overlays, character portraits, icons,
-> backgrounds and UI frames) was generated locally with the open-weights model Z-Image-Turbo (Apache-2.0)
+> **Pre-generated content** : all 2D pixel art (spaceship parts, wear overlays, character portraits and
+> sprites, icons, backgrounds and UI frames) was generated locally with the open-weights model Z-Image-Turbo (Apache-2.0)
 > through ComfyUI, then reduced and quantized to a hand-made 32-color palette by our own script
-> (`tools/pixelize.py`). Background removal uses BiRefNet (MIT). No live/runtime AI generation happens in
-> the game. Prompts describe original concepts only: no artist, studio, franchise or existing character
-> was referenced or imitated. Game code, design, story and texts were written with the help of an AI
-> coding assistant (Claude) under human direction.
+> (`tools/pixelize.py`). Background removal uses BiRefNet (MIT). The five instrumental music tracks were
+> pre-generated locally with the open-weights model ACE-Step 1.5 (MIT) from generic style descriptions,
+> then mastered by our own script (`tools/gen_audio.py`); sound effects are synthesized by code, without AI.
+> No live/runtime AI generation happens in the game. Prompts describe original concepts only: no artist,
+> studio, franchise, existing work or character was referenced or imitated. Game code, design, story and
+> texts were written with the help of an AI coding assistant (Claude) under human direction.
 
 ## Outils et modèles
 
@@ -19,6 +21,8 @@ workflow, post-traitement, empreinte SHA-256) de chaque fichier se trouve dans `
 |---|---|---|
 | Génération d'images (retenu) | Z-Image-Turbo bf16 + encodeur Qwen3-4B + VAE ae | Apache-2.0 |
 | Détourage | BiRefNet (nœud ComfyUI RemoveBackground) | MIT |
+| Musique (pré-générée) | ACE-Step 1.5 turbo (`ace_step_1.5_turbo_aio.safetensors`) | MIT (reconditionnement Comfy-Org Apache-2.0) |
+| Bruitages | tools/sfx_synth.py (synthèse procédurale, sans IA) | propriétaire du projet |
 | Post-traitement | tools/pixelize.py (code du projet) | propriétaire du projet |
 | Évalués puis écartés | SDXL base 1.0 + LoRA pixel-art-xl, FLUX.1-schnell, Qwen-Image 2512 | voir MODEL_LICENSES.md |
 
@@ -36,8 +40,9 @@ workflow, post-traitement, empreinte SHA-256) de chaque fichier se trouve dans `
 | ui | 2 |
 | wear | 4 |
 | wings | 4 |
+| worker | 10 |
 
-Total : 197 fichiers générés, 12 dérivés ou faits main.
+Total : 207 fichiers générés, 12 dérivés ou faits main.
 
 ## Liste des fichiers
 
@@ -123,6 +128,16 @@ Total : 197 fichiers générés, 12 dérivés ou faits main.
 | `assets/portraits/small/story_lustre.png` | 101 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
 | `assets/portraits/story_inspector.png` | 101 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
 | `assets/portraits/small/story_inspector.png` | 101 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
+| `assets/workers/staff_01.png` | 202 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
+| `assets/workers/staff_02.png` | 101 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
+| `assets/workers/staff_03.png` | 202 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
+| `assets/workers/staff_04.png` | 202 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
+| `assets/workers/staff_05.png` | 202 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
+| `assets/workers/staff_06.png` | 202 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
+| `assets/workers/staff_07.png` | 101 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
+| `assets/workers/staff_08.png` | 101 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
+| `assets/workers/staff_09.png` | 202 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
+| `assets/workers/staff_10.png` | 202 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
 | `assets/icons/ui_credits.png` | 101 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
 | `assets/icons/ui_rp.png` | 101 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
 | `assets/icons/ui_rep.png` | 101 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
@@ -240,3 +255,19 @@ Total : 197 fichiers générés, 12 dérivés ou faits main.
 | `assets/backgrounds/loc_opalia.png` | 302 | detailed pixel art, 16-bit retro game background, crisp pixels, limited palette, full-screen landscape scene f… |
 | `assets/ui/_panel_src.png` | 401 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
 | `assets/ui/_button_src.png` | 401 | pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark … |
+
+## Audio
+
+- **Musique** : pistes instrumentales **pré-générées localement** avec ACE-Step 1.5 turbo (licence MIT) dans
+  ComfyUI (workflow `comfy/workflows/ace_step15_music.json`, script `tools/gen_audio.py`) à partir de
+  descriptions de style génériques ; trois graines par piste, choix par mesures objectives, puis mastering
+  (-16 LUFS, fondus). Détail (invites, graines, réglages, mesures) dans `art/audio_manifest.json`.
+- **Bruitages** : 32 effets synthétisés par code (numpy, `tools/sfx_synth.py`), sans IA ni échantillon tiers.
+
+| Fichier | Rôle | Graine | Style demandé (début) |
+|---|---|---|---|
+| `assets/audio/music/title.ogg` | menu titre | 1103 | Instrumental retro space funk with a light synthwave shine. Joyful, adventurous and upbeat main menu… |
+| `assets/audio/music/garage_a.ogg` | jeu (atelier, détendu) | 1202 | Instrumental lo-fi space funk for a relaxed workshop. Laid-back groovy bassline, mellow electric pia… |
+| `assets/audio/music/garage_b.ogg` | jeu (atelier, ensoleillé) | 1303 | Instrumental retro synth funk, sunny and easygoing. Bouncy synth bass, muted funk guitar, soft analo… |
+| `assets/audio/music/garage_c.ogg` | jeu (orbite de nuit, rêveur) | 1403 | Instrumental dreamy space lounge, downtempo lo-fi synthwave. Warm electric piano chords, deep round … |
+| `assets/audio/music/jingle_win.ogg` | jingle de victoire (fin de chapitre) | 1504 | Short instrumental victory fanfare jingle. Triumphant retro synth brass, bright arpeggio flourish, p… |

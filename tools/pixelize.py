@@ -1,4 +1,4 @@
-"""Post-traitement pixel art de Wreck & Resell.
+"""Post-traitement pixel art de Clunker Cosmos.
 
 Chaîne : détourage (masque BiRefNet produit par ComfyUI, ou couleur de fond) → recadrage →
 quantification perceptuelle (OKLab) sur la palette unique (art/palette.json, ≤ 32 couleurs) →
@@ -178,7 +178,8 @@ def process(rgb_img: Image.Image, mask_img: Image.Image | None, spec: dict[str, 
 
     spec : mode (sprite|opaque), size [w,h] (taille exacte, opaque) ou max [w,h] (sprite, ratio
     conservé), paint_hue (red|blue|green|orange|None), outline (bool), contrast, saturation,
-    mask_threshold, chroma_weight, pad (marge en pixels autour du sprite).
+    mask_threshold, chroma_weight, pad (marge en pixels autour du sprite), fill_holes (bouche les
+    trous du masque, ex. blouse blanche sur fond blanc), reduce ("box" : voir box_reduce).
     """
     general, primer = load_palette()
     rgb = np.array(rgb_img.convert("RGB"))
@@ -211,6 +212,9 @@ def process(rgb_img: Image.Image, mask_img: Image.Image | None, spec: dict[str, 
         keep = largest_components(np.array(small) > 127, float(spec.get("min_component", 0.05)))
         keep_full = np.array(Image.fromarray((keep * 255).astype(np.uint8)).resize((alpha.shape[1], alpha.shape[0]), Image.NEAREST)) > 127
         alpha &= keep_full
+        if spec.get("fill_holes"):
+            holes = fill_holes(keep) & ~keep
+            alpha |= np.array(Image.fromarray((holes * 255).astype(np.uint8)).resize((alpha.shape[1], alpha.shape[0]), Image.NEAREST)) > 127
         if not alpha.any():
             raise ValueError("masque vide après détourage")
         ys, xs = np.where(alpha)
@@ -236,6 +240,9 @@ def process(rgb_img: Image.Image, mask_img: Image.Image | None, spec: dict[str, 
             nh = int(w / tr)
             y0 = (h - nh) // 2
             rgb, alpha = rgb[y0:y0 + nh], alpha[y0:y0 + nh]
+
+    if spec.get("reduce") == "box" and mode == "sprite":
+        return _finish(box_reduce(rgb, alpha, out_w, out_h, general, spec), spec, mode, pad, general)
 
     # Échantillonnage nearest à 4x la taille cible (le vote majoritaire se fait sur 4x4 points).
     work_w, work_h = min(rgb.shape[1], out_w * 4), min(rgb.shape[0], out_h * 4)
@@ -275,6 +282,12 @@ def process(rgb_img: Image.Image, mask_img: Image.Image | None, spec: dict[str, 
             score = -lab[..., 0]
         thr = np.quantile(score, 1.0 - float(spec.get("keep_frac", 0.25)))
         rgba[..., 3] = np.where(score >= thr, 255, 0)
+    return _finish(rgba, spec, mode, pad, general)
+
+
+def _finish(rgba: np.ndarray, spec: dict[str, Any], mode: str, pad: int, general: np.ndarray) -> Image.Image:
+    """Marge, contour et canevas communs à toutes les réductions."""
+    out_h, out_w = rgba.shape[:2]
     if mode == "sprite" and pad:
         padded = np.zeros((out_h + 2 * pad, out_w + 2 * pad, 4), dtype=np.uint8)
         padded[pad:pad + out_h, pad:pad + out_w] = rgba
@@ -285,6 +298,46 @@ def process(rgb_img: Image.Image, mask_img: Image.Image | None, spec: dict[str, 
     if spec.get("canvas"):
         img = place_on_canvas(img, spec["canvas"], spec.get("align", "center"))
     return img
+
+
+def fill_holes(mask: np.ndarray) -> np.ndarray:
+    """Masque sans trous : seules les zones transparentes reliées au bord de l'image restent transparentes."""
+    h, w = mask.shape
+    outside = np.zeros_like(mask, dtype=bool)
+    stack = [(y, x) for y in range(h) for x in (0, w - 1)] + [(y, x) for x in range(w) for y in (0, h - 1)]
+    stack = [(y, x) for y, x in stack if not mask[y, x]]
+    for y, x in stack:
+        outside[y, x] = True
+    while stack:
+        y, x = stack.pop()
+        for ny, nx in ((y + 1, x), (y - 1, x), (y, x + 1), (y, x - 1)):
+            if 0 <= ny < h and 0 <= nx < w and not mask[ny, nx] and not outside[ny, nx]:
+                outside[ny, nx] = True
+                stack.append((ny, nx))
+    return ~outside
+
+
+def box_reduce(rgb: np.ndarray, alpha: np.ndarray, out_w: int, out_h: int, pal: np.ndarray, spec: dict[str, Any]) -> np.ndarray:
+    """Réduction par moyenne de zone (pixels opaques seulement), puis couleur de palette la plus proche.
+
+    Réservée aux très petits personnages (~26 px de haut) : le vote majoritaire n'y retient que les
+    épais contours noirs de l'image source, alors que la moyenne garde les yeux, lunettes et moustaches.
+    Aucune couleur hors palette : le mélange n'existe qu'avant la quantification.
+    """
+    a = alpha.astype(np.float32)
+
+    def box(arr: np.ndarray) -> np.ndarray:
+        return np.array(Image.fromarray(arr.astype(np.float32), "F").resize((out_w, out_h), Image.BOX))
+
+    sa = box(a)
+    sr = np.stack([box(rgb[..., c].astype(np.float32) * a) for c in range(3)], -1)
+    col = np.clip(sr / np.maximum(sa[..., None], 1e-6), 0, 255).astype(np.uint8)
+    col = enhance(col, float(spec.get("box_contrast", 1.15)), float(spec.get("box_saturation", 1.25)))
+    idx = nearest_index(col, pal, float(spec.get("chroma_weight", 1.6)))
+    rgba = np.zeros((out_h, out_w, 4), dtype=np.uint8)
+    rgba[..., :3] = pal[idx]
+    rgba[..., 3] = np.where(sa >= 0.5, 255, 0)
+    return rgba
 
 
 def place_on_canvas(img: Image.Image, size: list[int], align: str) -> Image.Image:

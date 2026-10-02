@@ -28,8 +28,8 @@
      "effects": [{"op": "mul", "stat": "repair_speed", "value": 1.25}, {"op": "mul", "stat": "owner_speed", "value": 1.25}],
      "name": {"fr": "Bras robotisés", "en": "Robotic arms"}, "desc": {"fr": "Réparations +25 %, et vous travaillez +25 % plus vite.", "en": "Repairs +25%, and you work 25% faster."}},
     {"id": "at_7", "branch": "atelier", "pos": [5, 0], "rp": 200, "credits": 25000, "prereqs": ["at_6"], "icon": "tech_at_7",
-     "effects": [{"op": "add", "stat": "offline_cap_hours", "value": 24}, {"op": "add", "stat": "offline_efficiency", "value": 0.15}],
-     "name": {"fr": "Veilleur de nuit", "en": "Night watchman"}, "desc": {"fr": "L'atelier tourne 24 h de plus en votre absence.", "en": "The shop runs 24 more hours while you're away."}},
+     "effects": [{"op": "add", "stat": "shift_extra_hours", "value": 2}, {"op": "mul", "stat": "repair_speed", "value": 1.1}],
+     "name": {"fr": "Équipe du soir", "en": "Evening shift"}, "desc": {"fr": "L'équipe travaille jusqu'à 20 h et répare +10 % plus vite. Heures sup' payées en café.", "en": "The crew works until 8 PM and repairs 10% faster. Overtime paid in coffee."}},
 
     {"id": "co_1", "branch": "commerce", "pos": [0, 0], "rp": 8, "credits": 400, "prereqs": [], "icon": "tech_co_1",
      "effects": [{"op": "mul", "stat": "sale_price", "value": 1.04}],

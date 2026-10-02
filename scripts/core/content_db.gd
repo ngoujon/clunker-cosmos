@@ -39,6 +39,8 @@ var characters: Dictionary = {}
 var chapters: Array[Dictionary] = []
 var endings: Dictionary = {}
 var stats: Dictionary = {}
+## Pages du tutoriel (menu Tutoriel), dans l'ordre d'affichage.
+var tutorial: Array[Dictionary] = []
 var texts: Dictionary = {}
 var errors: PackedStringArray = []
 
@@ -62,6 +64,7 @@ func load_dir(dir: String) -> void:
 	_load_tech(_read(dir + "/tech_tree.json"))
 	_load_story(_read(dir + "/story.json"))
 	_load_quests(_read(dir + "/quests.json"))
+	_load_tutorial(_read(dir + "/tutorial.json"))
 	_load_ui_texts(_read(dir + "/ui_text.json"))
 
 
@@ -225,6 +228,17 @@ func _load_quests(d: Dictionary) -> void:
 		for ch: Dictionary in q.get("choices", []):
 			_text("quest.%s.choice%d" % [id, ci], ch.get("label"))
 			ci += 1
+
+
+func _load_tutorial(d: Dictionary) -> void:
+	tutorial.clear()
+	for page: Dictionary in d.get("pages", []):
+		var id: String = page["id"]
+		tutorial.append(page)
+		_text("tuto.%s.title" % id, page.get("title"))
+		_text("tuto.%s.body" % id, page.get("body"))
+		if page.has("bolt"):
+			_text("tuto.%s.bolt" % id, page["bolt"])
 
 
 func _load_ui_texts(d: Dictionary) -> void:

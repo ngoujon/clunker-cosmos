@@ -1,4 +1,4 @@
-# CLAUDE.md — Wreck & Resell (titre provisoire)
+# CLAUDE.md — Clunker Cosmos
 
 Jeu idle/gestion 2D pixel art (Steam) : garage orbital de vaisseaux d'occasion, vue en coupe.
 Godot **4.7.1 stable** + **GDScript typé** (avertissement `untyped_declaration` = erreur : tout doit être typé,

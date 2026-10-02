@@ -1,5 +1,5 @@
 {
-  "_comment": "Palette globale unique de Wreck & Resell (32 couleurs, conçue pour le projet). Les 3 couleurs 'primer' sont réservées aux zones peignables : le shader palette-swap les remplace par la rampe de la peinture choisie. Aucun autre pixel ne doit les utiliser.",
+  "_comment": "Palette globale unique de Clunker Cosmos (32 couleurs, conçue pour le projet). Les 3 couleurs 'primer' sont réservées aux zones peignables : le shader palette-swap les remplace par la rampe de la peinture choisie. Aucun autre pixel ne doit les utiliser.",
   "name": "wreck-resell-32",
   "colors": [
     "#0d0e14", "#2a2b3d", "#4a4d66", "#8a8fa6", "#c8cbd6", "#f2f0e6",

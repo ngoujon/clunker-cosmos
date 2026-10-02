@@ -1,0 +1,1447 @@
+{
+ "_comment": "Audio de Clunker Cosmos, généré par tools/gen_audio.py. Musiques : ACE-Step 1.5 turbo dans ComfyUI local (licence MIT), instrumentales, invites de style génériques (aucun artiste ni œuvre cités). Effets : synthèse procédurale numpy (tools/sfx_synth.py), sans IA ni échantillon tiers.",
+ "generator": "tools/gen_audio.py",
+ "assets": [
+  {
+   "id": "title",
+   "path": "assets/audio/music/title.ogg",
+   "type": "music",
+   "role": "menu titre",
+   "source": {
+    "tool": "ComfyUI (local) + ACE-Step 1.5 turbo",
+    "model": "ace_step_1.5_turbo_aio.safetensors",
+    "workflow": "comfy/workflows/ace_step15_music.json",
+    "tags": "Instrumental retro space funk with a light synthwave shine. Joyful, adventurous and upbeat main menu theme. Bright analog synth lead melody, funky slap bass, crisp drum machine groove, clean rhythm electric guitar, shimmering arpeggiated synths and warm pads. Playful, optimistic, catchy, cosmic road trip mood. No vocals.",
+    "lyrics": "[Instrumental]",
+    "language": "unknown",
+    "seed": 1103,
+    "bpm": 112,
+    "keyscale": "D major",
+    "timesignature": "4",
+    "duration_requested_s": 84,
+    "sampler": {
+     "steps": 8,
+     "cfg": 1.0,
+     "sampler": "euler",
+     "scheduler": "simple",
+     "shift": 3.0
+    },
+    "lm": {
+     "generate_audio_codes": true,
+     "cfg_scale": 2.0,
+     "temperature": 0.85,
+     "top_p": 0.9,
+     "top_k": 0,
+     "min_p": 0.0
+    },
+    "selection": {
+     "criterion": "score = 100 - pénalités (voir docstring de tools/gen_audio.py)",
+     "candidates": [
+      {
+       "seed": 1101,
+       "duration_s": 84.0,
+       "content_s": 78.7,
+       "lead_in_s": 0.0,
+       "longest_inner_silence_s": 0.05,
+       "inner_gaps_s": 0.0,
+       "clip_ppm": 0.0,
+       "overs_ppm": 14.4,
+       "crest_db": 16.29,
+       "lufs": -18.4,
+       "lra": 2.5,
+       "true_peak_db": -2.9,
+       "st_std_db": 0.91,
+       "st_jump_db": 2.32,
+       "timbre_var_db": 2.72,
+       "hf_ratio": 0.0178,
+       "stereo_corr": 0.941,
+       "rejected": "",
+       "score": 98.86
+      },
+      {
+       "seed": 1102,
+       "duration_s": 84.0,
+       "content_s": 80.6,
+       "lead_in_s": 0.0,
+       "longest_inner_silence_s": 0.05,
+       "inner_gaps_s": 0.0,
+       "clip_ppm": 0.0,
+       "overs_ppm": 75.9,
+       "crest_db": 17.09,
+       "lufs": -17.8,
+       "lra": 3.3,
+       "true_peak_db": -2.7,
+       "st_std_db": 1.67,
+       "st_jump_db": 3.67,
+       "timbre_var_db": 3.38,
+       "hf_ratio": 0.0269,
+       "stereo_corr": 0.922,
+       "rejected": "",
+       "score": 97.72
+      },
+      {
+       "seed": 1103,
+       "duration_s": 84.0,
+       "content_s": 78.4,
+       "lead_in_s": 0.0,
+       "longest_inner_silence_s": 0.25,
+       "inner_gaps_s": 0.0,
+       "clip_ppm": 0.0,
+       "overs_ppm": 67.2,
+       "crest_db": 17.85,
+       "lufs": -17.5,
+       "lra": 5.0,
+       "true_peak_db": -1.7,
+       "st_std_db": 0.6,
+       "st_jump_db": 2.17,
+       "timbre_var_db": 2.08,
+       "hf_ratio": 0.0131,
+       "stereo_corr": 0.862,
+       "rejected": "",
+       "score": 99.33
+      }
+     ]
+    },
+    "postprocess": {
+     "target_lufs": -16.0,
+     "max_true_peak_dbtp": -1.0,
+     "fade_in_s": 0.3,
+     "fade_out_s": 2.0,
+     "codec": "OGG Vorbis q5, 48 kHz stéréo",
+     "trim_start_s": 0.0,
+     "trim_end_s": 78.924,
+     "gain_db": 1.6,
+     "limit_dbfs": -1.5,
+     "lufs": -16.0,
+     "true_peak_db": -1.6,
+     "lra": 7.3
+    }
+   },
+   "duration_s": 78.92,
+   "sha256": "f378cbcea9687940bfa30681fac929143581841a0c1843366f80b4535ce23b74",
+   "license": "MIT (ACE-Step 1.5, Copyright (c) 2026 ACEStep) ; poids reconditionnés par Comfy-Org (Apache-2.0) ; morceau généré localement pour le projet, utilisation commerciale autorisée"
+  },
+  {
+   "id": "garage_a",
+   "path": "assets/audio/music/garage_a.ogg",
+   "type": "music",
+   "role": "jeu (atelier, détendu)",
+   "source": {
+    "tool": "ComfyUI (local) + ACE-Step 1.5 turbo",
+    "model": "ace_step_1.5_turbo_aio.safetensors",
+    "workflow": "comfy/workflows/ace_step15_music.json",
+    "tags": "Instrumental lo-fi space funk for a relaxed workshop. Laid-back groovy bassline, mellow electric piano chords, soft drum machine with a light swing, warm analog synth pads, a gentle synth lead playing a simple melody now and then. Cozy, easygoing, steady and unobtrusive background music for long play sessions. No vocals.",
+    "lyrics": "[Instrumental]",
+    "language": "unknown",
+    "seed": 1202,
+    "bpm": 92,
+    "keyscale": "F major",
+    "timesignature": "4",
+    "duration_requested_s": 144,
+    "sampler": {
+     "steps": 8,
+     "cfg": 1.0,
+     "sampler": "euler",
+     "scheduler": "simple",
+     "shift": 3.0
+    },
+    "lm": {
+     "generate_audio_codes": true,
+     "cfg_scale": 2.0,
+     "temperature": 0.85,
+     "top_p": 0.9,
+     "top_k": 0,
+     "min_p": 0.0
+    },
+    "selection": {
+     "criterion": "score = 100 - pénalités (voir docstring de tools/gen_audio.py)",
+     "candidates": [
+      {
+       "seed": 1201,
+       "duration_s": 144.0,
+       "content_s": 136.1,
+       "lead_in_s": 0.0,
+       "longest_inner_silence_s": 0.7,
+       "inner_gaps_s": 0.7,
+       "clip_ppm": 0.0,
+       "overs_ppm": 157.6,
+       "crest_db": 15.27,
+       "lufs": -18.6,
+       "lra": 3.3,
+       "true_peak_db": -4.3,
+       "st_std_db": 1.51,
+       "st_jump_db": 6.67,
+       "timbre_var_db": 3.78,
+       "hf_ratio": 0.0074,
+       "stereo_corr": 0.971,
+       "rejected": "",
+       "score": 86.46
+      },
+      {
+       "seed": 1202,
+       "duration_s": 144.0,
+       "content_s": 139.6,
+       "lead_in_s": 0.0,
+       "longest_inner_silence_s": 0.25,
+       "inner_gaps_s": 0.0,
+       "clip_ppm": 0.0,
+       "overs_ppm": 450.4,
+       "crest_db": 14.85,
+       "lufs": -18.4,
+       "lra": 3.0,
+       "true_peak_db": -5.0,
+       "st_std_db": 1.08,
+       "st_jump_db": 3.13,
+       "timbre_var_db": 3.06,
+       "hf_ratio": 0.0075,
+       "stereo_corr": 0.906,
+       "rejected": "",
+       "score": 96.76
+      },
+      {
+       "seed": 1203,
+       "duration_s": 144.0,
+       "content_s": 140.1,
+       "lead_in_s": 0.05,
+       "longest_inner_silence_s": 0.95,
+       "inner_gaps_s": 1.95,
+       "clip_ppm": 0.0,
+       "overs_ppm": 73.8,
+       "crest_db": 14.52,
+       "lufs": -18.8,
+       "lra": 4.5,
+       "true_peak_db": -5.3,
+       "st_std_db": 1.8,
+       "st_jump_db": 5.9,
+       "timbre_var_db": 3.11,
+       "hf_ratio": 0.0008,
+       "stereo_corr": 0.977,
+       "rejected": "",
+       "score": 85.27
+      }
+     ]
+    },
+    "postprocess": {
+     "target_lufs": -16.0,
+     "max_true_peak_dbtp": -1.0,
+     "fade_in_s": 0.3,
+     "fade_out_s": 2.0,
+     "codec": "OGG Vorbis q5, 48 kHz stéréo",
+     "trim_start_s": 0.022,
+     "trim_end_s": 139.89,
+     "gain_db": 2.4,
+     "limit_dbfs": -1.5,
+     "lufs": -16.0,
+     "true_peak_db": -2.4,
+     "lra": 3.1
+    }
+   },
+   "duration_s": 139.87,
+   "sha256": "966c3c960a83a0d856a939bfe68aad8a843a8f2b21df0944826fef8fce7aa1b8",
+   "license": "MIT (ACE-Step 1.5, Copyright (c) 2026 ACEStep) ; poids reconditionnés par Comfy-Org (Apache-2.0) ; morceau généré localement pour le projet, utilisation commerciale autorisée"
+  },
+  {
+   "id": "garage_b",
+   "path": "assets/audio/music/garage_b.ogg",
+   "type": "music",
+   "role": "jeu (atelier, ensoleillé)",
+   "source": {
+    "tool": "ComfyUI (local) + ACE-Step 1.5 turbo",
+    "model": "ace_step_1.5_turbo_aio.safetensors",
+    "workflow": "comfy/workflows/ace_step15_music.json",
+    "tags": "Instrumental retro synth funk, sunny and easygoing. Bouncy synth bass, muted funk guitar, soft analog brass stabs, clavinet style keys, tight drum machine with handclaps and light percussion. Cheerful, groovy, mid-tempo, warm and polished background music for a busy but friendly spaceship garage. No vocals.",
+    "lyrics": "[Instrumental]",
+    "language": "unknown",
+    "seed": 1303,
+    "bpm": 104,
+    "keyscale": "Bb major",
+    "timesignature": "4",
+    "duration_requested_s": 136,
+    "sampler": {
+     "steps": 8,
+     "cfg": 1.0,
+     "sampler": "euler",
+     "scheduler": "simple",
+     "shift": 3.0
+    },
+    "lm": {
+     "generate_audio_codes": true,
+     "cfg_scale": 2.0,
+     "temperature": 0.85,
+     "top_p": 0.9,
+     "top_k": 0,
+     "min_p": 0.0
+    },
+    "selection": {
+     "criterion": "score = 100 - pénalités (voir docstring de tools/gen_audio.py)",
+     "candidates": [
+      {
+       "seed": 1301,
+       "duration_s": 136.0,
+       "content_s": 128.4,
+       "lead_in_s": 0.0,
+       "longest_inner_silence_s": 0.2,
+       "inner_gaps_s": 0.0,
+       "clip_ppm": 0.0,
+       "overs_ppm": 1.7,
+       "crest_db": 15.42,
+       "lufs": -18.8,
+       "lra": 3.2,
+       "true_peak_db": -4.2,
+       "st_std_db": 2.57,
+       "st_jump_db": 9.71,
+       "timbre_var_db": 5.35,
+       "hf_ratio": 0.0021,
+       "stereo_corr": 0.941,
+       "rejected": "",
+       "score": 76.88
+      },
+      {
+       "seed": 1302,
+       "duration_s": 136.0,
+       "content_s": 129.6,
+       "lead_in_s": 0.0,
+       "longest_inner_silence_s": 0.5,
+       "inner_gaps_s": 2.6,
+       "clip_ppm": 0.0,
+       "overs_ppm": 237.7,
+       "crest_db": 15.91,
+       "lufs": -18.2,
+       "lra": 12.9,
+       "true_peak_db": -3.9,
+       "st_std_db": 4.14,
+       "st_jump_db": 12.25,
+       "timbre_var_db": 6.25,
+       "hf_ratio": 0.0146,
+       "stereo_corr": 0.943,
+       "rejected": "",
+       "score": 38.76
+      },
+      {
+       "seed": 1303,
+       "duration_s": 136.0,
+       "content_s": 128.8,
+       "lead_in_s": 0.0,
+       "longest_inner_silence_s": 0.1,
+       "inner_gaps_s": 0.0,
+       "clip_ppm": 0.0,
+       "overs_ppm": 34.9,
+       "crest_db": 16.88,
+       "lufs": -18.6,
+       "lra": 5.4,
+       "true_peak_db": -1.9,
+       "st_std_db": 1.98,
+       "st_jump_db": 3.49,
+       "timbre_var_db": 3.05,
+       "hf_ratio": 0.0058,
+       "stereo_corr": 0.942,
+       "rejected": "",
+       "score": 99.45
+      }
+     ]
+    },
+    "postprocess": {
+     "target_lufs": -16.0,
+     "max_true_peak_dbtp": -1.0,
+     "fade_in_s": 0.3,
+     "fade_out_s": 2.0,
+     "codec": "OGG Vorbis q5, 48 kHz stéréo",
+     "trim_start_s": 0.0,
+     "trim_end_s": 129.089,
+     "gain_db": 2.6,
+     "limit_dbfs": -1.5,
+     "lufs": -16.0,
+     "true_peak_db": -1.6,
+     "lra": 5.5
+    }
+   },
+   "duration_s": 129.09,
+   "sha256": "fcb512d0d9ca277fba7bf14af7f4187a914c9929463617402d887f9787d7ff9e",
+   "license": "MIT (ACE-Step 1.5, Copyright (c) 2026 ACEStep) ; poids reconditionnés par Comfy-Org (Apache-2.0) ; morceau généré localement pour le projet, utilisation commerciale autorisée"
+  },
+  {
+   "id": "garage_c",
+   "path": "assets/audio/music/garage_c.ogg",
+   "type": "music",
+   "role": "jeu (orbite de nuit, rêveur)",
+   "source": {
+    "tool": "ComfyUI (local) + ACE-Step 1.5 turbo",
+    "model": "ace_step_1.5_turbo_aio.safetensors",
+    "workflow": "comfy/workflows/ace_step15_music.json",
+    "tags": "Instrumental dreamy space lounge, downtempo lo-fi synthwave. Warm electric piano chords, deep round bass, brushed drum machine, twinkling arpeggios, soft analog pads and gentle tape warmth. Calm, cozy, spacious and slightly nostalgic late night orbit atmosphere, unobtrusive background music. No vocals.",
+    "lyrics": "[Instrumental]",
+    "language": "unknown",
+    "seed": 1403,
+    "bpm": 84,
+    "keyscale": "E minor",
+    "timesignature": "4",
+    "duration_requested_s": 128,
+    "sampler": {
+     "steps": 8,
+     "cfg": 1.0,
+     "sampler": "euler",
+     "scheduler": "simple",
+     "shift": 3.0
+    },
+    "lm": {
+     "generate_audio_codes": true,
+     "cfg_scale": 2.0,
+     "temperature": 0.85,
+     "top_p": 0.9,
+     "top_k": 0,
+     "min_p": 0.0
+    },
+    "selection": {
+     "criterion": "score = 100 - pénalités (voir docstring de tools/gen_audio.py)",
+     "candidates": [
+      {
+       "seed": 1401,
+       "duration_s": 128.0,
+       "content_s": 123.55,
+       "lead_in_s": 0.0,
+       "longest_inner_silence_s": 0.95,
+       "inner_gaps_s": 0.95,
+       "clip_ppm": 0.0,
+       "overs_ppm": 2031.9,
+       "crest_db": 16.83,
+       "lufs": -18.8,
+       "lra": 3.2,
+       "true_peak_db": -3.1,
+       "st_std_db": 0.83,
+       "st_jump_db": 3.94,
+       "timbre_var_db": 2.56,
+       "hf_ratio": 0.0054,
+       "stereo_corr": 0.985,
+       "rejected": "",
+       "score": 92.25
+      },
+      {
+       "seed": 1402,
+       "duration_s": 128.0,
+       "content_s": 122.95,
+       "lead_in_s": 0.0,
+       "longest_inner_silence_s": 0.0,
+       "inner_gaps_s": 0.0,
+       "clip_ppm": 0.0,
+       "overs_ppm": 323.9,
+       "crest_db": 17.28,
+       "lufs": -19.4,
+       "lra": 4.7,
+       "true_peak_db": -3.1,
+       "st_std_db": 4.11,
+       "st_jump_db": 11.38,
+       "timbre_var_db": 6.6,
+       "hf_ratio": 0.0036,
+       "stereo_corr": 0.935,
+       "rejected": "",
+       "score": 59.4
+      },
+      {
+       "seed": 1403,
+       "duration_s": 128.0,
+       "content_s": 122.3,
+       "lead_in_s": 0.0,
+       "longest_inner_silence_s": 0.0,
+       "inner_gaps_s": 0.0,
+       "clip_ppm": 0.1,
+       "overs_ppm": 969.6,
+       "crest_db": 19.78,
+       "lufs": -18.0,
+       "lra": 3.8,
+       "true_peak_db": 0.0,
+       "st_std_db": 0.82,
+       "st_jump_db": 3.17,
+       "timbre_var_db": 3.02,
+       "hf_ratio": 0.0047,
+       "stereo_corr": 0.88,
+       "rejected": "",
+       "score": 94.25
+      }
+     ]
+    },
+    "postprocess": {
+     "target_lufs": -16.0,
+     "max_true_peak_dbtp": -1.0,
+     "fade_in_s": 0.3,
+     "fade_out_s": 2.0,
+     "codec": "OGG Vorbis q5, 48 kHz stéréo",
+     "trim_start_s": 0.0,
+     "trim_end_s": 122.603,
+     "gain_db": 2.2,
+     "limit_dbfs": -2.2,
+     "lufs": -16.0,
+     "true_peak_db": -1.3,
+     "lra": 3.9
+    }
+   },
+   "duration_s": 122.6,
+   "sha256": "55a67f77fe6c95c898b20d0460f9f20cf37ad626568d79380de7cd66e0a1e1e9",
+   "license": "MIT (ACE-Step 1.5, Copyright (c) 2026 ACEStep) ; poids reconditionnés par Comfy-Org (Apache-2.0) ; morceau généré localement pour le projet, utilisation commerciale autorisée"
+  },
+  {
+   "id": "jingle_win",
+   "path": "assets/audio/music/jingle_win.ogg",
+   "type": "music",
+   "role": "jingle de victoire (fin de chapitre)",
+   "source": {
+    "tool": "ComfyUI (local) + ACE-Step 1.5 turbo",
+    "model": "ace_step_1.5_turbo_aio.safetensors",
+    "workflow": "comfy/workflows/ace_step15_music.json",
+    "tags": "Short instrumental victory fanfare jingle. Triumphant retro synth brass, bright arpeggio flourish, punchy drum fill and a final sustained major chord. Joyful, celebratory, mission accomplished. No vocals.",
+    "lyrics": "[Intro - drum fill]\n\n[Fanfare - synth brass melody]\n\n[Flourish - bright arpeggio]\n\n[Outro - sustained final chord]",
+    "language": "unknown",
+    "seed": 1504,
+    "bpm": 120,
+    "keyscale": "C major",
+    "timesignature": "4",
+    "duration_requested_s": 10,
+    "sampler": {
+     "steps": 8,
+     "cfg": 1.0,
+     "sampler": "euler",
+     "scheduler": "simple",
+     "shift": 3.0
+    },
+    "lm": {
+     "generate_audio_codes": true,
+     "cfg_scale": 2.0,
+     "temperature": 0.85,
+     "top_p": 0.9,
+     "top_k": 0,
+     "min_p": 0.0
+    },
+    "selection": {
+     "criterion": "score = 100 - pénalités (voir docstring de tools/gen_audio.py)",
+     "candidates": [
+      {
+       "seed": 1504,
+       "duration_s": 10.0,
+       "content_s": 7.7,
+       "lead_in_s": 0.0,
+       "longest_inner_silence_s": 0.0,
+       "inner_gaps_s": 0.0,
+       "clip_ppm": 0.0,
+       "overs_ppm": 20.8,
+       "crest_db": 16.19,
+       "lufs": -18.3,
+       "lra": 2.1,
+       "true_peak_db": -5.3,
+       "st_std_db": 0.94,
+       "st_jump_db": 1.82,
+       "timbre_var_db": 6.15,
+       "hf_ratio": 0.0257,
+       "stereo_corr": 0.652,
+       "end_drop_db": 21.38,
+       "rejected": "",
+       "score": 99.79
+      },
+      {
+       "seed": 1505,
+       "duration_s": 10.0,
+       "content_s": 6.85,
+       "lead_in_s": 0.0,
+       "longest_inner_silence_s": 0.0,
+       "inner_gaps_s": 0.0,
+       "clip_ppm": 0.0,
+       "overs_ppm": 857.3,
+       "crest_db": 14.78,
+       "lufs": -17.0,
+       "lra": 2.1,
+       "true_peak_db": -4.2,
+       "st_std_db": 2.26,
+       "st_jump_db": 4.78,
+       "timbre_var_db": 6.88,
+       "hf_ratio": 0.0725,
+       "stereo_corr": 0.614,
+       "end_drop_db": 10.72,
+       "rejected": "",
+       "score": 95.96
+      },
+      {
+       "seed": 1506,
+       "duration_s": 10.0,
+       "content_s": 6.6,
+       "lead_in_s": 0.0,
+       "longest_inner_silence_s": 0.0,
+       "inner_gaps_s": 0.0,
+       "clip_ppm": 0.0,
+       "overs_ppm": 453.1,
+       "crest_db": 14.37,
+       "lufs": -17.4,
+       "lra": 0.9,
+       "true_peak_db": -3.7,
+       "st_std_db": 0.12,
+       "st_jump_db": 0.28,
+       "timbre_var_db": 2.99,
+       "hf_ratio": 0.0472,
+       "stereo_corr": 0.779,
+       "end_drop_db": 13.82,
+       "rejected": "",
+       "score": 97.0
+      }
+     ]
+    },
+    "postprocess": {
+     "target_lufs": -16.0,
+     "max_true_peak_dbtp": -1.0,
+     "fade_in_s": 0.02,
+     "fade_out_s": 1.2,
+     "codec": "OGG Vorbis q5, 48 kHz stéréo",
+     "trim_start_s": 0.0,
+     "trim_end_s": 7.997,
+     "gain_db": 2.3,
+     "limit_dbfs": -1.5,
+     "lufs": -16.0,
+     "true_peak_db": -2.9,
+     "lra": 2.7
+    }
+   },
+   "duration_s": 8.0,
+   "sha256": "1da8b126ba198f1c7792818235da21d66ed61e7454b2a28b5b836d41e8058bcd",
+   "license": "MIT (ACE-Step 1.5, Copyright (c) 2026 ACEStep) ; poids reconditionnés par Comfy-Org (Apache-2.0) ; morceau généré localement pour le projet, utilisation commerciale autorisée"
+  },
+  {
+   "id": "ui_click",
+   "path": "assets/audio/sfx/ui_click.wav",
+   "type": "sfx",
+   "role": "clic de bouton",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Clic doux : sinus aigu qui retombe + corps triangle + transitoire de bruit.",
+    "params": {
+     "f": 1750.0,
+     "f_end": 1150.0
+    },
+    "level": {
+     "target": -21.0,
+     "measured": -21.0
+    }
+   },
+   "duration_s": 0.05,
+   "peak_dbfs": -7.83,
+   "sha256": "2887f44eb462a1735eb7b75b122d1a7b362e80284b74af87109846d7f618a53f",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "ui_hover",
+   "path": "assets/audio/sfx/ui_hover.wav",
+   "type": "sfx",
+   "role": "survol d'un bouton",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Effleurement : bip triangle très court, légèrement montant.",
+    "params": {
+     "note": "C7",
+     "to": "D7"
+    },
+    "level": {
+     "target": -26.0,
+     "measured": -26.0
+    }
+   },
+   "duration_s": 0.035,
+   "peak_dbfs": -16.05,
+   "sha256": "9ced7d8cb9bb25d5ce03a065d08f8fbb2ec177610eee8c93a1737d1d3200ed59",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "ui_open",
+   "path": "assets/audio/sfx/ui_open.wav",
+   "type": "sfx",
+   "role": "ouverture d'une fenêtre",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Ouverture : deux notes montantes (impulsion 25 %) + souffle filtré qui monte.",
+    "params": {
+     "notes": [
+      "G5",
+      "D6"
+     ],
+     "step": 0.05,
+     "air": 0.12
+    },
+    "level": {
+     "target": -19.0,
+     "measured": -19.0
+    }
+   },
+   "duration_s": 0.36,
+   "peak_dbfs": -12.23,
+   "sha256": "9de39c45dcfdaba02ddb43eafde9aaaae7e0d2d419b106bfa4db16a827e530e3",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "ui_close",
+   "path": "assets/audio/sfx/ui_close.wav",
+   "type": "sfx",
+   "role": "fermeture d'une fenêtre",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Fermeture : les mêmes notes en descendant + souffle qui descend.",
+    "params": {
+     "notes": [
+      "D6",
+      "G5"
+     ],
+     "step": 0.05,
+     "air": 0.1
+    },
+    "level": {
+     "target": -20.0,
+     "measured": -20.0
+    }
+   },
+   "duration_s": 0.32,
+   "peak_dbfs": -12.28,
+   "sha256": "e0acc0a39dbf5e56440c6446734b7c8d0825c48ed858d7d592f6931fa9face06",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "ui_error",
+   "path": "assets/audio/sfx/ui_error.wav",
+   "type": "sfx",
+   "role": "action impossible",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Erreur : deux notes graves descendantes, carré adouci (« bop-bop »).",
+    "params": {
+     "notes": [
+      "Eb4",
+      "Bb3"
+     ]
+    },
+    "level": {
+     "target": -18.0,
+     "measured": -18.0
+    }
+   },
+   "duration_s": 0.26,
+   "peak_dbfs": -14.47,
+   "sha256": "bee20e1cb7d3421054509c951487152a000910d626cb756095fdef9adf67bf3e",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "ui_toggle",
+   "path": "assets/audio/sfx/ui_toggle.wav",
+   "type": "sfx",
+   "role": "case à cocher / interrupteur",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Interrupteur : clic + deux mini-notes (tic-tac montant).",
+    "params": {
+     "notes": [
+      "C6",
+      "G6"
+     ]
+    },
+    "level": {
+     "target": -20.0,
+     "measured": -20.0
+    }
+   },
+   "duration_s": 0.073,
+   "peak_dbfs": -11.04,
+   "sha256": "2253cc2a046a0a47923384c0a969430c4b36c5e0b2b45a6c2af666564f985171",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "ui_tab",
+   "path": "assets/audio/sfx/ui_tab.wav",
+   "type": "sfx",
+   "role": "changement d'onglet",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Onglet : froissement très bref + bip triangle.",
+    "params": {
+     "note": "A5",
+     "to": "C6"
+    },
+    "level": {
+     "target": -21.0,
+     "measured": -21.0
+    }
+   },
+   "duration_s": 0.055,
+   "peak_dbfs": -9.25,
+   "sha256": "343d2c25b50f52e9b93c70a0d9fc721ff3f12d2a891ab654b5e6318028ae086d",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "speed",
+   "path": "assets/audio/sfx/speed.wav",
+   "type": "sfx",
+   "role": "changement de vitesse du temps",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Vitesse : petit arpège montant (impulsion 12,5 %) + souffle.",
+    "params": {
+     "notes": [
+      "C6",
+      "E6",
+      "G6"
+     ],
+     "step": 0.045,
+     "air": 0.15
+    },
+    "level": {
+     "target": -19.0,
+     "measured": -19.0
+    }
+   },
+   "duration_s": 0.197,
+   "peak_dbfs": -8.25,
+   "sha256": "ddf645f54f31283a7a5f010978080bd4e5f616956da341952916df0d715b749d",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "cash",
+   "path": "assets/audio/sfx/cash.wav",
+   "type": "sfx",
+   "role": "vente conclue",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Vente : « ka » (bruit bref) puis « tching » métallique à deux frappes, scintillement.",
+    "params": {
+     "notes": [
+      "D7",
+      "G7"
+     ]
+    },
+    "level": {
+     "target": -14.0,
+     "measured": -14.0
+    }
+   },
+   "duration_s": 0.997,
+   "peak_dbfs": -9.63,
+   "sha256": "b1ae1e67401cc3f1e846fb7dc6e7ec57afe2886c7558f1f0c8385077ef6b4e35",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "purchase",
+   "path": "assets/audio/sfx/purchase.wav",
+   "type": "sfx",
+   "role": "épave remportée aux enchères",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Épave remportée : deux coups de marteau d'enchères puis « ta-da » (carré adouci + tierce).",
+    "params": {
+     "gavel": 420.0,
+     "notes": [
+      "G5",
+      "C6",
+      "E5"
+     ]
+    },
+    "level": {
+     "target": -14.0,
+     "measured": -14.0
+    }
+   },
+   "duration_s": 1.318,
+   "peak_dbfs": -4.65,
+   "sha256": "7875c0451b620398c0a1a47200842850dd9b484b720fa3df5d86dd0a5dabe561",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "bid",
+   "path": "assets/audio/sfx/bid.wav",
+   "type": "sfx",
+   "role": "mise placée",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Mise : « toc » de bois + petit bip qui monte.",
+    "params": {
+     "wood": 950.0,
+     "note": "E6",
+     "to": "A6"
+    },
+    "level": {
+     "target": -17.0,
+     "measured": -17.0
+    }
+   },
+   "duration_s": 0.2,
+   "peak_dbfs": -8.49,
+   "sha256": "38b1e22fbd78f9ef7cb7b28e80ec36c0c2dd37a5c46013b66497b37a10dce975",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "scan",
+   "path": "assets/audio/sfx/scan.wav",
+   "type": "sfx",
+   "role": "balayage du scanner",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Scanner : balayage sinusoïdal montant pulsé (22 Hz), bruit filtré qui suit, puis deux bips de fin.",
+    "params": {
+     "sweep_s": 0.7,
+     "f_from": 320.0,
+     "f_to": 2400.0,
+     "pulse_hz": 22.0,
+     "beep": "C7"
+    },
+    "level": {
+     "target": -17.0,
+     "measured": -17.0
+    }
+   },
+   "duration_s": 1.329,
+   "peak_dbfs": -11.58,
+   "sha256": "d1f1ed3757d800ea1b4f3b6feb6c60c9e3af674af7abec4df6db377c9aaf64ab",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "repair_start",
+   "path": "assets/audio/sfx/repair_start.wav",
+   "type": "sfx",
+   "role": "début de réparation (clé à cliquet)",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Clé à cliquet : série de clics métalliques réguliers puis petit « tink ».",
+    "params": {
+     "clicks": 7,
+     "step": 0.034,
+     "ping": 3300.0,
+     "tink": 1760.0
+    },
+    "level": {
+     "target": -17.0,
+     "measured": -17.0
+    }
+   },
+   "duration_s": 0.518,
+   "peak_dbfs": -8.21,
+   "sha256": "03821b0bb860b00e751388be80e427abd5b9d3d2e55845c902cf4b70fe700aad",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "repair_done",
+   "path": "assets/audio/sfx/repair_done.wav",
+   "type": "sfx",
+   "role": "réparation terminée",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Réparation finie : appoggiature puis « ding » de cloche claire, sous-octave douce.",
+    "params": {
+     "grace": "B5",
+     "note": "E6"
+    },
+    "level": {
+     "target": -15.0,
+     "measured": -15.0
+    }
+   },
+   "duration_s": 1.162,
+   "peak_dbfs": -10.45,
+   "sha256": "bcaff62cb11da727a85c996dd0511e9a9bac93c0cae8ecfc76516b594e430fb4",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "boost",
+   "path": "assets/audio/sfx/boost.wav",
+   "type": "sfx",
+   "role": "coup de main (coup de marteau)",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Coup de main : coup de marteau (choc grave + tintement métallique) puis étincelle montante.",
+    "params": {
+     "metal": 760.0,
+     "spark": [
+      "C6",
+      "C7"
+     ]
+    },
+    "level": {
+     "target": -15.0,
+     "measured": -15.0
+    }
+   },
+   "duration_s": 0.653,
+   "peak_dbfs": -6.36,
+   "sha256": "3c735c1fc2d0fac88c1e1dd843d63045d440d534c9f8be2c5ae4215fab73e890",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "paint",
+   "path": "assets/audio/sfx/paint.wav",
+   "type": "sfx",
+   "role": "peinture (bombe)",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Bombe de peinture : deux cliquetis de bille puis « pschitt » (bruit aigu filtré, léger frémissement).",
+    "params": {
+     "spray_s": 0.5
+    },
+    "level": {
+     "target": -18.0,
+     "measured": -18.0
+    }
+   },
+   "duration_s": 0.648,
+   "peak_dbfs": -10.02,
+   "sha256": "220c40fc8d4f35994338820e11d7d4bd11151ab356c1b53d04c218ddf977b7e8",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "option",
+   "path": "assets/audio/sfx/option.wav",
+   "type": "sfx",
+   "role": "pose d'une option",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Pose d'option : « clac-clic » mécanique + petite note claire.",
+    "params": {
+     "note": "G6"
+    },
+    "level": {
+     "target": -17.0,
+     "measured": -17.0
+    }
+   },
+   "duration_s": 0.29,
+   "peak_dbfs": -9.86,
+   "sha256": "150079df423b35f50d5d2dcbff2630d7f317969455f8fbed4d7aac5f4cbcbbbe",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "hire",
+   "path": "assets/audio/sfx/hire.wav",
+   "type": "sfx",
+   "role": "embauche (mini-fanfare)",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Embauche : mini-fanfare montante (impulsion 25 %), tierce et basse triangle sur la note finale.",
+    "params": {
+     "lead": [
+      [
+       0.0,
+       "G4",
+       0.1
+      ],
+      [
+       0.11,
+       "C5",
+       0.1
+      ],
+      [
+       0.22,
+       "E5",
+       0.1
+      ],
+      [
+       0.33,
+       "G5",
+       0.55
+      ]
+     ],
+     "harmony": "E5",
+     "bass": "C4"
+    },
+    "level": {
+     "target": -13.0,
+     "measured": -13.0
+    }
+   },
+   "duration_s": 1.4,
+   "peak_dbfs": -5.48,
+   "sha256": "4b58740c00600da5cd61f7f7185f9790202e0623b94419a73aa9e834eaf990f0",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "fire",
+   "path": "assets/audio/sfx/fire.wav",
+   "type": "sfx",
+   "role": "licenciement (wah-wah triste)",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Licenciement : « wah-wah-waaah » triste et comique (dent de scie dans un filtre résonant qui s'ouvre et se referme à chaque note, vibrato puis chute sur la dernière).",
+    "params": {
+     "notes": [
+      [
+       0.0,
+       "G4",
+       0.24
+      ],
+      [
+       0.25,
+       "F#4",
+       0.24
+      ],
+      [
+       0.5,
+       "F4",
+       0.6
+      ]
+     ]
+    },
+    "level": {
+     "target": -14.0,
+     "measured": -14.0
+    }
+   },
+   "duration_s": 1.693,
+   "peak_dbfs": -10.05,
+   "sha256": "5dc9911bac7dc6e2e1ae30e5e126547ddfe4a73bdf850b74233324ecd6662e63",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "research",
+   "path": "assets/audio/sfx/research.wav",
+   "type": "sfx",
+   "role": "recherche terminée (carillon)",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Recherche : carillon de science-fiction (cloches FM en arpège pentatonique) sur nappe douce.",
+    "params": {
+     "notes": [
+      "E6",
+      "G6",
+      "A6",
+      "D7"
+     ],
+     "step": 0.08,
+     "ratio": 1.41,
+     "index": 1.2,
+     "pad": "E5"
+    },
+    "level": {
+     "target": -14.0,
+     "measured": -14.0
+    }
+   },
+   "duration_s": 1.398,
+   "peak_dbfs": -8.53,
+   "sha256": "63c1c2ed1bd526d9c69d3b051ebcc87e2a24dd945b32477c814262881ca39a4b",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "quest_new",
+   "path": "assets/audio/sfx/quest_new.wav",
+   "type": "sfx",
+   "role": "nouvelle quête",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Nouvelle quête : deux notes de cloche montantes (« attention »).",
+    "params": {
+     "notes": [
+      "A5",
+      "E6"
+     ],
+     "step": 0.11
+    },
+    "level": {
+     "target": -15.0,
+     "measured": -15.0
+    }
+   },
+   "duration_s": 1.151,
+   "peak_dbfs": -10.21,
+   "sha256": "8c06340e303514e6123edf77e8d0b0fc44d46524c1a69137c4ccb6441438f6e4",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "quest_done",
+   "path": "assets/audio/sfx/quest_done.wav",
+   "type": "sfx",
+   "role": "quête accomplie (jingle court)",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Quête accomplie : arpège C-E-G puis accord final tenu (carré adouci + triangles), étincelle aiguë.",
+    "params": {
+     "lead": [
+      [
+       0.0,
+       "C5",
+       0.08
+      ],
+      [
+       0.09,
+       "E5",
+       0.08
+      ],
+      [
+       0.18,
+       "G5",
+       0.08
+      ],
+      [
+       0.27,
+       "C6",
+       0.6
+      ]
+     ],
+     "chord": [
+      "E5",
+      "G5"
+     ],
+     "bass": "C4",
+     "sparkle": "C7"
+    },
+    "level": {
+     "target": -12.0,
+     "measured": -12.0
+    }
+   },
+   "duration_s": 1.491,
+   "peak_dbfs": -5.56,
+   "sha256": "17cad8b2c48ff53e419d11cfd4447e30e64168dd75d1c4f111dca329b4833208",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "level_up",
+   "path": "assets/audio/sfx/level_up.wav",
+   "type": "sfx",
+   "role": "montée de niveau (arpège)",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Montée de niveau : arpège rapide sur deux octaves (impulsion 12,5 %), note finale tenue et scintillante.",
+    "params": {
+     "notes": [
+      "C5",
+      "E5",
+      "G5",
+      "C6",
+      "E6",
+      "G6",
+      "C7"
+     ],
+     "step": 0.045
+    },
+    "level": {
+     "target": -12.0,
+     "measured": -12.0
+    }
+   },
+   "duration_s": 1.012,
+   "peak_dbfs": -4.83,
+   "sha256": "8ff30658b6ba31861a2bd1992663c710ecde2a704140ebc5fd866b2999ab620d",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "day_start",
+   "path": "assets/audio/sfx/day_start.wav",
+   "type": "sfx",
+   "role": "début de journée (cloche douce)",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Nouvelle journée : deux cloches douces à longue résonance.",
+    "params": {
+     "notes": [
+      "F5",
+      "C6"
+     ],
+     "step": 0.25
+    },
+    "level": {
+     "target": -16.0,
+     "measured": -16.0
+    }
+   },
+   "duration_s": 2.372,
+   "peak_dbfs": -8.55,
+   "sha256": "673cc4e4818d08cbd9fb8b5d0ec43ad3e34473e87e41474fae18eb3dba37160c",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "debt_paid",
+   "path": "assets/audio/sfx/debt_paid.wav",
+   "type": "sfx",
+   "role": "échéance de dette payée (tiroir-caisse)",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Échéance payée : sonnette de tiroir-caisse, tiroir qui glisse et se cale, pièces qui tintent.",
+    "params": {
+     "bell": "E7",
+     "coins": [
+      0.3,
+      0.34,
+      0.4,
+      0.47
+     ]
+    },
+    "level": {
+     "target": -14.0,
+     "measured": -14.0
+    }
+   },
+   "duration_s": 0.861,
+   "peak_dbfs": -11.48,
+   "sha256": "8e02ac5ca126c636798e9bab925e8208c3807e78585ad4b3b2532a5f32289db0",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "warning",
+   "path": "assets/audio/sfx/warning.wav",
+   "type": "sfx",
+   "role": "alerte douce",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Alerte douce : deux tons alternés deux fois, carré très adouci.",
+    "params": {
+     "notes": [
+      "A5",
+      "E5",
+      "A5",
+      "E5"
+     ],
+     "step": 0.13
+    },
+    "level": {
+     "target": -15.0,
+     "measured": -15.0
+    }
+   },
+   "duration_s": 0.53,
+   "peak_dbfs": -13.29,
+   "sha256": "3fda5a1a60ad8f897f2818e658df8759852b5d21c49a64f61c736f4bc0d33f80",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "notify",
+   "path": "assets/audio/sfx/notify.wav",
+   "type": "sfx",
+   "role": "notification",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Notification : « bloup-bip » (deux notes qui glissent vers le haut).",
+    "params": {
+     "notes": [
+      [
+       "Bb5",
+       "C6"
+      ],
+      [
+       "F6",
+       "G6"
+      ]
+     ]
+    },
+    "level": {
+     "target": -16.0,
+     "measured": -16.0
+    }
+   },
+   "duration_s": 0.597,
+   "peak_dbfs": -12.29,
+   "sha256": "582e99a065576ecf229bc50fb4aa3b3abdad81ea0755adcc5e8a7724169fff11",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "blip_bolt",
+   "path": "assets/audio/sfx/blip_bolt.wav",
+   "type": "sfx",
+   "role": "voix de BOLT (bip robotique)",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Voix de BOLT : impulsion 25 % en deux paliers, modulée en anneau (timbre robotique).",
+    "params": {
+     "dur": 0.042,
+     "notes": [
+      "C5",
+      "E5"
+     ],
+     "ring_hz": 180.0
+    },
+    "level": {
+     "target": -21.0,
+     "measured": -21.0
+    }
+   },
+   "duration_s": 0.042,
+   "peak_dbfs": -11.55,
+   "sha256": "fdd48fed7c7bb0248657e236f313ac96f5394646ae317c214d66e9ec6d51d2b9",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "blip_odile",
+   "path": "assets/audio/sfx/blip_odile.wav",
+   "type": "sfx",
+   "role": "voix d'Odile (bip chaleureux)",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Voix d'Odile : triangle chaud qui retombe légèrement, sous-octave sinus.",
+    "params": {
+     "dur": 0.048,
+     "note": "G4",
+     "to": "F#4"
+    },
+    "level": {
+     "target": -21.0,
+     "measured": -21.0
+    }
+   },
+   "duration_s": 0.048,
+   "peak_dbfs": -14.53,
+   "sha256": "69ec476dc88ee2efc05d1a7483eee2cfd1773d7c99b1c527373bee26dbfa4c77",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "blip_lustre",
+   "path": "assets/audio/sfx/blip_lustre.wav",
+   "type": "sfx",
+   "role": "voix de Lustre (bip mielleux)",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Voix de Lustre : sinus mielleux qui monte avec un vibrato rapide, deux voix désaccordées.",
+    "params": {
+     "dur": 0.05,
+     "note": "D5",
+     "to": "E5"
+    },
+    "level": {
+     "target": -21.0,
+     "measured": -21.0
+    }
+   },
+   "duration_s": 0.05,
+   "peak_dbfs": -14.64,
+   "sha256": "bb6b00114396c3855eb8e5ef0952c2f7af51d6cdbefd7fc2765c7f26ce2ca92d",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "blip_inspector",
+   "path": "assets/audio/sfx/blip_inspector.wav",
+   "type": "sfx",
+   "role": "voix de l'inspectrice (bip sec)",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Voix de l'inspectrice : carré sec, hauteur fixe, attaque et relâche brèves.",
+    "params": {
+     "dur": 0.03,
+     "note": "A5"
+    },
+    "level": {
+     "target": -22.0,
+     "measured": -22.0
+    }
+   },
+   "duration_s": 0.03,
+   "peak_dbfs": -20.28,
+   "sha256": "673c8c796a9e0f682bf21a84ccd82bc5568301c6cfb5db37b869775d7b66e25f",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  },
+  {
+   "id": "blip_npc",
+   "path": "assets/audio/sfx/blip_npc.wav",
+   "type": "sfx",
+   "role": "voix neutre des PNJ",
+   "source": {
+    "tool": "synthèse procédurale tools/sfx_synth.py (numpy)",
+    "recipe": "Voix neutre : impulsion 50 % adoucie, courte décroissance.",
+    "params": {
+     "dur": 0.038,
+     "note": "B4"
+    },
+    "level": {
+     "target": -21.0,
+     "measured": -21.0
+    }
+   },
+   "duration_s": 0.038,
+   "peak_dbfs": -13.47,
+   "sha256": "bc38fb5b8f1e4b90060f5ca65f02bb98ae512b4be534c4a5c5eb72a1167249c0",
+   "license": "œuvre originale du projet (synthèse procédurale, aucune ressource tierce)"
+  }
+ ]
+}

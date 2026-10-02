@@ -3022,6 +3022,426 @@
    "sha256": "1cc28e081a71285a0ef374f1426721e0a0a837db873dbdcb959ede004b1e1ff1"
   },
   {
+   "id": "worker_staff_01",
+   "category": "worker",
+   "file": "assets/workers/staff_01.png",
+   "source": "comfyui",
+   "model": "z_image_turbo_bf16.safetensors (Z-Image-Turbo, Apache-2.0) + qwen_3_4b + ae ; détourage BiRefNet (MIT)",
+   "workflow": "comfy/workflows/zimage_turbo_txt2img.json",
+   "prompt": "pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark outline, full body chibi game character of a young woman mechanic with brown hair, light blue goggles on her forehead, light blue shirt, blue overalls and brown boots, standing, three-quarter view facing right, whole body visible from head to feet, arms relaxed, isolated on a plain white background, centered, entire object visible, no text",
+   "negative": "blurry, photo, realistic, 3d render, text, letters, watermark, signature, logo, frame, border, multiple objects, cropped",
+   "seed": 202,
+   "candidates": [
+    101,
+    202,
+    303
+   ],
+   "gen_size": [
+    896,
+    1152
+   ],
+   "postprocess": {
+    "tool": "tools/pixelize.py",
+    "mode": "sprite",
+    "max": [
+     20,
+     26
+    ],
+    "canvas": [
+     20,
+     26
+    ],
+    "align": "bottom",
+    "outline": true,
+    "fill_holes": true,
+    "reduce": "box"
+   },
+   "size": [
+    20,
+    26
+   ],
+   "colors": 16,
+   "sha256": "60ec189461b2bd58564bf90902870e37ebca9bcbafed65e9faa9aeedb586fc89"
+  },
+  {
+   "id": "worker_staff_02",
+   "category": "worker",
+   "file": "assets/workers/staff_02.png",
+   "source": "comfyui",
+   "model": "z_image_turbo_bf16.safetensors (Z-Image-Turbo, Apache-2.0) + qwen_3_4b + ae ; détourage BiRefNet (MIT)",
+   "workflow": "comfy/workflows/zimage_turbo_txt2img.json",
+   "prompt": "pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark outline, full body chibi game character of a green-skinned alien worker with a blue cap, green shirt, blue overalls and dark boots, standing, three-quarter view facing right, whole body visible from head to feet, arms relaxed, isolated on a plain white background, centered, entire object visible, no text",
+   "negative": "blurry, photo, realistic, 3d render, text, letters, watermark, signature, logo, frame, border, multiple objects, cropped",
+   "seed": 101,
+   "candidates": [
+    101,
+    202,
+    303
+   ],
+   "gen_size": [
+    896,
+    1152
+   ],
+   "postprocess": {
+    "tool": "tools/pixelize.py",
+    "mode": "sprite",
+    "max": [
+     20,
+     26
+    ],
+    "canvas": [
+     20,
+     26
+    ],
+    "align": "bottom",
+    "outline": true,
+    "fill_holes": true,
+    "reduce": "box"
+   },
+   "size": [
+    20,
+    26
+   ],
+   "colors": 10,
+   "sha256": "1816d5c95e3bfd7b749ce9dcc214a525544d9992b05794a31310cf0acd987d4e"
+  },
+  {
+   "id": "worker_staff_03",
+   "category": "worker",
+   "file": "assets/workers/staff_03.png",
+   "source": "comfyui",
+   "model": "z_image_turbo_bf16.safetensors (Z-Image-Turbo, Apache-2.0) + qwen_3_4b + ae ; détourage BiRefNet (MIT)",
+   "workflow": "comfy/workflows/zimage_turbo_txt2img.json",
+   "prompt": "pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark outline, full body chibi game character of a elderly salesman with grey hair, a big grey mustache, a dark grey suit, white shirt, yellow tie and black shoes, standing, three-quarter view facing right, whole body visible from head to feet, arms relaxed, isolated on a plain white background, centered, entire object visible, no text",
+   "negative": "blurry, photo, realistic, 3d render, text, letters, watermark, signature, logo, frame, border, multiple objects, cropped",
+   "seed": 202,
+   "candidates": [
+    101,
+    202,
+    303
+   ],
+   "gen_size": [
+    896,
+    1152
+   ],
+   "postprocess": {
+    "tool": "tools/pixelize.py",
+    "mode": "sprite",
+    "max": [
+     20,
+     26
+    ],
+    "canvas": [
+     20,
+     26
+    ],
+    "align": "bottom",
+    "outline": true,
+    "fill_holes": true,
+    "reduce": "box"
+   },
+   "size": [
+    20,
+    26
+   ],
+   "colors": 11,
+   "sha256": "39523ed54122f080c3cc3a8ea3d76c097840e5e1b9a0851203a22d5fa436f779"
+  },
+  {
+   "id": "worker_staff_04",
+   "category": "worker",
+   "file": "assets/workers/staff_04.png",
+   "source": "comfyui",
+   "model": "z_image_turbo_bf16.safetensors (Z-Image-Turbo, Apache-2.0) + qwen_3_4b + ae ; détourage BiRefNet (MIT)",
+   "workflow": "comfy/workflows/zimage_turbo_txt2img.json",
+   "prompt": "pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark outline, full body chibi game character of a blue-skinned alien scientist with four arms, a white lab coat and a small white cap, standing, three-quarter view facing right, whole body visible from head to feet, arms relaxed, isolated on a plain white background, centered, entire object visible, no text",
+   "negative": "blurry, photo, realistic, 3d render, text, letters, watermark, signature, logo, frame, border, multiple objects, cropped",
+   "seed": 202,
+   "candidates": [
+    101,
+    202,
+    303
+   ],
+   "gen_size": [
+    896,
+    1152
+   ],
+   "postprocess": {
+    "tool": "tools/pixelize.py",
+    "mode": "sprite",
+    "max": [
+     20,
+     26
+    ],
+    "canvas": [
+     20,
+     26
+    ],
+    "align": "bottom",
+    "outline": true,
+    "fill_holes": true,
+    "reduce": "box"
+   },
+   "size": [
+    20,
+    26
+   ],
+   "colors": 8,
+   "sha256": "72684f9d2e12fdde6a931b8c8f37be5e1003caec756c87232011e402082b2334"
+  },
+  {
+   "id": "worker_staff_05",
+   "category": "worker",
+   "file": "assets/workers/staff_05.png",
+   "source": "comfyui",
+   "model": "z_image_turbo_bf16.safetensors (Z-Image-Turbo, Apache-2.0) + qwen_3_4b + ae ; détourage BiRefNet (MIT)",
+   "workflow": "comfy/workflows/zimage_turbo_txt2img.json",
+   "prompt": "pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark outline, full body chibi game character of a small round light blue robot with one big black camera eye, a tiny antenna and short stubby legs, standing, three-quarter view facing right, whole body visible from head to feet, arms relaxed, isolated on a plain white background, centered, entire object visible, no text",
+   "negative": "blurry, photo, realistic, 3d render, text, letters, watermark, signature, logo, frame, border, multiple objects, cropped",
+   "seed": 202,
+   "candidates": [
+    101,
+    202,
+    303
+   ],
+   "gen_size": [
+    896,
+    1152
+   ],
+   "postprocess": {
+    "tool": "tools/pixelize.py",
+    "mode": "sprite",
+    "max": [
+     20,
+     26
+    ],
+    "canvas": [
+     20,
+     26
+    ],
+    "align": "bottom",
+    "outline": true,
+    "fill_holes": true,
+    "reduce": "box"
+   },
+   "size": [
+    20,
+    26
+   ],
+   "colors": 12,
+   "sha256": "58be6b4fbd727bd93e45db934064146449b5dc9980425eec874c2473461573ce"
+  },
+  {
+   "id": "worker_staff_06",
+   "category": "worker",
+   "file": "assets/workers/staff_06.png",
+   "source": "comfyui",
+   "model": "z_image_turbo_bf16.safetensors (Z-Image-Turbo, Apache-2.0) + qwen_3_4b + ae ; détourage BiRefNet (MIT)",
+   "workflow": "comfy/workflows/zimage_turbo_txt2img.json",
+   "prompt": "pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark outline, full body chibi game character of a orange furry fox-like alien with big ears, a white headset with a microphone and dark grey overalls, standing, three-quarter view facing right, whole body visible from head to feet, arms relaxed, isolated on a plain white background, centered, entire object visible, no text",
+   "negative": "blurry, photo, realistic, 3d render, text, letters, watermark, signature, logo, frame, border, multiple objects, cropped",
+   "seed": 202,
+   "candidates": [
+    101,
+    202,
+    303
+   ],
+   "gen_size": [
+    896,
+    1152
+   ],
+   "postprocess": {
+    "tool": "tools/pixelize.py",
+    "mode": "sprite",
+    "max": [
+     20,
+     26
+    ],
+    "canvas": [
+     20,
+     26
+    ],
+    "align": "bottom",
+    "outline": true,
+    "fill_holes": true,
+    "reduce": "box"
+   },
+   "size": [
+    20,
+    26
+   ],
+   "colors": 16,
+   "sha256": "76e05839c998c48db8bf4912448cdfcfd77ffcc9615ea98852c21161314cc599"
+  },
+  {
+   "id": "worker_staff_07",
+   "category": "worker",
+   "file": "assets/workers/staff_07.png",
+   "source": "comfyui",
+   "model": "z_image_turbo_bf16.safetensors (Z-Image-Turbo, Apache-2.0) + qwen_3_4b + ae ; détourage BiRefNet (MIT)",
+   "workflow": "comfy/workflows/zimage_turbo_txt2img.json",
+   "prompt": "pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark outline, full body chibi game character of a pale grey alien painter with big black eyes, a black beret with colorful paint dots, a white shirt and a dark apron, standing, three-quarter view facing right, whole body visible from head to feet, arms relaxed, isolated on a plain white background, centered, entire object visible, no text",
+   "negative": "blurry, photo, realistic, 3d render, text, letters, watermark, signature, logo, frame, border, multiple objects, cropped",
+   "seed": 101,
+   "candidates": [
+    101,
+    202,
+    303
+   ],
+   "gen_size": [
+    896,
+    1152
+   ],
+   "postprocess": {
+    "tool": "tools/pixelize.py",
+    "mode": "sprite",
+    "max": [
+     20,
+     26
+    ],
+    "canvas": [
+     20,
+     26
+    ],
+    "align": "bottom",
+    "outline": true,
+    "fill_holes": true,
+    "reduce": "box"
+   },
+   "size": [
+    20,
+    26
+   ],
+   "colors": 11,
+   "sha256": "423d43aac1b5ce0408129bf29e6427d514e23a601e37548a69aeef27e2772ea8"
+  },
+  {
+   "id": "worker_staff_08",
+   "category": "worker",
+   "file": "assets/workers/staff_08.png",
+   "source": "comfyui",
+   "model": "z_image_turbo_bf16.safetensors (Z-Image-Turbo, Apache-2.0) + qwen_3_4b + ae ; détourage BiRefNet (MIT)",
+   "workflow": "comfy/workflows/zimage_turbo_txt2img.json",
+   "prompt": "pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark outline, full body chibi game character of a young mechanic with orange hair and freckles, a green welding cap with a visor and green overalls, standing, three-quarter view facing right, whole body visible from head to feet, arms relaxed, isolated on a plain white background, centered, entire object visible, no text",
+   "negative": "blurry, photo, realistic, 3d render, text, letters, watermark, signature, logo, frame, border, multiple objects, cropped",
+   "seed": 101,
+   "candidates": [
+    101,
+    202,
+    303
+   ],
+   "gen_size": [
+    896,
+    1152
+   ],
+   "postprocess": {
+    "tool": "tools/pixelize.py",
+    "mode": "sprite",
+    "max": [
+     20,
+     26
+    ],
+    "canvas": [
+     20,
+     26
+    ],
+    "align": "bottom",
+    "outline": true,
+    "fill_holes": true,
+    "reduce": "box"
+   },
+   "size": [
+    20,
+    26
+   ],
+   "colors": 19,
+   "sha256": "ec19ee1a9984551ee42d11c1122a06b3a3756f6b86eb7d2782f87740e0ec44c0"
+  },
+  {
+   "id": "worker_staff_09",
+   "category": "worker",
+   "file": "assets/workers/staff_09.png",
+   "source": "comfyui",
+   "model": "z_image_turbo_bf16.safetensors (Z-Image-Turbo, Apache-2.0) + qwen_3_4b + ae ; détourage BiRefNet (MIT)",
+   "workflow": "comfy/workflows/zimage_turbo_txt2img.json",
+   "prompt": "pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark outline, full body chibi game character of a grumpy old mechanic with grey hair, a bushy grey beard, dark welding goggles over his eyes and blue overalls, standing, three-quarter view facing right, whole body visible from head to feet, arms relaxed, isolated on a plain white background, centered, entire object visible, no text",
+   "negative": "blurry, photo, realistic, 3d render, text, letters, watermark, signature, logo, frame, border, multiple objects, cropped",
+   "seed": 202,
+   "candidates": [
+    101,
+    202,
+    303
+   ],
+   "gen_size": [
+    896,
+    1152
+   ],
+   "postprocess": {
+    "tool": "tools/pixelize.py",
+    "mode": "sprite",
+    "max": [
+     20,
+     26
+    ],
+    "canvas": [
+     20,
+     26
+    ],
+    "align": "bottom",
+    "outline": true,
+    "fill_holes": true,
+    "reduce": "box"
+   },
+   "size": [
+    20,
+    26
+   ],
+   "colors": 19,
+   "sha256": "77d6dce2af054e1c9a4740719a1483fc0af9f895bb5dc4af3a5f4198790c0432"
+  },
+  {
+   "id": "worker_staff_10",
+   "category": "worker",
+   "file": "assets/workers/staff_10.png",
+   "source": "comfyui",
+   "model": "z_image_turbo_bf16.safetensors (Z-Image-Turbo, Apache-2.0) + qwen_3_4b + ae ; détourage BiRefNet (MIT)",
+   "workflow": "comfy/workflows/zimage_turbo_txt2img.json",
+   "prompt": "pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark outline, full body chibi game character of a bald pink alien saleswoman with black sunglasses, a big smile, a white shirt and pink overalls, standing, three-quarter view facing right, whole body visible from head to feet, arms relaxed, isolated on a plain white background, centered, entire object visible, no text",
+   "negative": "blurry, photo, realistic, 3d render, text, letters, watermark, signature, logo, frame, border, multiple objects, cropped",
+   "seed": 202,
+   "candidates": [
+    101,
+    202,
+    303
+   ],
+   "gen_size": [
+    896,
+    1152
+   ],
+   "postprocess": {
+    "tool": "tools/pixelize.py",
+    "mode": "sprite",
+    "max": [
+     20,
+     26
+    ],
+    "canvas": [
+     20,
+     26
+    ],
+    "align": "bottom",
+    "outline": true,
+    "fill_holes": true,
+    "reduce": "box"
+   },
+   "size": [
+    20,
+    26
+   ],
+   "colors": 11,
+   "sha256": "4355712314a5bd457e0f2ca49362d4eb4b4e8e142074f2cb9f28deca84bf3c02"
+  },
+  {
    "id": "ui_credits",
    "category": "icon",
    "file": "assets/icons/ui_credits.png",

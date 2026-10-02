@@ -1,4 +1,61 @@
 {
+ "AudioAdjustVolume": {
+  "input": {
+   "required": {
+    "audio": [
+     "AUDIO",
+     {}
+    ],
+    "volume": [
+     "INT",
+     {
+      "tooltip": "Volume adjustment in decibels (dB). 0 = no change, +6 = double, -6 = half, etc",
+      "default": 1,
+      "min": -100,
+      "max": 100
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "audio",
+    "volume"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "AUDIO"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "AUDIO"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "AudioAdjustVolume",
+  "display_name": "Adjust Audio Volume",
+  "description": "Adjust the volume of the audio by a specified amount in decibels (dB).",
+  "python_module": "comfy_extras.nodes_audio",
+  "category": "audio",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": [
+   "audio gain",
+   "loudness",
+   "audio level"
+  ],
+  "essentials_category": null,
+  "has_intermediate_output": false
+ },
  "CLIPLoader": {
   "input": {
    "required": {
@@ -233,6 +290,64 @@
    "null conditioning",
    "clear conditioning"
   ]
+ },
+ "EmptyAceStep1.5LatentAudio": {
+  "input": {
+   "required": {
+    "seconds": [
+     "FLOAT",
+     {
+      "default": 120.0,
+      "min": 1.0,
+      "max": 1000.0,
+      "step": 0.01
+     }
+    ],
+    "batch_size": [
+     "INT",
+     {
+      "tooltip": "The number of latent images in the batch.",
+      "default": 1,
+      "min": 1,
+      "max": 4096
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "seconds",
+    "batch_size"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "LATENT"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "LATENT"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "EmptyAceStep1.5LatentAudio",
+  "display_name": "Empty Ace Step 1.5 Latent Audio",
+  "description": "",
+  "python_module": "comfy_extras.nodes_ace",
+  "category": "model/latent/ace",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
  },
  "EmptyLatentImage": {
   "input": {
@@ -843,6 +958,71 @@
   "essentials_category": null,
   "has_intermediate_output": false
  },
+ "SaveAudio": {
+  "input": {
+   "required": {
+    "audio": [
+     "AUDIO",
+     {}
+    ],
+    "filename_prefix": [
+     "STRING",
+     {
+      "default": "audio/ComfyUI",
+      "multiline": false
+     }
+    ]
+   },
+   "hidden": {
+    "prompt": [
+     "PROMPT"
+    ],
+    "extra_pnginfo": [
+     "EXTRA_PNGINFO"
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "audio",
+    "filename_prefix"
+   ],
+   "hidden": [
+    "prompt",
+    "extra_pnginfo"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "AUDIO"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "audio"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "SaveAudio",
+  "display_name": "Save Audio (FLAC) (DEPRECATED)",
+  "description": "",
+  "python_module": "comfy_extras.nodes_audio",
+  "category": "audio",
+  "output_node": true,
+  "deprecated": true,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": [
+   "export flac"
+  ],
+  "essentials_category": "Audio",
+  "has_intermediate_output": false
+ },
  "SaveImage": {
   "input": {
    "required": {
@@ -901,6 +1081,274 @@
    "download"
   ],
   "essentials_category": "Basics"
+ },
+ "TextEncodeAceStepAudio1.5": {
+  "input": {
+   "required": {
+    "clip": [
+     "CLIP",
+     {}
+    ],
+    "tags": [
+     "STRING",
+     {
+      "multiline": true,
+      "dynamicPrompts": true
+     }
+    ],
+    "lyrics": [
+     "STRING",
+     {
+      "multiline": true,
+      "dynamicPrompts": true
+     }
+    ],
+    "seed": [
+     "INT",
+     {
+      "default": 0,
+      "min": 0,
+      "max": 18446744073709551615,
+      "control_after_generate": true
+     }
+    ],
+    "bpm": [
+     "INT",
+     {
+      "default": 120,
+      "min": 10,
+      "max": 300
+     }
+    ],
+    "duration": [
+     "FLOAT",
+     {
+      "default": 120.0,
+      "min": 0.0,
+      "max": 2000.0,
+      "step": 0.1
+     }
+    ],
+    "timesignature": [
+     "COMBO",
+     {
+      "multiselect": false,
+      "options": [
+       "2",
+       "3",
+       "4",
+       "6"
+      ]
+     }
+    ],
+    "language": [
+     "COMBO",
+     {
+      "default": "en",
+      "multiselect": false,
+      "options": [
+       "ar",
+       "az",
+       "bg",
+       "bn",
+       "ca",
+       "cs",
+       "da",
+       "de",
+       "el",
+       "en",
+       "es",
+       "fa",
+       "fi",
+       "fr",
+       "he",
+       "hi",
+       "hr",
+       "ht",
+       "hu",
+       "id",
+       "is",
+       "it",
+       "ja",
+       "ko",
+       "la",
+       "lt",
+       "ms",
+       "ne",
+       "nl",
+       "no",
+       "pa",
+       "pl",
+       "pt",
+       "ro",
+       "ru",
+       "sa",
+       "sk",
+       "sr",
+       "sv",
+       "sw",
+       "ta",
+       "te",
+       "th",
+       "tl",
+       "tr",
+       "uk",
+       "ur",
+       "vi",
+       "yue",
+       "zh",
+       "unknown"
+      ]
+     }
+    ],
+    "keyscale": [
+     "COMBO",
+     {
+      "multiselect": false,
+      "options": [
+       "C major",
+       "C# major",
+       "Db major",
+       "D major",
+       "D# major",
+       "Eb major",
+       "E major",
+       "F major",
+       "F# major",
+       "Gb major",
+       "G major",
+       "G# major",
+       "Ab major",
+       "A major",
+       "A# major",
+       "Bb major",
+       "B major",
+       "C minor",
+       "C# minor",
+       "Db minor",
+       "D minor",
+       "D# minor",
+       "Eb minor",
+       "E minor",
+       "F minor",
+       "F# minor",
+       "Gb minor",
+       "G minor",
+       "G# minor",
+       "Ab minor",
+       "A minor",
+       "A# minor",
+       "Bb minor",
+       "B minor"
+      ]
+     }
+    ],
+    "generate_audio_codes": [
+     "BOOLEAN",
+     {
+      "tooltip": "Enable the LLM that generates audio codes. This can be slow but will increase the quality of the generated audio. Turn this off if you are giving the model an audio reference.",
+      "advanced": true,
+      "default": true
+     }
+    ],
+    "cfg_scale": [
+     "FLOAT",
+     {
+      "advanced": true,
+      "default": 2.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 0.1
+     }
+    ],
+    "temperature": [
+     "FLOAT",
+     {
+      "advanced": true,
+      "default": 0.85,
+      "min": 0.0,
+      "max": 2.0,
+      "step": 0.01
+     }
+    ],
+    "top_p": [
+     "FLOAT",
+     {
+      "advanced": true,
+      "default": 0.9,
+      "min": 0.0,
+      "max": 2000.0,
+      "step": 0.01
+     }
+    ],
+    "top_k": [
+     "INT",
+     {
+      "advanced": true,
+      "default": 0,
+      "min": 0,
+      "max": 100
+     }
+    ],
+    "min_p": [
+     "FLOAT",
+     {
+      "advanced": true,
+      "default": 0.0,
+      "min": 0.0,
+      "max": 1.0,
+      "step": 0.001
+     }
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "clip",
+    "tags",
+    "lyrics",
+    "seed",
+    "bpm",
+    "duration",
+    "timesignature",
+    "language",
+    "keyscale",
+    "generate_audio_codes",
+    "cfg_scale",
+    "temperature",
+    "top_p",
+    "top_k",
+    "min_p"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "CONDITIONING"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "CONDITIONING"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "TextEncodeAceStepAudio1.5",
+  "display_name": null,
+  "description": "",
+  "python_module": "comfy_extras.nodes_ace",
+  "category": "model/conditioning/ace",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": null,
+  "essentials_category": null,
+  "has_intermediate_output": false
  },
  "UNETLoader": {
   "input": {
@@ -1000,6 +1448,56 @@
    "latent to image",
    "render latent"
   ]
+ },
+ "VAEDecodeAudio": {
+  "input": {
+   "required": {
+    "samples": [
+     "LATENT",
+     {}
+    ],
+    "vae": [
+     "VAE",
+     {}
+    ]
+   }
+  },
+  "input_order": {
+   "required": [
+    "samples",
+    "vae"
+   ]
+  },
+  "is_input_list": false,
+  "output": [
+   "AUDIO"
+  ],
+  "output_is_list": [
+   false
+  ],
+  "output_name": [
+   "AUDIO"
+  ],
+  "output_tooltips": [
+   null
+  ],
+  "output_matchtypes": null,
+  "name": "VAEDecodeAudio",
+  "display_name": "VAE Decode Audio",
+  "description": "",
+  "python_module": "comfy_extras.nodes_audio",
+  "category": "model/latent",
+  "output_node": false,
+  "deprecated": false,
+  "experimental": false,
+  "dev_only": false,
+  "api_node": false,
+  "price_badge": null,
+  "search_aliases": [
+   "latent to audio"
+  ],
+  "essentials_category": null,
+  "has_intermediate_output": false
  },
  "VAELoader": {
   "input": {

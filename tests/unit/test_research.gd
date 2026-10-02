@@ -104,3 +104,13 @@ func test_node_states_for_graph() -> void:
 	eq(ResearchSystem.node_state(m, "at_1"), "ready", "racine abordable")
 	eq(ResearchSystem.node_state(m, "at_2"), "locked", "prérequis manquant")
 	eq(ResearchSystem.node_state(m, "li_1"), "available", "RP insuffisants")
+
+
+func test_evening_shift_extends_staff_hours() -> void:
+	var m: GameModel = new_model()
+	var end0: int = db.cfgi("time", "shift_end", 18)
+	check(not m.is_shift_hour(end0), "service terminé à %d h" % end0)
+	ResearchSystem.grant(m, "at_7")
+	eq(m.shift_end(), end0 + 2, "Équipe du soir : +2 h")
+	check(m.is_shift_hour(end0) and m.is_shift_hour(end0 + 1), "les employés travaillent jusqu'à %d h" % (end0 + 2))
+	check(not m.is_shift_hour(end0 + 2), "puis rentrent chez eux")

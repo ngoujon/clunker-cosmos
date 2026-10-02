@@ -1,4 +1,4 @@
-# Wreck & Resell *(titre provisoire)*
+# Clunker Cosmos
 
 Jeu **idle / gestion 2D en pixel art** pour PC (Steam) : vous tenez un garage orbital de vaisseaux d'occasion,
 vu en coupe. Achetez des épaves aux enchères, réparez-les (ou maquillez leurs défauts…), personnalisez-les,

@@ -1,6 +1,13 @@
 class_name EventText
 extends RefCounted
-## Phrases lisibles (FR/EN) pour les événements du modèle : notifications, rapports, hors-ligne.
+## Phrases lisibles (FR/EN) pour les événements du modèle : notifications et rapports.
+
+## Événements retenus dans les « faits marquants » du rapport du jour.
+const NOTABLE: PackedStringArray = [
+	"ship_sold", "wreck_bought", "sav_claim", "inspection", "employee_quit", "employee_level",
+	"quest_completed", "quest_available", "debt_paid", "debt_late", "item_found", "salaries_unpaid",
+	"lot_defaulted", "chapter_started",
+]
 
 
 static func _ship_name(id: int) -> String:

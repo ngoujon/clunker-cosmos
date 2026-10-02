@@ -112,10 +112,6 @@
     "rp_per_sale": 2.0,
     "rp_per_scan": 0.5
   },
-  "offline": {
-    "cap_hours": 24,
-    "efficiency": 1.0
-  },
   "stats": {
     "repair_speed": 1.0,
     "repair_cost": 1.0,
@@ -152,7 +148,6 @@
     "fatigue_rate": 1.0,
     "xp_gain": 1.0,
     "research_speed": 1.0,
-    "offline_cap_hours": 0.0,
-    "offline_efficiency": 0.0
+    "shift_extra_hours": 0.0
   }
 }

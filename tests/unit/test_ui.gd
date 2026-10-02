@@ -134,3 +134,26 @@ func test_paint_ramps_valid() -> void:
 	for pid: String in db.paints:
 		var ramp: Array[Color] = ShipView.paint_ramp(db, pid)
 		eq(ramp.size(), 3, "rampe %s" % pid)
+
+
+func test_cursor_patterns_valid() -> void:
+	var cols: Dictionary = CursorKit.colors()
+	for id: String in ["arrow", "hand", "help"]:
+		var pat: PackedStringArray = CursorKit.pattern(id)
+		var w: int = pat[0].length()
+		var bad: Array[String] = []
+		for row: String in pat:
+			if row.length() != w:
+				bad.append("largeur " + row)
+			for i: int in row.length():
+				if row[i] != "." and not cols.has(row[i]):
+					bad.append("caractère " + row[i])
+		eq(bad.size(), 0, "motif %s : %s" % [id, str(bad)])
+		var hs: Vector2i = CursorKit.HOTSPOTS[id]
+		check(hs.x < w and hs.y < pat.size() and pat[hs.y][hs.x] != ".", "point actif de %s sur un pixel visible" % id)
+		var img: Image = CursorKit.image(id, 3)
+		eq(img.get_size(), Vector2i(w * 3, pat.size() * 3), "image ×3 de %s" % id)
+		check(img.get_width() <= 256 and img.get_height() <= 256, "taille de curseur acceptée par Godot")
+	eq(CursorKit.scale_for(Vector2i(1440, 810)), 2, "fenêtre ×3 : curseur ×2")
+	eq(CursorKit.scale_for(Vector2i(1920, 1080)), 3, "plein écran 1080p : curseur ×3")
+	eq(CursorKit.scale_for(Vector2i(960, 540)), 2, "fenêtre ×2 : curseur ×2")

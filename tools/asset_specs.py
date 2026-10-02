@@ -92,6 +92,20 @@ STAFF = {
     "staff_09": "grumpy old alien mechanic with a beard made of cables and a welding mask",
     "staff_10": "charming pink alien saleswoman with sunglasses and a big smile",
 }
+## Personnages en pied de la vue en coupe du garage : un par portrait d'employé (mêmes traits et couleurs que
+## le portrait retenu, pour reconnaître chacun à son poste).
+WORKERS = {
+    "staff_01": "young woman mechanic with brown hair, light blue goggles on her forehead, light blue shirt, blue overalls and brown boots",
+    "staff_02": "green-skinned alien worker with a blue cap, green shirt, blue overalls and dark boots",
+    "staff_03": "elderly salesman with grey hair, a big grey mustache, a dark grey suit, white shirt, yellow tie and black shoes",
+    "staff_04": "blue-skinned alien scientist with four arms, a white lab coat and a small white cap",
+    "staff_05": "small round light blue robot with one big black camera eye, a tiny antenna and short stubby legs",
+    "staff_06": "orange furry fox-like alien with big ears, a white headset with a microphone and dark grey overalls",
+    "staff_07": "pale grey alien painter with big black eyes, a black beret with colorful paint dots, a white shirt and a dark apron",
+    "staff_08": "young mechanic with orange hair and freckles, a green welding cap with a visor and green overalls",
+    "staff_09": "grumpy old mechanic with grey hair, a bushy grey beard, dark welding goggles over his eyes and blue overalls",
+    "staff_10": "bald pink alien saleswoman with black sunglasses, a big smile, a white shirt and pink overalls",
+}
 STORY = {
     "story_bolt": "sarcastic onboard computer AI shown as a boxy robot head with a green CRT screen face and an antenna",
     "story_odile": "adventurous old woman mechanic with white hair in a bun, aviator goggles and a big wrench, blue hologram tint",
@@ -195,6 +209,12 @@ def specs() -> list[dict[str, Any]]:
         out.append({"id": pid, "category": "portrait", "out": f"portraits/{pid}.png", "w": 1024, "h": 1024, "seeds": [101, 202],
                     "prompt": f"{STYLE}, portrait of a {subj}, head and shoulders, front view, game character portrait, {ISO}",
                     "pp": {"mode": "sprite", "max": [48, 48], "canvas": [48, 48], "align": "bottom", "outline": True}})
+    for pid, subj in WORKERS.items():
+        out.append({"id": "worker_" + pid, "category": "worker", "out": f"workers/{pid}.png", "w": 896, "h": 1152, "seeds": [101, 202, 303],
+                    "prompt": f"{STYLE}, full body chibi game character of a {subj}, standing, three-quarter view facing right, "
+                              f"whole body visible from head to feet, arms relaxed, {ISO}",
+                    "pp": {"mode": "sprite", "max": [20, 26], "canvas": [20, 26], "align": "bottom", "outline": True,
+                           "fill_holes": True, "reduce": "box"}})
 
     def icon(iid: str, subject: str) -> None:
         out.append({"id": iid, "category": "icon", "out": f"icons/{iid}.png", "w": 1024, "h": 1024, "seeds": [101],

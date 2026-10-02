@@ -23,6 +23,12 @@ func start(p_main: MainUI, p_args: Dictionary) -> void:
 	if mode != "smoke":
 		# Captures et vidéo : la vraie souris (survols, infobulles) ne doit pas apparaître à l'image.
 		main.get_viewport().gui_disable_input = true
+	if mode != "trailer":
+		Audio.enabled = false
+	if mode in ["screens", "steam"]:
+		# Rendu « canvas_items » : l'image capturée a la taille de la fenêtre (texte net à cette résolution).
+		var k: int = int(args.get("scale", "3"))
+		main.get_window().size = Vector2i(MainUI.W * k, MainUI.H * k)
 	if args.has("lang"):
 		I18n.set_locale(str(args["lang"]), false)
 	match mode:
@@ -106,8 +112,10 @@ func _smoke() -> void:
 	main.open_settings()
 	await frames(1)
 	main.close_all_modals()
-	main.show_report_popup(OfflineSim.run_hours(m, 6), true)
+	main.open_tutorial()
 	await frames(1)
+	if not main.tutorial_open():
+		errors.append("tutoriel non ouvert")
 	main.close_all_modals()
 	main.dialogue.show_dialogue({"quest": "m1_01", "phase": "start", "lines": [{"speaker": "bolt", "key": "dlg.m1_01.start.1"}, {"speaker": "glorbian", "key": "dlg.m1_01.start.0"}]})
 	main.dialogue.advance()
@@ -145,10 +153,10 @@ func capture(name: String) -> void:
 	var scale: int = int(args.get("scale", "3"))
 	var out_dir: String = str(args.get("out", ProjectSettings.globalize_path("res://docs/screens")))
 	DirAccess.make_dir_recursive_absolute(out_dir)
-	if img.get_width() != MainUI.W:
-		img.resize(MainUI.W, MainUI.H, Image.INTERPOLATE_NEAREST)
-	if scale > 1:
-		img.resize(MainUI.W * scale, MainUI.H * scale, Image.INTERPOLATE_NEAREST)
+	var want: Vector2i = Vector2i(MainUI.W * scale, MainUI.H * scale)
+	if img.get_size() != want:
+		push_warning("capture %s : fenêtre de %s au lieu de %s" % [name, img.get_size(), want])
+		img.resize(want.x, want.y, Image.INTERPOLATE_LANCZOS)
 	var path: String = out_dir.path_join(name + ".png")
 	img.save_png(path)
 	print("capture : ", path)
@@ -186,6 +194,25 @@ func _screens() -> void:
 		main.open_settings()
 		await frames(2)
 		await capture("10_settings")
+		main.close_all_modals()
+	if only.contains("tutorial"):
+		# Uniquement sur demande (--only=tutorial) : menu Tutoriel, page « L'atelier ».
+		main.dialogue.advance()
+		main.open_tutorial("workshop")
+		await frames(2)
+		await capture("11_tutorial")
+		main.close_all_modals()
+	if only.contains("tooltip"):
+		# Uniquement sur demande (--only=tooltip) : infobulle d'une ressource (survol simulé, sans
+		# déplacer le vrai curseur).
+		main.dialogue.advance()
+		main.get_viewport().gui_disable_input = false
+		var box: Control = main.top_bar.stat_box(str(args.get("stat", "credits")))
+		var ev: InputEventMouseMotion = InputEventMouseMotion.new()
+		ev.position = box.get_global_rect().get_center()
+		main.get_viewport().push_input(ev, true)
+		await get_tree().create_timer(1.5).timeout
+		await capture("12_tooltip")
 	get_tree().quit(0)
 
 
@@ -314,11 +341,14 @@ func _steam() -> void:
 	main.dialogue.finish_typing()
 	await steam_capture("07_story")
 	main.dialogue.advance()
-	main.show_report_popup(OfflineSim.run_hours(m, 24), true)
 	m.dialogue_queue.clear()
-	await frames(3)
-	await steam_capture("08_offline")
-	main.close_all_modals()
+	# L'équipe au travail : vue d'ensemble du garage pendant le service, quelques heures plus tard.
+	Autopilot.new().play_hours(m, 3)
+	m.dialogue_queue.clear()
+	main.selected_ship = -1
+	open_screen("garage")
+	await frames(30)
+	await steam_capture("08_crew")
 	_prepare(m, "quests")
 	open_screen("quests")
 	await steam_capture("09_quests")

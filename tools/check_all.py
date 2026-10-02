@@ -1,4 +1,4 @@
-"""Vérification complète de Wreck & Resell (bibliothèque standard uniquement, Python ≥ 3.10).
+"""Vérification complète de Clunker Cosmos (bibliothèque standard uniquement, Python ≥ 3.10).
 
 Usage : python tools/check_all.py [--skip-import]
 
@@ -7,12 +7,12 @@ Chaque contrôle affiche une ligne « [OK] » ou « [ÉCHEC] » ; le script se t
 
 Contrôles :
   1. import Godot (enregistrement des classes, aucune erreur de script)
-  2. tests unitaires headless (≥ 50, RH, enchères, réparation/vente, arbre, quêtes, sauvegarde, hors-ligne)
+  2. tests unitaires headless (≥ 50, RH, enchères, réparation/vente, arbre, quêtes, sauvegarde, réglages)
   3. simulation de 30 jours (≥ 10 ventes, résultat d'exploitation > 0, 0 erreur)
   4. chapitres 1 et 2 de l'histoire bouclés par l'autopilote
   5. test de fumée de l'interface (tous les écrans construits et manipulés en headless)
   6. validation des assets dans Godot (présence, tailles, palette ≤ 32 couleurs, ancrages)
-  7. manifeste des assets (prompt, graine, workflow, empreintes) + divulgation IA
+  7. manifeste des assets (prompt, graine, workflow, empreintes) + divulgation IA ; manifeste audio
   8. workflows ComfyUI validés contre l'instantané /object_info + licences des modèles
   9. documents requis
  10. captures d'écran du vrai jeu (docs/screens)
@@ -77,7 +77,8 @@ def check_import() -> None:
 
 REQUIRED_SUITES = {
     "test_staff": "RH", "test_auction": "enchères", "test_workshop": "réparation", "test_market": "vente",
-    "test_research": "arbre techno", "test_quests": "quêtes", "test_save": "sauvegarde", "test_offline": "hors-ligne",
+    "test_research": "arbre techno", "test_quests": "quêtes", "test_save": "sauvegarde",
+    "test_settings": "réglages", "test_audio": "audio", "test_fonts": "polices",
 }
 
 
@@ -195,6 +196,42 @@ def check_manifest() -> None:
            f"({', '.join(f'{k} {v}' for k, v in sorted(cats.items()))})" + (f" ; problèmes : {problems[:4]}" if problems else ""))
 
 
+def check_audio_manifest() -> None:
+    """Musiques (ACE-Step 1.5) et bruitages (synthèse) : fichiers présents, empreintes, provenance, divulgation."""
+    mpath = ROOT / "art" / "audio_manifest.json"
+    if not mpath.exists():
+        report("Manifeste audio", False, "art/audio_manifest.json absent")
+        return
+    items = json.loads(mpath.read_text(encoding="utf-8")).get("assets", [])
+    problems: list[str] = []
+    for a in items:
+        f = ROOT / a.get("path", "")
+        if not f.exists():
+            problems.append(f"manquant {a.get('path')}")
+            continue
+        if a.get("sha256") and hashlib.sha256(f.read_bytes()).hexdigest() != a["sha256"]:
+            problems.append(f"empreinte différente {a.get('path')}")
+        if not a.get("license"):
+            problems.append(f"{a.get('id')} sans licence")
+        if a.get("type") == "music":
+            src = a.get("source", {})
+            for key in ("model", "workflow", "seed", "tags"):
+                if key not in src:
+                    problems.append(f"{a.get('id')} sans {key}")
+            if not (ROOT / src.get("workflow", "")).exists():
+                problems.append(f"workflow absent {src.get('workflow')}")
+    music = [a for a in items if a.get("type") == "music"]
+    sfx = [a for a in items if a.get("type") == "sfx"]
+    dtext = (ROOT / "docs" / "AI_DISCLOSURE.md").read_text(encoding="utf-8") if (ROOT / "docs" / "AI_DISCLOSURE.md").exists() else ""
+    undisclosed = [a["path"] for a in music if a["path"] not in dtext]
+    if undisclosed:
+        problems.append(f"musiques absentes de AI_DISCLOSURE.md : {undisclosed}")
+    if len(music) < 4 or len(sfx) < 20:
+        problems.append(f"{len(music)} musiques, {len(sfx)} bruitages")
+    report("Manifeste audio + divulgation", not problems, f"{len(music)} musiques ACE-Step 1.5, {len(sfx)} bruitages synthétisés"
+           + (f" ; problèmes : {problems[:4]}" if problems else ""))
+
+
 # --- 8. Workflows et licences -------------------------------------------------------
 
 def check_workflows() -> None:
@@ -300,6 +337,10 @@ def mp4_info(path: Path) -> dict:
                         w, h = struct.unpack(">II", data[d1 - 8:d1])
                         if w and h:
                             info["video"] = (w >> 16, h >> 16)
+                    elif k3 == "mdia":
+                        for k4, e0, e1 in boxes(d0, d1):
+                            if k4 == "hdlr" and data[e0 + 8:e0 + 12] == b"soun":
+                                info["audio"] = True
     return info
 
 
@@ -313,7 +354,7 @@ def check_steam() -> None:
             problems.append(f"{mp4.name} absent")
             continue
         info = mp4_info(mp4)
-        if info["video"] != (1920, 1080) or not (30.0 <= info["duration"] <= 180.0):
+        if info["video"] != (1920, 1080) or not (30.0 <= info["duration"] <= 180.0) or not info.get("audio"):
             problems.append(f"{mp4.name} : {info}")
         durations.append(f"{lang} {info['duration']:.1f} s")
         shots = sorted((steam / "screenshots" / lang).glob("*.png"))
@@ -333,13 +374,13 @@ def check_steam() -> None:
         if needed not in text:
             problems.append(f"STEAM_STORE.md sans « {needed} »")
     report("Kit Steam (vidéos, captures, capsules, fiche)", not problems,
-           f"vidéos 1920×1080 ({', '.join(durations)}), captures FR/EN 1920×1080, {len(caps)} capsules, docs/STEAM_STORE.md"
+           f"vidéos 1920×1080 avec son ({', '.join(durations)}), captures FR/EN 1920×1080, {len(caps)} capsules, docs/STEAM_STORE.md"
            + (f" ; problèmes : {problems}" if problems else ""))
 
 
 def main() -> int:
     t0 = time.time()
-    print("Wreck & Resell — vérification complète", flush=True)
+    print("Clunker Cosmos — vérification complète", flush=True)
     print(f"Godot : {godot.find_godot()}", flush=True)
     if "--skip-import" not in sys.argv:
         check_import()
@@ -349,6 +390,7 @@ def main() -> int:
     check_ui_smoke()
     check_assets_godot()
     check_manifest()
+    check_audio_manifest()
     check_workflows()
     check_docs()
     check_screens()

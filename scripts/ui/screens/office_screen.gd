@@ -124,7 +124,7 @@ func _report_panel() -> void:
 	var lines: Array[String] = []
 	for e: Variant in evs:
 		var ed: Dictionary = e
-		if not str(ed.get("type", "")) in OfflineSim.NOTABLE and str(ed.get("type", "")) != "lot_lost":
+		if not str(ed.get("type", "")) in EventText.NOTABLE and str(ed.get("type", "")) != "lot_lost":
 			continue
 		var txt: String = EventText.describe(ed)
 		if not txt.is_empty():

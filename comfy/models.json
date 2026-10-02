@@ -1,5 +1,5 @@
 {
-  "_comment": "Modèles utilisés/évalués pour l'art de Wreck & Resell. Licences détaillées dans docs/MODEL_LICENSES.md.",
+  "_comment": "Modèles utilisés/évalués pour l'art et la musique de Clunker Cosmos. Licences détaillées dans docs/MODEL_LICENSES.md.",
   "models": [
     {
       "id": "sdxl_base",
@@ -90,6 +90,15 @@
       "size": 253806246,
       "license": "Apache-2.0",
       "track": "qwen_image"
+    },
+    {
+      "id": "ace_step_15_turbo",
+      "file": "ace_step_1.5_turbo_aio.safetensors",
+      "folder": "checkpoints",
+      "url": "https://huggingface.co/Comfy-Org/ace_step_1.5_ComfyUI_files/resolve/main/checkpoints/ace_step_1.5_turbo_aio.safetensors",
+      "size": 10025478736,
+      "license": "MIT (poids ACE-Step 1.5) ; reconditionnement Comfy-Org Apache-2.0",
+      "track": "ace_step_1.5"
     }
   ]
 }

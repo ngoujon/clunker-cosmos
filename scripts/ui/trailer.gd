@@ -3,11 +3,11 @@ extends Node
 ##   godot --path . --write-movie build/trailer_fr/frame.png --fixed-fps 30 \
 ##         res://scenes/main.tscn -- --tour=trailer --lang=fr
 ## (voir tools/make_trailer.py). Un faux curseur montre les clics ; les actions passent par l'UI réelle
-## (signaux des boutons) ou, pour les montages accélérés, directement par l'API du modèle.
+## (signaux des boutons, donc avec leurs bruitages) ou, pour les montages accélérés, directement par l'API
+## du modèle. La musique du menu accompagne toute la vidéo (enregistrée avec le son par le Movie Maker).
 ## Les messages « TRAILER: … » de la console servent de contrôle (actions réussies, boutons trouvés).
 
 const BAND_H: int = 26
-const OFFLINE_HOURS: int = 24
 
 var main: MainUI = null
 var tour: Node = null
@@ -177,6 +177,9 @@ func _run() -> void:
 	I18n.set_locale(str(tour.args.get("lang", "fr")), false)
 	main.auto_dialogues = false
 	main.show_title()
+	# Un seul morceau du début à la fin : les changements d'écran ne relancent pas la musique.
+	Audio.play_music("title")
+	Audio.music_locked = true
 	_build_overlay()
 	m = tour.call("demo_model", 12, 7031)
 	for loc: String in Content.db.location_order:
@@ -206,8 +209,10 @@ func _run() -> void:
 	await _shot_sales()
 	mark("équipe")
 	await _shot_staff()
-	mark("accéléré + hors-ligne")
-	await _shot_timelapse()
+	mark("équipe au travail")
+	await _shot_crew()
+	mark("politique")
+	await _shot_policy()
 	mark("labo")
 	await _shot_research()
 	mark("histoire")
@@ -343,6 +348,7 @@ func _shot_paint() -> void:
 	for pid: String in order:
 		await move_to(cursor.position + Vector2(randf_range(-6, 6), randf_range(-3, 3)), 0.12)
 		cursor.press()
+		Audio.play("paint", 0.1)
 		sh.paint = pid
 		sh.wear = maxf(0.0, sh.wear - wear0 / float(order.size()))
 		s.force_rebuild()
@@ -411,28 +417,39 @@ func _shot_staff() -> void:
 	unsay()
 
 
-func _shot_timelapse() -> void:
+## Vue d'ensemble du garage en accéléré : les employés travaillent à leurs postes.
+func _shot_crew() -> void:
 	main.selected_ship = -1
 	_fill_garage()
 	screen_now("garage")
-	await move_to(Vector2(447, 10), 0.6)
-	cursor.press()
-	Game.set_speed(3)
+	await move_to(Vector2(431, 10), 0.6)
+	var fast: Button = main.top_bar.speed_button(3)
+	if fast != null:
+		await click(fast)
+	else:
+		Game.set_speed(3)
 	main.top_bar.refresh()
-	say("trailer.idle")
+	say("trailer.crew")
 	await wait(5.5)
 	Game.set_speed(0)
 	main.top_bar.refresh()
 	unsay()
 	await wait(0.3)
 	clear_toasts()
-	say("trailer.offline")
-	var rep: Dictionary = OfflineSim.run_hours(m, OFFLINE_HOURS)
-	print("TRAILER: hors-ligne %d h : %d ventes, solde %d" % [OFFLINE_HOURS, int(rep.get("sold", 0)), int(rep.get("credits_delta", 0))])
-	main.show_report_popup(rep, true)
-	await wait(3.0)
-	main.close_all_modals()
+
+
+## Politique de l'atelier : de l'honnêteté au requin, en un clic.
+func _shot_policy() -> void:
+	var s: GameScreen = screen_now("office")
+	say("trailer.policy")
+	await wait(0.8)
+	var shark: Button = find_button(s, I18n.t("ui.policy.shark"))
+	if shark != null:
+		await click(shark)
+	print("TRAILER: politique %s" % str(m.settings.get("defect_policy", "?")))
+	await wait(2.0)
 	unsay()
+	await wait(0.2)
 
 
 func _shot_research() -> void:
@@ -526,9 +543,12 @@ func _shot_end(montage: Control) -> void:
 		edge.position = Vector2(0, y)
 		edge.size = Vector2(MainUI.W, 1)
 		end.add_child(edge)
-	var title: Label = _big_label(I18n.t("ui.title"), 32, UIKit.C_ACCENT)
-	title.position = Vector2(0, 84)
-	title.size = Vector2(MainUI.W, 36)
+	var title: Label = _big_label(I18n.t("ui.title"), 36, UIKit.C_ACCENT)
+	title.add_theme_font_override("font", UIKit.display_font())
+	title.add_theme_color_override("font_outline_color", UIKit.C_DARK)
+	title.add_theme_constant_override("outline_size", 4)
+	title.position = Vector2(0, 80)
+	title.size = Vector2(MainUI.W, 42)
 	end.add_child(title)
 	var lines: Array[Array] = [["trailer.cta", 16, UIKit.C_TEXT, 128], ["trailer.features", 8, UIKit.C_TEXT, 156], ["trailer.langs", 8, UIKit.C_DIM, 174]]
 	for ln: Array in lines:
@@ -539,22 +559,24 @@ func _shot_end(montage: Control) -> void:
 	end.modulate.a = 0.0
 	var tw: Tween = end.create_tween()
 	tw.tween_property(end, "modulate:a", 1.0, 0.6)
-	await wait(5.0)
+	await wait(4.4)
+	Audio.stop_music(1.2)
+	await wait(0.6)
 	await fade_to(1.0, 0.6)
+	await wait(0.4)
+	Audio.stop_all()
 	await wait(0.2)
 
 
-## Curseur dessiné en pixels (le Movie Maker n'enregistre pas le curseur du système).
+## Curseur du jeu (CursorKit) dessiné en pixels : le Movie Maker n'enregistre pas le curseur matériel.
 class FakeCursor extends Control:
 	var _press: float = 0.0
-	const ARROW: PackedStringArray = [
-		"X.........", "XX........", "XWX.......", "XWWX......", "XWWWX.....", "XWWWWX....", "XWWWWWX...",
-		"XWWWWWWX..", "XWWWWWWWX.", "XWWWWXXXXX", "XWWXWX....", "XWX.XWX...", "XX..XWX...", "X....XWX..", ".....XX...",
-	]
+	var _arrow: PackedStringArray = CursorKit.pattern("arrow")
+	var _colors: Dictionary = CursorKit.colors()
 
 	func _init() -> void:
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
-		size = Vector2(12, 16)
+		size = Vector2(_arrow[0].length(), _arrow.size())
 
 	func press() -> void:
 		_press = 1.0
@@ -569,11 +591,9 @@ class FakeCursor extends Control:
 			var r: float = 3.0 + (1.0 - _press) * 6.0
 			draw_arc(Vector2.ZERO, r, 0.0, TAU, 16, Color(UIKit.C_ACCENT, _press), 1.0)
 		var off: Vector2 = Vector2(1, 1) if _press > 0.5 else Vector2.ZERO
-		for y: int in ARROW.size():
-			var row: String = ARROW[y]
+		for y: int in _arrow.size():
+			var row: String = _arrow[y]
 			for x: int in row.length():
 				var ch: String = row[x]
-				if ch == "X":
-					draw_rect(Rect2(off + Vector2(x, y), Vector2.ONE), UIKit.C_DARK)
-				elif ch == "W":
-					draw_rect(Rect2(off + Vector2(x, y), Vector2.ONE), Color.WHITE)
+				if _colors.has(ch):
+					draw_rect(Rect2(off + Vector2(x, y), Vector2.ONE), _colors[ch] as Color)

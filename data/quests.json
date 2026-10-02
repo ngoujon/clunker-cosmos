@@ -1,5 +1,5 @@
 {
- "_comment": "Quêtes de Wreck & Resell. kind main = histoire (mode Histoire seulement, démarrage auto) ; kind side = commandes et défis facultatifs (tous modes). Schéma : scripts/core/quest_system.gd.",
+ "_comment": "Quêtes de Clunker Cosmos. kind main = histoire (mode Histoire seulement, démarrage auto) ; kind side = commandes et défis facultatifs (tous modes). Schéma : scripts/core/quest_system.gd.",
  "quests": [
   {
    "id": "m1_01",
@@ -35,29 +35,36 @@
     {
      "speaker": "narrator",
      "text": {
-      "fr": "Station orbitale de Ferropolis. Ça sent l'huile, le café froid et les mauvaises décisions.",
-      "en": "Ferropolis orbital station. It smells of oil, cold coffee and bad decisions."
+      "fr": "Station orbitale de Ferropolis. Ça sent l'huile, le café froid et les mauvaises décisions. Bienvenue chez vous.",
+      "en": "Ferropolis orbital station. It smells of oil, cold coffee and bad decisions. Welcome home."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Ah. Vous devez être la personne qui hérite. Je suis BOLT, Bureau d'Optimisation Logistique et Technique. Je gère ce garage depuis la disparition de votre tante. Enfin, « gérer »… je regarde la poussière tomber.",
-      "en": "Ah. You must be the heir. I am BOLT, Bureau of Optimized Logistics and Tinkering. I've been running this garage since your aunt vanished. Well, “running”… I watch the dust settle."
+      "fr": "Ah. Vous devez être la personne qui hérite. Je suis BOLT : Bureau d'Optimisation Logistique et Technique. Depuis que votre tante a disparu, je gère le garage. Enfin, je regarde la poussière tomber. Très efficacement.",
+      "en": "Ah. You must be the heir. I am BOLT: Bureau of Optimized Logistics and Tinkering. Since your aunt vanished, I've been running the garage. Well, watching the dust settle. Very efficiently."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Bonne nouvelle : le garage est à vous. Mauvaise nouvelle : la dette aussi. 60 000 crédits envers Galax-Auto, payables chaque semaine. Avec intérêts moraux.",
-      "en": "Good news: the garage is yours. Bad news: so is the debt. 60,000 credits owed to Galax-Auto, payable weekly. With emotional interest."
+      "fr": "Bonne nouvelle : le garage est à vous. Mauvaise nouvelle : la dette aussi. 60 000 crédits envers Galax-Auto, 2 500 par semaine. Libre dans 24 semaines, sauf imprévu. Les imprévus sont notre spécialité.",
+      "en": "Good news: the garage is yours. Bad news: so is the debt. 60,000 credits owed to Galax-Auto, 2,500 a week. Free in 24 weeks, barring surprises. Surprises are our specialty."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Le principe est simple : on achète des épaves, on les répare, on les revend plus cher. Allez voir les enchères de la casse. Et scannez avant de miser : certains défauts se cachent mieux que votre tante.",
-      "en": "The idea is simple: buy wrecks, fix them, sell them for more. Go check out the scrapyard auctions. And scan before you bid: some defects hide better than your aunt."
+      "fr": "Le principe : acheter des épaves, les réparer, les revendre plus cher. Votre tante ajoutait une quatrième étape : « pleurer un peu dans la soute ». Elle est facultative.",
+      "en": "The plan: buy wrecks, fix them, sell them for more. Your aunt added a fourth step: “have a little cry in the cargo hold.” It's optional."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Commencez par l'onglet Enchères. Et scannez avant de miser : certains défauts se cachent mieux que votre tante.",
+      "en": "Start with the Auctions tab. And scan before you bid: some defects hide better than your aunt."
      }
     }
    ],
@@ -65,15 +72,15 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Félicitations, vous possédez maintenant un tas de ferraille officiel. Votre tante serait fière. Ou horrifiée. Probablement les deux.",
-      "en": "Congratulations, you now own an official pile of scrap. Your aunt would be proud. Or horrified. Probably both."
+      "fr": "Félicitations, vous possédez un tas de ferraille officiel, certificat compris. Votre tante serait fière. Ou horrifiée. Chez elle, c'était la même tête.",
+      "en": "Congratulations, you now own an official pile of scrap, certificate included. Your aunt would be proud. Or horrified. On her, it was the same face."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Dans l'atelier, chaque défaut connu peut être réparé, maquillé… ou simplement signalé au client. Je recommande de réparer. Les clients adorent les vaisseaux qui volent.",
-      "en": "In the workshop, every known defect can be repaired, covered up… or simply disclosed to the buyer. I recommend repairing. Customers love ships that actually fly."
+      "fr": "À l'atelier (onglet Garage), chaque défaut connu peut être réparé, maquillé… ou avoué au client, les yeux dans les yeux (comptez-les avant). Je recommande de réparer : les clients adorent les vaisseaux qui volent.",
+      "en": "In the workshop (Garage tab), every known defect can be repaired, covered up… or confessed to the buyer, eye to eye (count the eyes first). I recommend repairing: customers love ships that actually fly."
      }
     }
    ]
@@ -117,15 +124,15 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Votre épave a des problèmes. Comme vous, mais en plus réparable.",
-      "en": "Your wreck has problems. Like you, but more fixable."
+      "fr": "Votre épave a des problèmes. Comme vous, mais en plus réparable. Et elle ne discute pas.",
+      "en": "Your wreck has problems. Like you, but more fixable. And it doesn't talk back."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Choisissez un défaut et lancez la réparation : vous travaillez de 8 h à 20 h. Si ça ne va pas assez vite, cliquez sur « Coup de main ». Oui, le coup de main, c'est vous.",
-      "en": "Pick a defect and start the repair: you work from 8:00 to 20:00. If it's too slow, click “Lend a hand”. Yes, the hand is yours."
+      "fr": "Choisissez un défaut et lancez la réparation. Vous travaillez de 8 h à 20 h ; après, même les héros dorment. Trop lent ? Cliquez sur « Coup de main ». Oui, la main, c'est la vôtre.",
+      "en": "Pick a defect and start the repair. You work from 8:00 to 20:00; after that, even heroes sleep. Too slow? Click “Lend a hand.” Yes, the hand is yours."
      }
     }
    ],
@@ -133,15 +140,22 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Trois défauts réparés et aucun doigt perdu. Je mets à jour votre dossier : « sait tenir une clé dans le bon sens ».",
-      "en": "Three defects fixed and no fingers lost. Updating your file: “can hold a wrench the right way up.”"
+      "fr": "Trois défauts réparés, zéro doigt perdu. Je mets à jour votre dossier : « sait tenir une clé dans le bon sens ». C'est la plus haute distinction du garage.",
+      "en": "Three defects fixed, zero fingers lost. Updating your file: “can hold a wrench the right way up.” It's the garage's highest honor."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Votre tante avait caché 300 crédits dans une boîte à biscuits marquée « urgences ». Je décrète que c'est une urgence.",
-      "en": "Your aunt hid 300 credits in a cookie tin labeled “emergencies”. I hereby declare this an emergency."
+      "fr": "Votre tante avait caché 300 crédits dans une boîte à biscuits marquée « urgences ». Je décrète que c'est une urgence. Les biscuits, eux, ont expiré sous l'ancien calendrier.",
+      "en": "Your aunt hid 300 credits in a cookie tin labeled “emergencies.” I hereby declare this an emergency. The cookies expired under the old calendar."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Au passage, chaque réparation rapporte un peu de recherche. On apprend toujours quelque chose en démontant. Surtout ce qu'il ne fallait pas démonter.",
+      "en": "By the way, every repair earns a little research. You always learn something by taking things apart. Mostly which things not to take apart."
      }
     }
    ]
@@ -189,15 +203,15 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Il y a du monde au comptoir. Enfin, « du monde »… un Glorbien s'est collé à la porte vitrée et n'arrive plus à repartir.",
-      "en": "There are customers at the counter. Well, “customers”… a Glorbian got stuck to the glass door and can't leave."
+      "fr": "Il y a du monde au comptoir. Enfin, « du monde »… un Glorbien s'est collé à la porte vitrée et n'arrive plus à repartir. Il dit que c'est une marque d'affection.",
+      "en": "There are customers at the counter. Well, “customers”… a Glorbian got stuck to the glass door and can't leave. They say it's a sign of affection."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Proposez un vaisseau à un client. Trop cher, il refuse ; trop bas, je pleure. Au juste prix, tout le monde sourit. Et regardez ses goûts : couleur, classe, options.",
-      "en": "Offer a ship to a client. Too high and they refuse; too low and I cry. At a fair price, everyone smiles. And check their tastes: color, class, options."
+      "fr": "Dans l'onglet Ventes, proposez un vaisseau à un client. Trop cher : il marchande ou s'en va. Trop bas : je pleure. Et regardez ses goûts (classe, couleur, options) : un client comblé paie plus.",
+      "en": "In the Sales tab, offer a ship to a client. Too pricey: they haggle or leave. Too cheap: I cry. And check their tastes (class, color, options): a delighted client pays more."
      }
     }
    ],
@@ -205,15 +219,15 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Vendu ! Le client est reparti en klaxonnant. Ou alors c'était le moteur. On ne le saura jamais.",
-      "en": "Sold! The client left honking. Or maybe that was the engine. We'll never know."
+      "fr": "Vendu ! Le client est reparti en klaxonnant. Ou alors c'était le moteur. Dans les deux cas, la garantie dure sept jours. Croisez les doigts. Moi, je n'en ai pas.",
+      "en": "Sold! The client left honking. Or maybe that was the engine. Either way, the warranty lasts seven days. Cross your fingers. I don't have any."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Chaque vente améliore votre réputation et rapporte un peu de recherche. Oui, vendre des vaisseaux d'occasion, c'est de la science.",
-      "en": "Every sale boosts your reputation and earns a little research. Yes, selling used ships is a science."
+      "fr": "Chaque vente améliore votre réputation et rapporte des points de recherche. Oui, vendre des vaisseaux d'occasion est une science. Une science molle, mais une science.",
+      "en": "Every sale boosts your reputation and earns research points. Yes, selling used ships is a science. A soft science, but a science."
      }
     }
    ]
@@ -257,29 +271,29 @@
     {
      "speaker": "lustre",
      "text": {
-      "fr": "Bonjour, bonjour ! Augustin Lustre, directeur régional de Galax-Auto. Quel charmant… tas de rouille vous avez là.",
-      "en": "Hello, hello! Augustin Lustre, Regional Director of Galax-Auto. What a charming… pile of rust you have here."
+      "fr": "Bonjour, bonjour, bonjour ! Augustin Lustre, directeur régional de Galax-Auto. « Galax-Auto : on reprend tout, même ce qui n'est pas à vendre. » Quel charmant… tas de rouille vous avez là.",
+      "en": "Hello, hello, hello! Augustin Lustre, Regional Director of Galax-Auto. “Galax-Auto: we take it all, even what isn't for sale.” What a charming… pile of rust you have here."
      }
     },
     {
      "speaker": "lustre",
      "text": {
-      "fr": "Galax-Auto vous propose de racheter ce garage pour la généreuse somme de 12 crédits et un porte-clés collector. Non ? Quel dommage.",
-      "en": "Galax-Auto would like to buy this garage for the generous sum of 12 credits and a collector's keychain. No? What a pity."
+      "fr": "Galax-Auto vous propose de racheter ce garage pour la généreuse somme de 12 crédits et un porte-clés collector. Il clignote ! Non ? Quel dommage. Je garde le porte-clés.",
+      "en": "Galax-Auto would like to buy this garage for the generous sum of 12 credits and a collector's keychain. It blinks! No? What a pity. I'm keeping the keychain."
      }
     },
     {
      "speaker": "lustre",
      "text": {
-      "fr": "Alors je vous rappelle les échéances de votre tante : 2 500 crédits par semaine, prélevés automatiquement tous les 7 jours. Vous pouvez aussi payer en avance… si vous aimez les choses exotiques, comme la solvabilité.",
-      "en": "Then allow me to remind you of your aunt's installments: 2,500 credits a week, automatically charged every 7 days. You may also pay early… if you enjoy exotic things, like solvency."
+      "fr": "Je vous rappelle les échéances : 2 500 crédits prélevés tous les 7 jours. En retard, c'est pénalité et réputation en berne. Payer en avance depuis votre Bureau ? Si vous aimez l'exotisme. Comme la solvabilité.",
+      "en": "A reminder of the installments: 2,500 credits charged every 7 days. Late means a penalty and a bruised reputation. Paying early from your Office? If you enjoy exotic things. Like solvency."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Il est parti. J'ai désinfecté la poignée de la porte. Deux fois.",
-      "en": "He's gone. I disinfected the door handle. Twice."
+      "fr": "Il est parti. J'ai désinfecté la poignée de la porte. Deux fois. Puis la porte. Puis l'idée même de porte.",
+      "en": "He's gone. I disinfected the door handle. Twice. Then the door. Then the very concept of doors."
      }
     }
    ],
@@ -287,8 +301,8 @@
     {
      "speaker": "lustre",
      "text": {
-      "fr": "Paiement reçu. Quel dommage… je veux dire : quelle joie ! À la semaine prochaine.",
-      "en": "Payment received. What a shame… I mean: what a joy! See you next week."
+      "fr": "Paiement reçu. Quel dommage… pardon, quelle joie ! Mes dents et moi vous disons à la semaine prochaine.",
+      "en": "Payment received. What a shame… sorry, what a joy! My teeth and I will see you next week."
      }
     },
     {
@@ -296,6 +310,13 @@
      "text": {
       "fr": "Il sourit avec 48 dents. Je les ai comptées. Méfiez-vous des gens qui ont plus de dents que de scrupules.",
       "en": "He smiles with 48 teeth. I counted. Beware of people with more teeth than scruples."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Il a oublié un dépliant : « Prêt de dépannage Galax-Auto : à sec ? On vous renfloue ! Frais modiques, voir au dos. » Au dos, il y a un deuxième dépliant. Beaucoup plus épais.",
+      "en": "He left a flyer behind: “Galax-Auto Emergency Loans: broke? We'll bail you out! Tiny fees, see back.” On the back, there's a second flyer. A much thicker one."
      }
     }
    ]
@@ -349,36 +370,36 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "En rangeant le bureau, j'ai trouvé un holo-message de votre tante. Il était caché sous trois tasses et un sandwich fossilisé.",
-      "en": "While tidying the office, I found a holo-message from your aunt. It was hidden under three mugs and a fossilized sandwich."
+      "fr": "En rangeant le bureau, j'ai trouvé un holo-message de votre tante, sous trois tasses et un sandwich fossilisé. J'ai proposé le sandwich à un musée. Le musée a refusé.",
+      "en": "While tidying the office, I found a holo-message from your aunt, under three mugs and a fossilized sandwich. I offered the sandwich to a museum. The museum declined."
      }
     },
     {
      "speaker": "odile",
      "text": {
-      "fr": "Si tu écoutes ce message, c'est que j'ai disparu. Ou que BOLT fouille encore dans mes affaires. BOLT, arrête ça tout de suite.",
-      "en": "If you're hearing this, I've disappeared. Or BOLT is snooping through my things again. BOLT, stop that right now."
+      "fr": "Si tu écoutes ce message, c'est que j'ai disparu. Ou que BOLT fouille encore dans mes affaires. BOLT, je te vois. Repose ce sandwich.",
+      "en": "If you're hearing this, I've disappeared. Or BOLT is snooping through my things again. BOLT, I can see you. Put that sandwich down."
      }
     },
     {
      "speaker": "odile",
      "text": {
-      "fr": "Je cherche l'Aurore, le plus beau vaisseau jamais construit. On l'a démontée, et ses pièces dorment dans cinq épaves, aux quatre coins de la galaxie. Enfin, aux cinq coins.",
-      "en": "I'm looking for the Aurora, the most beautiful ship ever built. She was taken apart, and her pieces sleep in five wrecks, in the four corners of the galaxy. Well, five corners."
+      "fr": "Je cherche l'Aurore, le plus beau vaisseau jamais construit. On l'a démontée en cinq pièces, cachées aux quatre coins de la galaxie. Enfin, aux cinq coins. La galaxie est mal rangée.",
+      "en": "I'm looking for the Aurora, the most beautiful ship ever built. She was split into five pieces, hidden in the four corners of the galaxy. Well, five corners. The galaxy is very untidy."
      }
     },
     {
      "speaker": "odile",
      "text": {
-      "fr": "La première, la Quille Ancestrale, se trouve dans une épave de la casse de Ferropolis. Achète-la avant que Galax-Auto n'y mette ses gros doigts.",
-      "en": "The first one, the Ancestral Keel, is inside a wreck at the Ferropolis Scrapyard. Buy it before Galax-Auto gets its fat fingers on it."
+      "fr": "La première, la Quille Ancestrale, dort dans une épave de la casse de Ferropolis. Achète-la avant que Galax-Auto n'y colle son logo. Ils collent leur logo partout. Même sur leur logo.",
+      "en": "The first one, the Ancestral Keel, sleeps inside a wreck at the Ferropolis Scrapyard. Buy it before Galax-Auto slaps a logo on it. They slap logos on everything. Even on their logo."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Le lot vient justement d'apparaître aux enchères de Ferropolis. Je dis ça, je ne dis rien. Si, en fait, je le dis : achetez-le.",
-      "en": "The lot just popped up at the Ferropolis auctions. Just saying. Actually, no, I'm really saying it: buy it."
+      "fr": "Le lot vient justement d'apparaître aux enchères de Ferropolis. Je dis ça, je ne dis rien. Si, en fait, je le dis. En majuscules : ACHETEZ-LE.",
+      "en": "The lot just popped up at the Ferropolis auctions. Just saying. Actually, no, I'm really saying it. In capitals: BUY IT."
      }
     }
    ],
@@ -386,15 +407,15 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "La Quille de l'Aurore ! Elle est tiède. Elle ronronne. Je n'aime pas les objets qui ronronnent.",
-      "en": "The Aurora's Keel! It's warm. It purrs. I don't like objects that purr."
+      "fr": "La Quille de l'Aurore ! Elle est tiède. Elle ronronne. Je n'aime pas les objets qui ronronnent. Ça commence par ronronner, et après ça réclame des croquettes.",
+      "en": "The Aurora's Keel! It's warm. It purrs. I don't like objects that purr. First they purr, then they demand treats."
      }
     },
     {
      "speaker": "odile",
      "text": {
-      "fr": "(suite du message) …et si tu as trouvé la Quille, c'est que tu as de la suite dans les idées. Continue. Les autres pièces t'attendent.",
-      "en": "(message continues) …and if you found the Keel, you clearly don't give up easily. Keep going. The other pieces are waiting for you."
+      "fr": "(suite du message) …et si tu as trouvé la Quille, c'est que tu as de la suite dans les idées. Ça vient de mon côté de la famille. L'autre côté collectionne les cailloux.",
+      "en": "(message continues) …and if you found the Keel, you clearly don't give up. That comes from my side of the family. The other side collects pebbles."
      }
     },
     {
@@ -445,15 +466,15 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Vous ne pouvez pas réparer, vendre, enchérir et chercher en même temps. J'ai vérifié : vous n'avez que deux bras. Conception très limitée.",
-      "en": "You can't repair, sell, bid and research at the same time. I checked: you only have two arms. Very limited design."
+      "fr": "Vous ne pouvez pas réparer, vendre, enchérir et chercher en même temps. J'ai vérifié vos plans : seulement deux bras. Conception très limitée. Je porterais réclamation, mais auprès de qui ?",
+      "en": "You can't repair, sell, bid and research all at once. I checked your specs: only two arms. Very limited design. I'd file a complaint, but with whom?"
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Le vivier de candidats se renouvelle chaque jour dans l'onglet RH. Un mécanicien et un vendeur feraient des merveilles. Évitez ceux qui écrivent « maladroit » dans leurs qualités.",
-      "en": "The candidate pool refreshes every day in the HR tab. A mechanic and a salesperson would work wonders. Avoid anyone who lists “clumsy” as a strength."
+      "fr": "Les candidats du jour sont dans l'onglet Équipe ; le vivier change chaque jour. Un mécanicien et un vendeur feraient des merveilles. Évitez ceux qui écrivent « maladroit » dans leurs qualités.",
+      "en": "Today's candidates are in the Staff tab; the pool changes every day. A mechanic and a salesperson would work wonders. Avoid anyone who lists “clumsy” as a strength."
      }
     }
    ],
@@ -461,15 +482,22 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Deux employés ! Le garage ressemble presque à une entreprise. Je leur ai fait signer le règlement intérieur. Article 1 : on ne débranche pas BOLT.",
-      "en": "Two employees! The garage almost looks like a business. I had them sign the house rules. Article 1: nobody unplugs BOLT."
+      "fr": "Deux employés ! Le garage ressemble presque à une entreprise. Je leur ai fait signer le règlement intérieur. Article 1 : on ne débranche pas BOLT. Article 2 : voir article 1.",
+      "en": "Two employees! The garage almost looks like a business. I had them sign the house rules. Article 1: nobody unplugs BOLT. Article 2: see Article 1."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Vérifiez leurs postes et leurs règles de priorité. Un employé sans poste, c'est un employé qui fait la sieste. Et ils adorent la sieste.",
-      "en": "Check their stations and priority rules. An employee without a station is an employee taking a nap. And they love naps."
+      "fr": "Vérifiez leurs postes et leurs règles de priorité. Un employé sans poste, c'est un employé qui fait la sieste. Et ils adorent la sieste. Ils en parlent pendant leurs pauses.",
+      "en": "Check their stations and priority rules. An employee without a station is an employee taking a nap. And they love naps. They talk about them on their breaks."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Ils travaillent seuls de 8 h à 18 h. Et quand vous fermez boutique, le temps s'arrête : ni salaires, ni échéances, ni rouille. Tout le monde se fige en pleine pause café. C'est beau. Un peu inquiétant.",
+      "en": "They work on their own from 8:00 to 18:00. And when you shut up shop, time stops: no wages, no installments, no rust. Everyone freezes mid-coffee break. It's beautiful. A little unsettling."
      }
     }
    ]
@@ -513,15 +541,15 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Votre tante avait un arbre technologique. Pas un vrai arbre, rassurez-vous : la dernière plante de la station est morte de désespoir.",
-      "en": "Your aunt had a technology tree. Not a real tree, don't worry: the station's last plant died of despair."
+      "fr": "Votre tante avait un arbre technologique. Pas un vrai arbre, rassurez-vous : la dernière plante de la station est morte de désespoir. Je l'arrosais pourtant avec des statistiques.",
+      "en": "Your aunt had a technology tree. Not a real tree, don't worry: the station's last plant died of despair. Even though I watered it with statistics."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Dépensez des points de recherche et des crédits pour débloquer deux technologies. Chaque branche améliore une partie du garage. Choisissez bien. Ou au hasard, comme d'habitude.",
-      "en": "Spend research points and credits to unlock two technologies. Each branch improves part of the garage. Choose wisely. Or randomly, as usual."
+      "fr": "Dans l'onglet Labo, dépensez points de recherche et crédits pour débloquer deux technologies. Chaque branche améliore une partie du garage. Choisissez bien. Ou au hasard, comme d'habitude.",
+      "en": "In the Lab tab, spend research points and credits to unlock two technologies. Each branch improves part of the garage. Choose wisely. Or randomly, as usual."
      }
     }
    ],
@@ -529,15 +557,15 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Deux technologies ! Le garage gagne en efficacité, et vous en respect de ma part. Pas beaucoup. Mais un peu.",
-      "en": "Two technologies! The garage gets more efficient, and you get a little more respect from me. Not much. But some."
+      "fr": "Deux technologies ! Le garage gagne en efficacité, et vous, en respect de ma part. Deux pour cent. Ne dépensez pas tout d'un coup.",
+      "en": "Two technologies! The garage gets more efficient, and you get more respect from me. Two percent. Don't spend it all at once."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Astuce : un chercheur au labo produit des points de recherche toute la journée. Moi, je produis surtout des remarques.",
-      "en": "Tip: a researcher in the lab produces research points all day long. I mostly produce remarks."
+      "fr": "Astuce : un chercheur au labo produit des points de recherche toute la journée. Moi, je produis surtout des remarques. Elles ne se vendent pas, j'ai essayé.",
+      "en": "Tip: a researcher in the lab produces research points all day long. I mostly produce remarks. They don't sell. I tried."
      }
     }
    ]
@@ -581,15 +609,15 @@
     {
      "speaker": "odile",
      "text": {
-      "fr": "(holo-message n° 2) Le Cœur de l'Aurore bat quelque part dans les anneaux de Kryo-7. Il faut un permis pour y enchérir. Les douaniers sont des bonshommes de glace très à cheval sur la paperasse.",
-      "en": "(holo-message #2) The Aurora's Heart is beating somewhere in the rings of Kryo-7. You need a permit to bid there. The customs officers are snowmen who are very strict about paperwork."
+      "fr": "(holo-message n° 2) Le Cœur de l'Aurore bat quelque part dans les anneaux de Kryo-7. Il faut un permis pour y enchérir. Les douaniers sont des bonshommes de neige. Ne leur offre surtout pas de café chaud.",
+      "en": "(holo-message #2) The Aurora's Heart is beating somewhere in the rings of Kryo-7. You need a permit to bid there. The customs officers are snowmen. Whatever you do, don't offer them hot coffee."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Le « Permis de Kryo-7 » se débloque dans la branche Lieux de l'arbre. Prévoyez une écharpe. Pour vous, pas pour moi : je n'ai pas de cou.",
-      "en": "The “Kryo-7 permit” is unlocked in the Locations branch of the tree. Bring a scarf. For you, not me: I don't have a neck."
+      "fr": "Le « Permis de Kryo-7 » se débloque au Labo, branche Lieux. Prévoyez une écharpe. Pour vous, pas pour moi : je n'ai pas de cou. Un choix de conception. Pas le mien.",
+      "en": "The “Kryo-7 permit” is in the Lab, Locations branch. Bring a scarf. For you, not me: I don't have a neck. A design choice. Not mine."
      }
     }
    ],
@@ -604,8 +632,8 @@
     {
      "speaker": "odile",
      "text": {
-      "fr": "(holo-message n° 2, suite) Et pense à scanner les lots là-bas : le froid cache très bien les fissures.",
-      "en": "(holo-message #2, continued) And remember to scan the lots there: the cold hides cracks very well."
+      "fr": "(holo-message n° 2, suite) Et scanne les lots là-bas : le froid cache très bien les fissures. Sur les coques comme sur les visages. Ne me demande pas comment je le sais.",
+      "en": "(holo-message #2, continued) And scan the lots there: the cold hides cracks very well. On hulls and on faces. Don't ask me how I know."
      }
     }
    ]
@@ -659,15 +687,22 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Un cargo gelé passe aux enchères à Kryo-7. D'après le carnet, le Cœur de l'Aurore est toujours à bord. Et il bat. Encore un objet qui fait des choses qu'un objet ne devrait pas faire.",
-      "en": "A frozen freighter is going up for auction at Kryo-7. According to the notebook, the Aurora's Heart is still aboard. And it's beating. Yet another object doing things objects shouldn't do."
+      "fr": "Un cargo gelé passe aux enchères à Kryo-7. D'après le carnet, le Cœur de l'Aurore est toujours à bord. Et il bat. Encore un objet qui se prend pour un organe. Je ne juge pas. Si, un peu.",
+      "en": "A frozen freighter is up for auction at Kryo-7. According to the notebook, the Aurora's Heart is still aboard. And it's beating. Another object that thinks it's an organ. I'm not judging. Well, a little."
      }
     },
     {
      "speaker": "lustre",
      "text": {
-      "fr": "Tiens, tiens… On s'intéresse aux vieux cargos ? Galax-Auto aussi. Que le meilleur gagne. C'est-à-dire nous.",
-      "en": "Well, well… Interested in old freighters? So is Galax-Auto. May the best one win. Meaning us."
+      "fr": "Tiens, tiens… On s'intéresse aux vieux cargos ? Galax-Auto aussi. Que le meilleur gagne. C'est-à-dire nous. C'est écrit dans le règlement. Que nous avons rédigé.",
+      "en": "Well, well… Interested in old freighters? So is Galax-Auto. May the best one win. Meaning us. It's in the rules. Which we wrote."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Il a 52 dents, maintenant. Il en a fait poser quatre de plus pour sourire plus large. Je ne savais pas que c'était possible. Je ne voulais pas le savoir.",
+      "en": "He has 52 teeth now. He had four more fitted to smile wider. I didn't know that was possible. I didn't want to know."
      }
     }
    ],
@@ -682,8 +717,8 @@
     {
      "speaker": "odile",
      "text": {
-      "fr": "(holo-message n° 3) Bravo. Méfie-toi de Galax-Auto : ils veulent transformer l'Aurore en panneau publicitaire volant. Ne les laisse pas faire.",
-      "en": "(holo-message #3) Well done. Beware of Galax-Auto: they want to turn the Aurora into a flying billboard. Don't let them."
+      "fr": "(holo-message n° 3) Bravo ! Méfie-toi de Galax-Auto : ils veulent transformer l'Aurore en panneau publicitaire volant. Avec un jingle. Un jingle, tu te rends compte ?",
+      "en": "(holo-message #3) Well done! Beware of Galax-Auto: they want to turn the Aurora into a flying billboard. With a jingle. A jingle, can you imagine?"
      }
     }
    ]
@@ -746,8 +781,8 @@
     {
      "speaker": "lustre",
      "text": {
-      "fr": "Rien de personnel ! C'est le marché. Un marché que nous possédons à 94 %.",
-      "en": "Nothing personal! It's just the market. A market we own 94% of."
+      "fr": "Rien de personnel ! C'est le marché. Un marché que nous possédons à 94 %. Les 6 % restants, c'est vous. Pour l'instant.",
+      "en": "Nothing personal! It's just the market. A market we own 94% of. The other 6% is you. For now."
      }
     },
     {
@@ -776,8 +811,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Il vient de nous donner un indice. Il est vraiment très mauvais en méchant.",
-      "en": "He just gave us a hint. He's really terrible at being a villain."
+      "fr": "Il vient de nous donner un indice. Il est vraiment très mauvais en méchant. Je commence presque à l'apprécier. Presque.",
+      "en": "He just gave us a hint. He's really terrible at being a villain. I'm almost starting to like him. Almost."
      }
     }
    ]
@@ -832,8 +867,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Débloquez « Contacts au Nébula Bazar » dans la branche Lieux. Et gardez une main sur votre portefeuille. L'autre aussi.",
-      "en": "Unlock “Nebula Bazaar contacts” in the Locations branch. And keep one hand on your wallet. The other one too."
+      "fr": "Débloquez « Contacts au Nébula Bazar » au Labo, branche Lieux. Et gardez une main sur votre portefeuille. L'autre aussi. Pour vos pieds, je ne garantis rien.",
+      "en": "Unlock “Nebula Bazaar contacts” in the Lab, Locations branch. And keep one hand on your wallet. The other one too. I can't vouch for your feet."
      }
     }
    ],
@@ -841,15 +876,15 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Bienvenue au Nébula Bazar. Les défauts y sont mieux cachés que les vendeurs. Scannez tout. Deux fois.",
-      "en": "Welcome to the Nebula Bazaar. Defects hide better than the sellers there. Scan everything. Twice."
+      "fr": "Bienvenue au Nébula Bazar. Les défauts y sont mieux cachés que les vendeurs. Scannez tout. Deux fois. Et recomptez votre monnaie. Trois fois.",
+      "en": "Welcome to the Nebula Bazaar. Defects hide better than the sellers there. Scan everything. Twice. And count your change. Three times."
      }
     },
     {
      "speaker": "odile",
      "text": {
-      "fr": "(holo-message n° 4, suite) Au Bazar, tout le monde te proposera de « maquiller » tes défauts. Souviens-toi : le Bureau a une excellente mémoire.",
-      "en": "(holo-message #4, continued) At the Bazaar, everyone will offer to “touch up” your defects. Remember: the Bureau has an excellent memory."
+      "fr": "(holo-message n° 4, suite) Au Bazar, tout le monde te proposera de « maquiller » tes défauts. Souviens-toi : le Bureau de la Consommation a une excellente mémoire. Et un stylo à quatre couleurs.",
+      "en": "(holo-message #4, continued) At the Bazaar, everyone will offer to “touch up” your defects. Remember: the Consumer Bureau has an excellent memory. And a four-color pen."
      }
     }
    ]
@@ -898,15 +933,15 @@
     {
      "speaker": "inspector",
      "text": {
-      "fr": "Inspectrice Plimsoll, Bureau Galactique de la Consommation. On me signale des vaisseaux maquillés dans le secteur. Je n'accuse personne. Je note juste votre nom. En gras.",
-      "en": "Inspector Plimsoll, Galactic Consumer Bureau. I've had reports of touched-up ships in this sector. I'm not accusing anyone. I'm just writing down your name. In bold."
+      "fr": "Inspectrice Plimsoll, Bureau Galactique de la Consommation. On me signale des vaisseaux maquillés dans le secteur. Je n'accuse personne. Je note juste votre nom. En gras. Souligné deux fois.",
+      "en": "Inspector Plimsoll, Galactic Consumer Bureau. I've had reports of touched-up ships in this sector. I'm not accusing anyone. I'm just writing down your name. In bold. Underlined twice."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Elle a un stylo à quatre couleurs. Mauvais signe. Vendons trois vaisseaux sans rien dissimuler, histoire de prouver qu'on est des gens bien.",
-      "en": "She has a four-color pen. Bad sign. Let's sell three ships without hiding anything, just to prove we're good people."
+      "fr": "Elle a un stylo à quatre couleurs, et le rouge est presque vide. Mauvais signe. Vendons trois vaisseaux sans rien dissimuler, histoire de prouver qu'on est des gens bien.",
+      "en": "She has a four-color pen, and the red is almost empty. Bad sign. Let's sell three ships without hiding anything, just to prove we're good people."
      }
     }
    ],
@@ -914,15 +949,15 @@
     {
      "speaker": "inspector",
      "text": {
-      "fr": "Trois ventes irréprochables. Tant d'honnêteté, c'est presque suspect. Je vous garde à l'œil quand même.",
-      "en": "Three flawless sales. So much honesty is almost suspicious. I'm keeping an eye on you anyway."
+      "fr": "Trois ventes irréprochables. Tant d'honnêteté, c'est presque suspect. J'ouvre un dossier sur votre absence de dossier.",
+      "en": "Three flawless sales. So much honesty is almost suspicious. I'm opening a file on your lack of a file."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Elle a souri. Ou alors c'était une crampe.",
-      "en": "She smiled. Or it was a cramp."
+      "fr": "Elle a souri. Ou alors c'était une crampe. Dans le doute, j'ai noté la date.",
+      "en": "She smiled. Or it was a cramp. Either way, I wrote down the date."
      }
     }
    ]
@@ -1071,8 +1106,8 @@
     {
      "speaker": "odile",
      "text": {
-      "fr": "(holo-message n° 6) Trois pièces… Tu avances vite. Plus vite que moi, à vrai dire. Ça m'agace un peu.",
-      "en": "(holo-message #6) Three pieces… You're moving fast. Faster than I did, frankly. It's a bit annoying."
+      "fr": "(holo-message n° 6) Trois pièces… Tu avances vite. Plus vite que moi, à vrai dire. Ça m'agace un peu. Je suis fière, mais je boude.",
+      "en": "(holo-message #6) Three pieces… You're moving fast. Faster than I did, frankly. It's a bit annoying. I'm proud, but I'm sulking."
      }
     }
    ]
@@ -1127,8 +1162,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Il nous provoque. Et ça marche. Agrandissez le garage au niveau 2 : plus de place pour les vaisseaux et pour l'équipe.",
-      "en": "He's provoking us. And it's working. Expand the garage to level 2: more room for ships and for the crew."
+      "fr": "Il nous provoque. Et ça marche. Dans l'onglet Bureau, agrandissez le garage au niveau 2 : plus de place pour les vaisseaux, pour l'équipe et pour mon ego.",
+      "en": "He's provoking us. And it's working. In the Office tab, expand the garage to level 2: more room for ships, for the crew and for my ego."
      }
     }
    ],
@@ -1136,15 +1171,15 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Garage agrandi ! On a même un placard à balais. Je l'ai rebaptisé « salle de réunion ».",
-      "en": "Garage expanded! We even have a broom closet. I renamed it the “meeting room.”"
+      "fr": "Garage agrandi ! On a même un placard à balais. Je l'ai rebaptisé « salle de réunion ». Première réunion à 14 h. Ordre du jour : le balai.",
+      "en": "Garage expanded! We even have a broom closet. I renamed it the “meeting room.” First meeting at 14:00. Agenda: the broom."
      }
     },
     {
      "speaker": "odile",
      "text": {
-      "fr": "(holo-message n° 7) Si tu en es là, il est temps de visiter le Cimetière de Tartarus. Là où les vaisseaux vont mourir… et où j'ai caché autre chose.",
-      "en": "(holo-message #7) If you've made it this far, it's time to visit the Tartarus Graveyard. Where ships go to die… and where I hid something else."
+      "fr": "(holo-message n° 7) Si tu en es là, il est temps de visiter le Cimetière de Tartarus. Là où les vaisseaux vont mourir… et où j'ai caché autre chose. Pas mon goûter. Enfin, pas seulement.",
+      "en": "(holo-message #7) If you've made it this far, it's time to visit the Tartarus Graveyard. Where ships go to die… and where I hid something else. Not my snack. Well, not only my snack."
      }
     }
    ]
@@ -1199,8 +1234,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Débloquez « Cartes de Tartarus » dans la branche Lieux. Et emportez des piles de rechange. Les fantômes adorent vider les piles.",
-      "en": "Unlock “Tartarus charts” in the Locations branch. And bring spare batteries. Ghosts love draining batteries."
+      "fr": "Débloquez « Cartes de Tartarus » au Labo, branche Lieux. Et emportez des piles de rechange. Les fantômes adorent vider les piles. Et les frigos.",
+      "en": "Unlock “Tartarus charts” in the Lab, Locations branch. And bring spare batteries. Ghosts love draining batteries. And fridges."
      }
     }
    ],
@@ -1215,8 +1250,8 @@
     {
      "speaker": "odile",
      "text": {
-      "fr": "(holo-message n° 7, suite) À Tartarus, les épaves ont beaucoup de défauts, mais elles ne coûtent presque rien. Un bon mécanicien y vaut de l'or.",
-      "en": "(holo-message #7, continued) At Tartarus, wrecks have lots of defects, but they cost next to nothing. A good mechanic is worth gold there."
+      "fr": "(holo-message n° 7, suite) À Tartarus, les épaves ont beaucoup de défauts, mais elles ne coûtent presque rien. Un bon mécanicien y vaut de l'or. Grizzle vaut du platine. Ne le répète pas, ça finirait en augmentation.",
+      "en": "(holo-message #7, continued) At Tartarus, wrecks have lots of defects, but they cost next to nothing. A good mechanic is worth gold there. Grizzle is worth platinum. Don't repeat that, or it'll end in a raise."
      }
     }
    ]
@@ -1274,6 +1309,13 @@
       "fr": "Pensez aux règles de priorité : un mécanicien « Critiques d'abord » à Tartarus, c'est une assurance-vie.",
       "en": "Mind the priority rules: a “Critical first” mechanic at Tartarus is basically life insurance."
      }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Effectif complet ? Agrandissez le garage depuis l'onglet Bureau. Les employés ne s'empilent pas. J'ai demandé. Ils ont refusé.",
+      "en": "Headcount maxed out? Expand the garage from the Office tab. Employees don't stack. I asked. They refused."
+     }
     }
    ],
    "dialogue_end": [
@@ -1287,8 +1329,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Grizzle a déjà réorganisé mes étagères. Sans me demander. Je sens qu'on va très bien s'entendre. Ou pas du tout.",
-      "en": "Grizzle has already reorganized my shelves. Without asking. I can tell we'll get along great. Or not at all."
+      "fr": "Grizzle a déjà réorganisé mes étagères. Sans me demander. J'ai ajouté un article 3 au règlement : « on ne touche pas aux étagères de BOLT ». Grizzle l'a rangé dans un tiroir.",
+      "en": "Grizzle has already reorganized my shelves. Without asking. I added Article 3 to the house rules: “nobody touches BOLT's shelves.” Grizzle filed it in a drawer."
      }
     }
    ]
@@ -1349,8 +1391,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Le lot est aux enchères à Tartarus. Galax-Auto a envoyé trois acheteurs en lunettes noires. Dans l'espace. Ridicule.",
-      "en": "The lot is up at Tartarus. Galax-Auto sent three buyers in sunglasses. In space. Ridiculous."
+      "fr": "Le lot est aux enchères à Tartarus. Galax-Auto a envoyé trois acheteurs en lunettes noires. Dans l'espace. Ils se sont déjà cognés trois fois dans le sas.",
+      "en": "The lot is up at Tartarus. Galax-Auto sent three buyers in sunglasses. In space. They've already walked into the airlock three times."
      }
     }
    ],
@@ -1425,15 +1467,15 @@
     {
      "speaker": "lustre",
      "text": {
-      "fr": "Vous remboursez la dette… C'est contrariant. Galax-Auto comptait sur votre faillite pour boucler son plan trimestriel.",
-      "en": "You're paying off the debt… How annoying. Galax-Auto was counting on your bankruptcy to hit its quarterly plan."
+      "fr": "Vous remboursez la dette… C'est contrariant. Galax-Auto comptait sur votre faillite pour boucler son plan trimestriel. J'avais déjà commandé le gâteau.",
+      "en": "You're paying off the debt… How annoying. Galax-Auto was counting on your bankruptcy to hit its quarterly plan. I'd already ordered the cake."
      }
     },
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Montrons-lui qu'on tient la route : 20 000 crédits remboursés au total. Vous pouvez payer en avance depuis l'écran du garage.",
-      "en": "Let's show him we're solid: 20,000 credits repaid in total. You can pay early from the garage screen."
+      "fr": "Montrons-lui qu'on tient la route : 20 000 crédits remboursés au total, échéances comprises. Vous pouvez payer en avance depuis l'onglet Bureau. Il déteste ça. C'est un bonus.",
+      "en": "Let's show him we're solid: 20,000 credits repaid in total, installments included. You can pay early from the Office tab. He hates that. Call it a bonus."
      }
     }
    ],
@@ -1504,8 +1546,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Opalia : champagne, smokings et épaves presque neuves. Il faut une invitation pour y enchérir. Elle se débloque dans la branche Lieux… et suppose un peu de crédit galactique.",
-      "en": "Opalia: champagne, tuxedos and nearly-new wrecks. You need an invitation to bid there. It's unlocked in the Locations branch… and requires a bit of galactic credit."
+      "fr": "Opalia : champagne, smokings et épaves presque neuves. Il faut une invitation pour y enchérir. Elle se débloque au Labo, branche Lieux… et suppose un peu de crédit galactique.",
+      "en": "Opalia: champagne, tuxedos and nearly-new wrecks. You need an invitation to bid there. It's unlocked in the Lab, Locations branch… and requires a bit of galactic credit."
      }
     },
     {
@@ -1518,8 +1560,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Je vais le pixeliser.",
-      "en": "I'm going to pixelate him."
+      "fr": "Je vais le pixeliser. Avec de très gros pixels.",
+      "en": "I'm going to pixelate him. With very big pixels."
      }
     }
    ],
@@ -1527,8 +1569,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Invitation obtenue ! J'ai réservé une table près du buffet. Pour l'espionnage. Et pour le buffet.",
-      "en": "Invitation secured! I booked a table near the buffet. For espionage. And for the buffet."
+      "fr": "Invitation obtenue ! J'ai réservé une table près du buffet. Pour l'espionnage. Et pour le buffet. Je ne mange pas, mais je juge.",
+      "en": "Invitation secured! I booked a table near the buffet. For espionage. And for the buffet. I don't eat, but I judge."
      }
     },
     {
@@ -1596,8 +1638,8 @@
     {
      "speaker": "lustre",
      "text": {
-      "fr": "Que le plus riche gagne. Ah, mais c'est déjà décidé.",
-      "en": "May the richest win. Oh, but that's already settled."
+      "fr": "Que le plus riche gagne. Ah, mais c'est déjà décidé. J'ai même fait polir mes 60 dents pour la photo.",
+      "en": "May the richest win. Oh, but that's already settled. I even had all 60 of my teeth polished for the photo."
      }
     }
    ],
@@ -1696,8 +1738,8 @@
     {
      "speaker": "lustre",
      "text": {
-      "fr": "Pas si vite ! Galax-Auto vous offre 150 000 crédits pour l'Aurore, et j'efface la dette. Réfléchissez bien. Ou pas du tout, c'est encore mieux.",
-      "en": "Not so fast! Galax-Auto offers you 150,000 credits for the Aurora, and I'll wipe the debt. Think carefully. Or don't think at all, that's even better."
+      "fr": "Pas si vite ! Galax-Auto vous offre 150 000 crédits pour l'Aurore, et j'efface la dette. Réfléchissez bien. Ou pas du tout, c'est encore mieux. Signez ici, ici, et là où c'est écrit tout petit.",
+      "en": "Not so fast! Galax-Auto offers you 150,000 credits for the Aurora, and I'll wipe the debt. Think carefully. Or don't think at all, even better. Sign here, here, and where it's written very small."
      }
     }
    ]
@@ -1751,6 +1793,13 @@
      "text": {
       "fr": "Choisissez avec votre portefeuille. Il est tellement plus raisonnable que votre cœur.",
       "en": "Choose with your wallet. It's so much more reasonable than your heart."
+     }
+    },
+    {
+     "speaker": "bolt",
+     "text": {
+      "fr": "Pour info, je n'ai aucune préférence. Mais si on vend, je refuse de porter l'uniforme à paillettes. Je n'ai pas de corps, et je refuse quand même.",
+      "en": "For the record, I have no preference. But if we sell, I refuse to wear the sequined uniform. I don't have a body, and I still refuse."
      }
     }
    ],
@@ -1866,8 +1915,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Le vivier de candidats est dans l'onglet RH. Il change tous les jours, comme l'humeur des Krrkt.",
-      "en": "The candidate pool is in the HR tab. It changes every day, like Krrkt moods."
+      "fr": "Les candidats sont dans l'onglet Équipe. Le vivier change tous les jours, comme l'humeur des Krrkt. Les bons partent vite. Les Krrkt aussi, mais avec un morceau du comptoir.",
+      "en": "Candidates are in the Staff tab. The pool changes every day, like Krrkt moods. The good ones leave fast. So do the Krrkt, but with a chunk of the counter."
      }
     }
    ],
@@ -1882,8 +1931,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Pensez à vérifier son poste et sa règle de priorité dans l'onglet RH. Sinon, la recrue fera la sieste.",
-      "en": "Remember to check their station and priority rule in the HR tab. Otherwise, the recruit will take a nap."
+      "fr": "Pensez à vérifier son poste et sa règle de priorité dans l'onglet Équipe. Sinon, la recrue fera la sieste. Avec talent, mais la sieste.",
+      "en": "Remember to check their station and priority rule in the Staff tab. Otherwise, the recruit will nap. Very skillfully, but still."
      }
     }
    ],
@@ -1891,8 +1940,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Toujours personne ? Très bien. Je continuerai à me parler à moi-même. Comme d'habitude.",
-      "en": "Still nobody? Fine. I'll keep talking to myself. As usual."
+      "fr": "Toujours personne ? Très bien. Je continuerai à me parler à moi-même. Comme d'habitude. Je gagne tous les débats.",
+      "en": "Still nobody? Fine. I'll keep talking to myself. As usual. I win every argument."
      }
     }
    ]
@@ -1948,8 +1997,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Scannez trois lots. Les défauts cachés coûtent cher après la vente : retours SAV, réputation en berne, inspectrice en colère.",
-      "en": "Scan three lots. Hidden defects get expensive after the sale: warranty claims, bruised reputation, angry inspector."
+      "fr": "Scannez trois lots. Les défauts cachés coûtent cher après la vente : retours SAV, réputation en berne, inspectrice en colère. Dans cet ordre, si on a de la chance.",
+      "en": "Scan three lots. Hidden defects get expensive after the sale: warranty claims, bruised reputation, angry inspector. In that order, if we're lucky."
      }
     }
    ],
@@ -1964,8 +2013,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Bonus : chaque scan rapporte un peu de recherche. La curiosité paie. Parfois.",
-      "en": "Bonus: every scan earns a little research. Curiosity pays. Sometimes."
+      "fr": "Bonus : chaque scan rapporte un peu de recherche. La curiosité paie. Parfois. Le reste du temps, c'est vous qui payez le scan.",
+      "en": "Bonus: every scan earns a little research. Curiosity pays. Sometimes. The rest of the time, you pay for the scan."
      }
     }
    ],
@@ -2241,8 +2290,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Le comptoir vous remercie. Moi aussi.",
-      "en": "The counter thanks you. So do I."
+      "fr": "Le comptoir vous remercie. Il tremble encore, mais il vous remercie.",
+      "en": "The counter thanks you. It's still shaking, but it thanks you."
      }
     }
    ],
@@ -2324,8 +2373,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Avec quelqu'un à la cabine de peinture, ça se ferait tout seul, selon les goûts des clients. Je dis ça pour votre dos.",
-      "en": "With someone in the paint booth, this would happen automatically, following client tastes. I'm saying this for your back's sake."
+      "fr": "Avec un carrossier en poste, ça se ferait tout seul, selon les goûts des clients. Je dis ça pour votre dos. Et pour mes capteurs, qui saturent de gris.",
+      "en": "With a body artist on duty, this would happen on its own, following client tastes. I'm saying this for your back. And for my sensors, which are drowning in grey."
      }
     }
    ],
@@ -2518,8 +2567,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Félicitations. On vient de rendre heureuses quatre tonnes de cailloux.",
-      "en": "Congratulations. We just made four tons of pebbles happy."
+      "fr": "Félicitations. On vient de rendre heureuses quatre tonnes de cailloux. C'est un marché de niche, mais solide comme un roc.",
+      "en": "Congratulations. We just made four tons of pebbles happy. It's a niche market, but rock-solid."
      }
     }
    ],
@@ -2793,8 +2842,8 @@
     {
      "speaker": "inspector",
      "text": {
-      "fr": "Dossier classé. Pour l'instant.",
-      "en": "File closed. For now."
+      "fr": "Dossier classé. Pour l'instant. Au crayon de papier.",
+      "en": "File closed. For now. In pencil."
      }
     }
    ]
@@ -3345,8 +3394,8 @@
     {
      "speaker": "bolt",
      "text": {
-      "fr": "Une épave rare offerte. Les tentacules, ça a du bon.",
-      "en": "A free rare wreck. Tentacles have their perks."
+      "fr": "Une épave rare offerte. Je retire tout ce que j'ai dit sur les tentacules.",
+      "en": "A free rare wreck. I take back everything I said about tentacles."
      }
     }
    ],

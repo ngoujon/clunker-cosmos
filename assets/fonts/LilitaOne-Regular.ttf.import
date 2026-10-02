@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cwxpti8hm56a5"
-path="res://.godot/imported/Tiny5-Regular.ttf-9725221fe74b33ad4c58becad1f695c6.fontdata"
+uid="uid://beci63jhkfxs2"
+path="res://.godot/imported/LilitaOne-Regular.ttf-3fc5417b202255ea31131e19ae8ead4f.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/Tiny5-Regular.ttf"
-dest_files=["res://.godot/imported/Tiny5-Regular.ttf-9725221fe74b33ad4c58becad1f695c6.fontdata"]
+source_file="res://assets/fonts/LilitaOne-Regular.ttf"
+dest_files=["res://.godot/imported/LilitaOne-Regular.ttf-3fc5417b202255ea31131e19ae8ead4f.fontdata"]
 
 [params]
 

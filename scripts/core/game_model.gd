@@ -124,7 +124,12 @@ func now() -> int:
 
 func is_shift_hour(h: int = -1) -> bool:
 	var hh: int = hour if h < 0 else h
-	return hh >= db.cfgi("time", "shift_start", 8) and hh < db.cfgi("time", "shift_end", 18)
+	return hh >= db.cfgi("time", "shift_start", 8) and hh < shift_end()
+
+
+## Fin du service des employés (heure exclue), prolongée par la recherche « Équipe du soir ».
+func shift_end() -> int:
+	return mini(24, db.cfgi("time", "shift_end", 18) + stati("shift_extra_hours"))
 
 
 func is_owner_hour() -> bool:

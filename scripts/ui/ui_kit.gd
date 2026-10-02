@@ -1,8 +1,14 @@
 class_name UIKit
 extends RefCounted
-## Thème pixel (9-slice générés + police Tiny5) et fabriques de widgets pour l'UI construite en code.
+## Thème (9-slice pixel art générés + polices lissées) et fabriques de widgets pour l'UI construite en code.
+## Le jeu est rendu en mode « canvas_items » : les textures restent en pixels nets (filtre nearest, échelle
+## entière) et le texte est rastérisé à la résolution de la fenêtre (suréchantillonnage des polices).
 
-const FONT_PATH: String = "res://assets/fonts/Tiny5-Regular.ttf"
+const FONT_PATH: String = "res://assets/fonts/BarlowSemiCondensed-Medium.ttf"
+const DISPLAY_FONT_PATH: String = "res://assets/fonts/LilitaOne-Regular.ttf"
+## Repli pour les symboles absents des deux polices (→ ● ○ ★…) : sous-ensemble de Noto Sans Math aux
+## métriques de Barlow (tools/make_symbol_font.py), sinon toutes les lignes seraient plus hautes.
+const SYMBOL_FONT_PATH: String = "res://assets/fonts/CosmosSymbols.ttf"
 const C_TEXT: Color = Color("#f2f0e6")
 const C_DIM: Color = Color("#8a8fa6")
 const C_ACCENT: Color = Color("#f5dc6a")
@@ -16,17 +22,34 @@ const C_SLATE: Color = Color("#2a2b3d")
 
 static var _theme: Theme = null
 static var _font: FontFile = null
+static var _display_font: FontFile = null
 static var _tex_cache: Dictionary = {}
 
 
 static func font() -> FontFile:
 	if _font == null:
-		_font = load(FONT_PATH) as FontFile
-		_font.antialiasing = TextServer.FONT_ANTIALIASING_NONE
-		_font.hinting = TextServer.HINTING_NONE
-		_font.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_DISABLED
-		_font.force_autohinter = false
+		_font = _load_font(FONT_PATH)
 	return _font
+
+
+## Police des titres et du logo.
+static func display_font() -> FontFile:
+	if _display_font == null:
+		_display_font = _load_font(DISPLAY_FONT_PATH)
+		var fb: Array[Font] = [font()]
+		_display_font.fallbacks = fb
+	return _display_font
+
+
+static func _load_font(path: String) -> FontFile:
+	var f: FontFile = load(path) as FontFile
+	f.antialiasing = TextServer.FONT_ANTIALIASING_GRAY
+	f.hinting = TextServer.HINTING_LIGHT
+	f.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_AUTO
+	f.allow_system_fallback = false
+	var fb: Array[Font] = [load(SYMBOL_FONT_PATH) as FontFile]
+	f.fallbacks = fb
+	return f
 
 
 static func tex(path: String) -> Texture2D:
@@ -116,7 +139,8 @@ static func theme() -> Theme:
 	t.set_color("font_color", "Label", C_TEXT)
 	t.set_constant("line_spacing", "Label", 1)
 	t.set_type_variation("Title", "Label")
-	t.set_font_size("font_size", "Title", 16)
+	t.set_font("font", "Title", display_font())
+	t.set_font_size("font_size", "Title", 12)
 	t.set_color("font_color", "Title", C_ACCENT)
 	t.set_type_variation("Dim", "Label")
 	t.set_color("font_color", "Dim", C_DIM)
@@ -154,9 +178,28 @@ static func theme() -> Theme:
 	t.set_stylebox("scroll", "VScrollBar", vsb)
 	t.set_stylebox("scroll", "HScrollBar", vsb)
 	t.set_stylebox("grabber", "HScrollBar", vs)
+	# Curseurs (volumes) : piste sombre, partie remplie dorée, poignée pixel.
+	var track: StyleBoxFlat = _flat(C_DARK, C_DIM, 1, 0, 2)
+	t.set_stylebox("slider", "HSlider", track)
+	var filled: StyleBoxFlat = _flat(C_ORANGE, C_DIM, 1, 0, 2)
+	t.set_stylebox("grabber_area", "HSlider", filled)
+	t.set_stylebox("grabber_area_highlight", "HSlider", _flat(C_ACCENT, C_DIM, 1, 0, 2))
+	t.set_icon("grabber", "HSlider", _grabber_tex(C_TEXT))
+	t.set_icon("grabber_highlight", "HSlider", _grabber_tex(C_ACCENT))
+	t.set_icon("grabber_disabled", "HSlider", _grabber_tex(C_DIM))
 	_compact_styles(t)
 	_theme = t
 	return t
+
+
+## Poignée de curseur 5×9 dessinée en pixels (contour sombre).
+static func _grabber_tex(c: Color) -> ImageTexture:
+	var img: Image = Image.create(5, 9, false, Image.FORMAT_RGBA8)
+	img.fill(C_DARK)
+	for y: int in range(1, 8):
+		for x: int in range(1, 4):
+			img.set_pixel(x, y, c)
+	return ImageTexture.create_from_image(img)
 
 
 static func _flat(bg: Color, border: Color, bw: int, ml: int, mt: int) -> StyleBoxFlat:
@@ -219,7 +262,8 @@ static func wrap_label(text: String, width: int, color: Color = C_TEXT) -> Label
 	return l
 
 
-static func button(text: String, cb: Callable, icon_id: String = "", tooltip: String = "") -> Button:
+## Bouton avec bruitage de clic (`sfx`, vide = muet) et léger son au survol.
+static func button(text: String, cb: Callable, icon_id: String = "", tooltip: String = "", sfx: String = "ui_click") -> Button:
 	var b: Button = Button.new()
 	b.text = text
 	b.focus_mode = Control.FOCUS_NONE
@@ -229,9 +273,39 @@ static func button(text: String, cb: Callable, icon_id: String = "", tooltip: St
 		b.theme_type_variation = "TextButton"
 	if not tooltip.is_empty():
 		b.tooltip_text = tooltip
+	if not sfx.is_empty():
+		b.pressed.connect(func() -> void: Audio.play(sfx, 0.04))
+	b.mouse_entered.connect(func() -> void:
+		if not b.disabled:
+			Audio.play("ui_hover", 0.05))
 	b.pressed.connect(cb)
 	b.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	return b
+
+
+## Curseur 0-100 % (volumes) ; `cb` reçoit la valeur entre 0 et 1.
+static func slider(value: float, cb: Callable, width: int = 90) -> HSlider:
+	var s: HSlider = HSlider.new()
+	s.min_value = 0.0
+	s.max_value = 100.0
+	s.step = 5.0
+	s.value = roundf(value * 100.0)
+	s.custom_minimum_size = Vector2(width, 10)
+	s.focus_mode = Control.FOCUS_NONE
+	s.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	s.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	s.value_changed.connect(func(v: float) -> void: cb.call(v / 100.0))
+	return s
+
+
+## Infobulle riche : première ligne en titre (couleur d'accent), suite avec retour à la ligne.
+static func rich_tooltip(text: String, width: int = 200) -> Control:
+	var parts: PackedStringArray = text.split("\n", true, 1)
+	var v: VBoxContainer = vbox([], 1)
+	v.add_child(label(parts[0], C_ACCENT))
+	if parts.size() > 1:
+		v.add_child(wrap_label(parts[1], width, C_TEXT))
+	return v
 
 
 static func icon_rect(id: String, size: int = 16) -> TextureRect:

@@ -62,5 +62,15 @@
  "loc_tartarus": 302,
  "loc_opalia": 302,
  "ui_panel_src": 401,
- "ui_button_src": 401
+ "ui_button_src": 401,
+ "worker_staff_01": 202,
+ "worker_staff_02": 101,
+ "worker_staff_03": 202,
+ "worker_staff_04": 202,
+ "worker_staff_05": 202,
+ "worker_staff_06": 202,
+ "worker_staff_07": 101,
+ "worker_staff_08": 101,
+ "worker_staff_09": 202,
+ "worker_staff_10": 202
 }

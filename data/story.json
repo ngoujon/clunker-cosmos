@@ -1,5 +1,5 @@
 {
- "_comment": "Personnages, chapitres et fins de l'histoire de Wreck & Resell. Textes FR/EN.",
+ "_comment": "Personnages, chapitres et fins de l'histoire de Clunker Cosmos. Textes FR/EN.",
  "characters": {
   "bolt": {
    "name": {
@@ -121,8 +121,8 @@
     "en": "Independence"
    },
    "text": {
-    "fr": "L'Aurore s'élève au-dessus de Ferropolis et toute la galaxie retient son souffle (sauf les Brumeux, qui n'en ont pas). Les dons des fans de vieux coucous et la prime de la Société des Vaisseaux Historiques effacent la dette de Galax-Auto jusqu'au dernier crédit. Tante Odile reprend sa place à l'établi, BOLT repeint l'enseigne « Pièces & Miracles » en lettres dorées, et Augustin Lustre est muté à la succursale d'un astéroïde inhabité. Le garage reste à vous : libre, bruyant et légèrement rouillé.",
-    "en": "The Aurora rises above Ferropolis and the whole galaxy holds its breath (except the Mistlings, who don't have any). Donations from vintage-ship fans and a bounty from the Historic Starship Society wipe out the Galax-Auto debt down to the last credit. Aunt Odile takes back her spot at the workbench, BOLT repaints the “Parts & Miracles” sign in gold letters, and Augustin Lustre gets transferred to the branch office on an uninhabited asteroid. The garage stays yours: free, noisy and slightly rusty."
+    "fr": "L'Aurore s'élève au-dessus de Ferropolis et toute la galaxie retient son souffle (sauf les Brumeux, qui n'en ont pas). Les dons des fans de vieux coucous et la prime de la Société des Vaisseaux Historiques effacent la dette de Galax-Auto jusqu'au dernier crédit. Tante Odile reprend sa place à l'établi, BOLT repeint l'enseigne « Pièces & Miracles » en lettres dorées, et Augustin Lustre est muté sur un astéroïde désert, où il vend des porte-clés aux cailloux. Le garage reste à vous : libre, bruyant et légèrement rouillé.",
+    "en": "The Aurora rises above Ferropolis and the whole galaxy holds its breath (except the Mistlings, who don't have any). Donations from vintage-ship fans and a bounty from the Historic Starship Society wipe out the Galax-Auto debt down to the last credit. Aunt Odile takes back her spot at the workbench, BOLT repaints the “Parts & Miracles” sign in gold letters, and Augustin Lustre gets transferred to a deserted asteroid, where he sells keychains to rocks. The garage stays yours: free, noisy and slightly rusty."
    }
   },
   "franchise": {
@@ -131,8 +131,8 @@
     "en": "The Franchise"
    },
    "text": {
-    "fr": "Galax-Auto vire 150 000 crédits sur votre compte et efface la dette d'un coup de stylo doré. L'Aurore devient un panneau publicitaire volant qui clignote « Galax-Auto, l'avenir en plastique ». Le garage s'appelle désormais « Galax-Auto Express – Pièces & Miracles », et BOLT doit chanter le jingle de la marque toutes les heures. Tante Odile vous envoie une carte postale d'une planète lointaine : « Tu es riche. Je suis fière (un peu). »",
-    "en": "Galax-Auto wires 150,000 credits to your account and erases the debt with a golden pen. The Aurora becomes a flying billboard that blinks “Galax-Auto: the future, in plastic.” The garage is now called “Galax-Auto Express – Parts & Miracles”, and BOLT has to sing the company jingle every hour. Aunt Odile sends you a postcard from a faraway planet: “You're rich. I'm proud (a little).”"
+    "fr": "Galax-Auto vire 150 000 crédits sur votre compte et efface la dette d'un coup de stylo doré. L'Aurore devient un panneau publicitaire volant qui clignote « Galax-Auto, l'avenir en plastique ». Le garage s'appelle désormais « Galax-Auto Express – Pièces & Miracles », et BOLT doit chanter le jingle de la marque toutes les heures. Faux. Exprès. Tante Odile vous envoie une carte postale d'une planète lointaine : « Tu es riche. Je suis fière (un peu). »",
+    "en": "Galax-Auto wires 150,000 credits to your account and erases the debt with a golden pen. The Aurora becomes a flying billboard that blinks “Galax-Auto: the future, in plastic.” The garage is now called “Galax-Auto Express – Parts & Miracles”, and BOLT has to sing the company jingle every hour. Off-key. On purpose. Aunt Odile sends you a postcard from a faraway planet: “You're rich. I'm proud (a little).”"
    }
   }
  }

@@ -1,9 +1,13 @@
 class_name DialogueBox
 extends PanelContainer
 ## Boîte de dialogue des quêtes : portrait, nom de l'orateur (personnage ou espèce), texte affiché
-## progressivement. Clic = ligne suivante. Suspend le temps tant qu'elle est ouverte.
+## progressivement (petits bips de « voix » propres à chaque personnage). Clic = ligne suivante.
+## Suspend le temps tant qu'elle est ouverte.
 
 const CHARS_PER_SEC: float = 70.0
+## Un bip de voix toutes les N lettres affichées.
+const BLIP_EVERY: int = 3
+const BLIPS: Dictionary = {"bolt": "blip_bolt", "odile": "blip_odile", "lustre": "blip_lustre", "inspector": "blip_inspector"}
 
 var main: MainUI = null
 var _data: Dictionary = {}
@@ -16,6 +20,8 @@ var _text: Label
 var _hint: Label
 var _skip: Button
 var _typing: float = 0.0
+var _blip: String = ""
+var _last_blip: int = 0
 
 
 func _init() -> void:
@@ -91,6 +97,9 @@ func _render() -> void:
 	_text.add_theme_color_override("font_color", UIKit.C_DIM if str(line.get("speaker", "")) == "narrator" else UIKit.C_TEXT)
 	_text.visible_characters = 0
 	_typing = 0.0
+	var sp: String = str(line.get("speaker", ""))
+	_blip = "" if sp == "narrator" else str(BLIPS.get(sp, "blip_npc"))
+	_last_blip = 0
 	_hint.text = I18n.t("ui.dialogue.next", {"i": _idx + 1, "n": _lines.size()})
 
 
@@ -99,6 +108,9 @@ func _process(delta: float) -> void:
 		return
 	_typing += delta * CHARS_PER_SEC
 	_text.visible_characters = int(_typing)
+	if not _blip.is_empty() and _text.visible_characters - _last_blip >= BLIP_EVERY:
+		_last_blip = _text.visible_characters
+		Audio.play(_blip, 0.08)
 	if _text.visible_characters >= _text.get_total_character_count():
 		_text.visible_characters = -1
 

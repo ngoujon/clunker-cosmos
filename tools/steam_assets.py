@@ -4,7 +4,7 @@ Usage :
   .venv/Scripts/python.exe tools/steam_assets.py
 
 1. Godot (fenêtré) lance `--tour=capsules` (scripts/ui/capsules.gd) : chaque visuel est composé avec les vrais
-   assets (décors, vaisseaux peints par le shader du jeu, police Tiny5) puis agrandi au plus proche voisin
+   assets (décors, vaisseaux peints par le shader du jeu, logo en Lilita One) directement à la taille finale
    → docs/steam/capsules/<nom>_<largeur>x<hauteur>.png aux tailles demandées par Steam.
 2. Copie de l'en-tête pour la bibliothèque (même taille), icône Windows multi-tailles `icon.ico`
    et `icon.svg` du projet (icône de fenêtre) redessinée en pixels à partir de l'icône 64×64.

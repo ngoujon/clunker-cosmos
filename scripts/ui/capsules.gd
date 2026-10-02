@@ -1,7 +1,8 @@
 extends Node
 ## Visuels de la page Steam (capsules, fond de page, logo, icônes) composés avec les vrais assets du jeu :
-## décors de lieux, vaisseaux peints par le shader du jeu, police Tiny5. Chaque visuel est rendu dans un
-## SubViewport à sa taille « pixel », puis agrandi au plus proche voisin à la taille exigée par Steam.
+## décors de lieux, vaisseaux peints par le shader du jeu, logo en Lilita One. Chaque visuel est composé
+## dans un SubViewport en coordonnées « pixel » (taille de base) étirées d'un facteur entier jusqu'à la
+## taille exigée par Steam : le pixel art reste net (filtre nearest) et le logo est rastérisé à la taille finale.
 ##   godot --path . res://scenes/main.tscn -- --tour=capsules --out=docs/steam/capsules
 ## (voir tools/steam_assets.py, qui ajoute ensuite l'icône .ico et icon.svg).
 
@@ -20,7 +21,7 @@ const SHIPS: Array[Dictionary] = [
 ## en fractions de la taille. logo : "line", "two" ou "".
 const SPECS: Array[Dictionary] = [
 	{"file": "header_capsule_920x430", "size": Vector2i(460, 215), "scale": 2, "bg": "loc_ferropolis", "bg_k": 1, "bg_anchor": Vector2(0.5, 0.55),
-	 "logo": "line", "logo_y": 0.17, "logo_w": 0.86, "logo_h": 0.34, "ships": [[0, 0.25, 0.66, 2], [1, 0.75, 0.66, 2]]},
+	 "logo": "line", "logo_y": 0.21, "logo_w": 0.86, "logo_h": 0.34, "ships": [[0, 0.25, 0.66, 2], [1, 0.75, 0.66, 2]]},
 	{"file": "small_capsule_462x174", "size": Vector2i(231, 87), "scale": 2, "bg": "loc_ferropolis", "bg_k": 1, "bg_anchor": Vector2(0.5, 0.45),
 	 "logo": "two", "logo_y": 0.5, "logo_w": 0.92, "logo_h": 0.92, "ships": []},
 	{"file": "main_capsule_1232x706", "size": Vector2i(616, 353), "scale": 2, "bg": "loc_ferropolis", "bg_k": 2, "bg_anchor": Vector2(0.5, 0.5),
@@ -53,8 +54,6 @@ func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(out_dir)
 	for spec: Dictionary in SPECS:
 		var img: Image = await _render(spec)
-		var k: int = int(spec["scale"])
-		img.resize(img.get_width() * k, img.get_height() * k, Image.INTERPOLATE_NEAREST)
 		var path: String = out_dir.path_join(str(spec["file"]) + ".png")
 		img.save_png(path)
 		print("capsule : ", path, " ", img.get_width(), "x", img.get_height())
@@ -63,9 +62,13 @@ func _run() -> void:
 
 func _render(spec: Dictionary) -> Image:
 	var size: Vector2i = spec["size"]
+	var k: int = int(spec["scale"])
 	var transparent: bool = str(spec.get("bg", "")).is_empty()
 	var sv: SubViewport = SubViewport.new()
-	sv.size = size
+	sv.size = size * k
+	sv.size_2d_override = size
+	sv.size_2d_override_stretch = true
+	sv.oversampling_override = float(k)
 	sv.transparent_bg = transparent
 	sv.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
 	sv.snap_2d_transforms_to_pixel = true
@@ -137,25 +140,30 @@ func _ship(root: Control, d: Dictionary, center: Vector2, k: int) -> void:
 	root.add_child(v)
 
 
-## Logo : la plus grande taille multiple de 8 (pixels nets avec Tiny5) qui tient dans `max_w` × `max_h`.
-## Tiny5 à la taille fs : majuscules de 5/8 fs, ascendante 7/8 fs (haut des majuscules à fs/4 sous le
-## haut de ligne) ; interligne fs ; bandeau sombre avec une marge de 3/8 fs autour des lettres.
+## Logo : la plus grande taille de Lilita One qui tient dans `max_w` × `max_h`. Lilita One à la taille fs :
+## capitales de 0,7 fs (pas de jambages dans le titre) ; interligne serré de 0,92 fs ; bandeau sombre
+## avec une marge de 0,3 fs autour des lettres.
+const CAP: float = 0.7
+const LEADING: float = 0.92
+const PAD: float = 0.3
+
+
 func _logo(root: Control, lines: Array, center_y: float, max_w: float, max_h: float, band: bool) -> void:
-	var font: Font = UIKit.font()
+	var font: Font = UIKit.display_font()
 	var n: int = lines.size()
 	var fs: int = 8
-	for cand: int in range(8, 257, 8):
+	for cand: int in range(8, 400):
 		var widest: float = 0.0
 		for ln: Variant in lines:
 			widest = maxf(widest, font.get_string_size(str(ln), HORIZONTAL_ALIGNMENT_LEFT, -1, cand).x)
-		var block: float = float(cand) * (float(n) - 3.0 / 8.0) + (float(cand) * 0.75 if band else 0.0)
-		if widest + float(cand) / 8.0 <= max_w and block <= max_h:
+		var block: float = float(cand) * (LEADING * float(n - 1) + CAP + (PAD * 2.0 if band else 0.1))
+		if widest + float(cand) * 0.3 <= max_w and block <= max_h:
 			fs = cand
 	var f: float = float(fs)
-	var block_h: float = f * (float(n) - 3.0 / 8.0)
+	var block_h: float = f * (LEADING * float(n - 1) + CAP)
 	var top: float = round(center_y - block_h / 2.0)
 	if band:
-		var pad: float = f * 3.0 / 8.0
+		var pad: float = round(f * PAD)
 		var strip: ColorRect = ColorRect.new()
 		strip.color = Color(UIKit.C_DARK, 0.62)
 		strip.position = Vector2(0, top - pad)
@@ -167,18 +175,23 @@ func _logo(root: Control, lines: Array, center_y: float, max_w: float, max_h: fl
 			edge.position = Vector2(0, y)
 			edge.size = Vector2(root.size.x, 1)
 			root.add_child(edge)
+	var ascent: float = font.get_ascent(fs)
 	for i: int in n:
 		var l: Label = UIKit.label(str(lines[i]), UIKit.C_ACCENT)
+		l.add_theme_font_override("font", font)
 		l.add_theme_font_size_override("font_size", fs)
 		l.add_theme_constant_override("line_spacing", 0)
+		l.add_theme_color_override("font_outline_color", UIKit.C_DARK)
+		l.add_theme_constant_override("outline_size", maxi(2, int(f / 10.0)))
 		l.add_theme_color_override("font_shadow_color", UIKit.C_DARK)
-		var off: int = maxi(1, int(f / 16.0))
+		var off: int = maxi(1, int(f / 18.0))
 		l.add_theme_constant_override("shadow_offset_x", off)
 		l.add_theme_constant_override("shadow_offset_y", off)
 		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		l.vertical_alignment = VERTICAL_ALIGNMENT_TOP
-		l.position = Vector2(0, top + f * float(i) - f / 4.0)
-		l.size = Vector2(root.size.x, f * 9.0 / 8.0)
+		# Haut des capitales de la ligne i à top + i × interligne : ligne de base = haut des capitales + 0,7 fs.
+		l.position = Vector2(0, top + f * LEADING * float(i) + f * CAP - ascent)
+		l.size = Vector2(root.size.x, font.get_height(fs))
 		root.add_child(l)
 
 

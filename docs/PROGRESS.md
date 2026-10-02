@@ -1,4 +1,4 @@
-# Avancement — Wreck & Resell
+# Avancement — Clunker Cosmos
 
 ## Jalons
 

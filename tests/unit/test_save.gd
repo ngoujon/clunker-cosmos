@@ -22,6 +22,20 @@ func test_save_has_current_version() -> void:
 	check(d.has("game_version") and d.has("saved_at"), "métadonnées")
 
 
+## Jeu de gestion, pas un idle : rien n'avance pendant que le jeu est fermé, quelle que soit la date
+## de la sauvegarde.
+func test_load_never_advances_time() -> void:
+	var m: GameModel = _played(6, 2)
+	var d: Dictionary = SaveCodec.to_dict(m)
+	d["saved_at"] = int(d["saved_at"]) - 30 * 24 * 3600
+	var m2: GameModel = SaveCodec.from_dict(db, d)
+	eq(m2.day, m.day, "même jour")
+	eq(m2.hour, m.hour, "même heure")
+	eq(m2.credits, m.credits, "mêmes crédits")
+	eq(m2.ships.size(), m.ships.size(), "mêmes vaisseaux")
+	check(m2.owner_online, "patron présent")
+
+
 func test_roundtrip_preserves_state() -> void:
 	var m: GameModel = _played(3, 4)
 	var d1: Dictionary = SaveCodec.to_dict(m)

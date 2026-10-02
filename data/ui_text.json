@@ -1,8 +1,8 @@
 {
  "_comment": "Textes d'interface FR/EN (générés puis maintenus à la main). Clés utilisées par I18n.t().",
  "ui.title": {
-  "fr": "Wreck & Resell",
-  "en": "Wreck & Resell"
+  "fr": "Clunker Cosmos",
+  "en": "Clunker Cosmos"
  },
  "ui.subtitle": {
   "fr": "Garage orbital de vaisseaux d'occasion",
@@ -51,10 +51,6 @@
  "ui.menu.new_classic": {
   "fr": "Nouvelle partie : Classique",
   "en": "New game: Classic"
- },
- "ui.menu.language": {
-  "fr": "Langue : Français",
-  "en": "Language: English"
  },
  "ui.menu.quit": {
   "fr": "Quitter",
@@ -129,24 +125,24 @@
   "en": "Finances, debt, workshop policy, daily report."
  },
  "ui.top.credits.tip": {
-  "fr": "Crédits",
-  "en": "Credits"
+  "fr": "Crédits (¢)",
+  "en": "Credits (¢)"
  },
  "ui.top.rp.tip": {
-  "fr": "Points de recherche (réparations, ventes, scans, chercheurs)",
-  "en": "Research points (repairs, sales, scans, researchers)"
+  "fr": "Points de recherche",
+  "en": "Research points"
  },
  "ui.top.rep.tip": {
-  "fr": "Réputation (0-100) : attire plus de clients au budget plus élevé",
-  "en": "Reputation (0-100): brings more and richer customers"
+  "fr": "Réputation (0-100)",
+  "en": "Reputation (0-100)"
  },
  "ui.top.debt.tip": {
   "fr": "Dette envers Galax-Auto",
   "en": "Debt owed to Galax-Auto"
  },
  "ui.top.debt.next": {
-  "fr": "Prochaine échéance : jour {day}, {amount}",
-  "en": "Next installment: day {day}, {amount}"
+  "fr": "Prochaine échéance : jour {day}, {amount}.",
+  "en": "Next installment: day {day}, {amount}."
  },
  "ui.top.no_debt": {
   "fr": "libre !",
@@ -181,12 +177,12 @@
   "en": "Speed ×4 (3)"
  },
  "ui.top.settings": {
-  "fr": "Menu (Échap)",
-  "en": "Menu (Esc)"
+  "fr": "Paramètres et menu (Échap)",
+  "en": "Settings and menu (Esc)"
  },
  "ui.settings.title": {
-  "fr": "Menu",
-  "en": "Menu"
+  "fr": "Paramètres",
+  "en": "Settings"
  },
  "ui.settings.language": {
   "fr": "Langue",
@@ -209,8 +205,8 @@
   "en": "Save and quit"
  },
  "ui.settings.keys": {
-  "fr": "Espace : pause · 1-3 : vitesse · F11 : plein écran · F12 : capture",
-  "en": "Space: pause · 1-3: speed · F11: fullscreen · F12: screenshot"
+  "fr": "Espace : pause · 1-3 : vitesse · Échap : menu · F1 : tutoriel · F11 : plein écran · F12 : capture",
+  "en": "Space: pause · 1-3: speed · Esc: menu · F1: tutorial · F11: fullscreen · F12: screenshot"
  },
  "ui.dialogue.skip": {
   "fr": "Passer",
@@ -227,54 +223,6 @@
  "ui.ending.continue": {
   "fr": "Le garage reste ouvert : vous pouvez continuer à jouer librement.",
   "en": "The garage stays open: you can keep playing freely."
- },
- "ui.offline.title": {
-  "fr": "Pendant votre absence",
-  "en": "While you were away"
- },
- "ui.report.title": {
-  "fr": "Rapport du jour",
-  "en": "Daily report"
- },
- "ui.offline.away": {
-  "fr": "L'atelier a tourné {hours} h sans vous.",
-  "en": "The workshop ran {hours} h without you."
- },
- "ui.offline.sold": {
-  "fr": "Vaisseaux vendus",
-  "en": "Ships sold"
- },
- "ui.offline.revenue": {
-  "fr": "Chiffre d'affaires",
-  "en": "Revenue"
- },
- "ui.offline.bought": {
-  "fr": "Épaves achetées",
-  "en": "Wrecks bought"
- },
- "ui.offline.repairs": {
-  "fr": "Réparations",
-  "en": "Repairs"
- },
- "ui.offline.custom": {
-  "fr": "Personnalisations",
-  "en": "Customizations"
- },
- "ui.offline.expenses": {
-  "fr": "Dépenses",
-  "en": "Expenses"
- },
- "ui.offline.credits": {
-  "fr": "Solde",
-  "en": "Balance"
- },
- "ui.offline.rp": {
-  "fr": "Recherche",
-  "en": "Research"
- },
- "ui.offline.events": {
-  "fr": "Faits marquants",
-  "en": "Highlights"
  },
  "ui.garage.you": {
   "fr": "Vous",
@@ -1648,14 +1596,6 @@
   "fr": "Vitesse de recherche",
   "en": "Research speed"
  },
- "stat.offline_cap_hours": {
-  "fr": "Heures hors ligne max",
-  "en": "Max offline hours"
- },
- "stat.offline_efficiency": {
-  "fr": "Efficacité hors ligne",
-  "en": "Offline efficiency"
- },
  "trailer.hook": {
   "fr": "Un garage orbital. Des épaves. Des aliens.",
   "en": "An orbital garage. Wrecks. Aliens."
@@ -1680,13 +1620,13 @@
   "fr": "Embauchez une équipe excentrique",
   "en": "Hire a quirky crew"
  },
- "trailer.idle": {
-  "fr": "Votre atelier tourne tout seul",
-  "en": "Your workshop runs itself"
+ "trailer.crew": {
+  "fr": "Regardez votre équipe s'activer",
+  "en": "Watch your crew get to work"
  },
- "trailer.offline": {
-  "fr": "Même quand vous n'êtes pas là",
-  "en": "Even while you're away"
+ "trailer.policy": {
+  "fr": "Honnête… ou requin ? À vous de voir",
+  "en": "Honest… or a shark? Your call"
  },
  "trailer.research": {
   "fr": "42 technologies à découvrir",
@@ -1705,20 +1645,12 @@
   "en": "Coming soon on Steam"
  },
  "trailer.features": {
-  "fr": "Gestion · Idle · Pixel art · Humour",
-  "en": "Management · Idle · Pixel art · Humor"
+  "fr": "Gestion · Pixel art · Humour · Histoire",
+  "en": "Management · Pixel art · Humor · Story"
  },
  "trailer.langs": {
   "fr": "Français · English",
   "en": "English · Français"
- },
- "ui.settings.to_fullscreen": {
-  "fr": "Plein écran (F11)",
-  "en": "Fullscreen (F11)"
- },
- "ui.settings.to_windowed": {
-  "fr": "Mode fenêtré (F11)",
-  "en": "Windowed (F11)"
  },
  "ui.ev.emergency_loan": {
   "fr": "Prêt de dépannage de Galax-Auto : +{amount} (dette +{debt})",
@@ -1731,5 +1663,153 @@
  "ui.cat.loan": {
   "fr": "Prêt de dépannage",
   "en": "Emergency loan"
+ },
+ "ui.top.day.tip": {
+  "fr": "Jour et heure",
+  "en": "Day and time"
+ },
+ "ui.top.credits.help": {
+  "fr": "Votre trésorerie : {credits}. Elle paie les mises aux enchères, les pièces, la peinture, les options, les salaires, l'entretien du garage et les échéances de la dette. Les ventes la remplissent.",
+  "en": "Your cash: {credits}. It pays for auction bids, parts, paint, options, wages, garage upkeep and debt installments. Sales fill it back up."
+ },
+ "ui.top.rp.help": {
+  "fr": "{rp} points. Gagnés par les chercheurs pendant leur service, et un peu à chaque réparation, vente et scan. Au Labo, ils débloquent des technologies (avec des crédits).",
+  "en": "{rp} points. Earned by researchers during their shift, plus a little for every repair, sale and scan. In the Lab, they unlock technologies (along with credits)."
+ },
+ "ui.top.rep.help": {
+  "fr": "{rep} sur 100. Plus elle est haute, plus il vient de clients, avec de plus gros budgets. Elle monte avec les ventes réussies et baisse avec les réclamations, les retards de paiement et les contrôles ratés.",
+  "en": "{rep} out of 100. The higher it is, the more customers show up, with bigger budgets. It rises with good sales and drops with claims, late payments and failed inspections."
+ },
+ "ui.top.debt.help": {
+  "fr": "Galax-Auto exige {installment} tous les {days} jours. En retard : pénalité de {penalty} % et réputation en baisse. Remboursement anticipé possible au Bureau.",
+  "en": "Galax-Auto demands {installment} every {days} days. Late: {penalty}% penalty and lower reputation. You can repay early from the Office."
+ },
+ "ui.top.debt.free": {
+  "fr": "Dette remboursée : le garage est enfin à vous !",
+  "en": "Debt paid off: the garage is finally yours!"
+ },
+ "ui.top.day.help": {
+  "fr": "Une heure de jeu dure {sph} s à vitesse ×1. Votre équipe travaille de {start} h à {end} h (« ouvert »), vous de {start} h à {owner_end} h. Le temps s'arrête quand le jeu est en pause ou fermé.",
+  "en": "One in-game hour lasts {sph} s at ×1 speed. Your crew works from {start}:00 to {end}:00 (\"open\"), you from {start}:00 to {owner_end}:00. Time stops when the game is paused or closed."
+ },
+ "ui.top.tutorial": {
+  "fr": "Tutoriel (F1)",
+  "en": "Tutorial (F1)"
+ },
+ "ui.tutorial.title": {
+  "fr": "Tutoriel",
+  "en": "Tutorial"
+ },
+ "ui.tutorial.open": {
+  "fr": "Tutoriel (F1)",
+  "en": "Tutorial (F1)"
+ },
+ "ui.tutorial.prev": {
+  "fr": "‹ Précédent",
+  "en": "‹ Previous"
+ },
+ "ui.tutorial.next": {
+  "fr": "Suivant ›",
+  "en": "Next ›"
+ },
+ "ui.tutorial.hint": {
+  "fr": "Perdu ? F1 ou le bouton « ? » ouvre le tutoriel.",
+  "en": "Lost? F1 or the \"?\" button opens the tutorial."
+ },
+ "ui.away.focus": {
+  "fr": "Pause : la fenêtre du jeu n'est plus active",
+  "en": "Paused: the game window is not active"
+ },
+ "ui.away.idle": {
+  "fr": "Pause : vous n'étiez plus là. Bougez la souris pour reprendre.",
+  "en": "Paused: you were away. Move the mouse to resume."
+ },
+ "ui.settings.display": {
+  "fr": "Affichage",
+  "en": "Display"
+ },
+ "ui.settings.fullscreen": {
+  "fr": "Plein écran (F11)",
+  "en": "Fullscreen (F11)"
+ },
+ "ui.settings.audio": {
+  "fr": "Audio",
+  "en": "Audio"
+ },
+ "ui.settings.master": {
+  "fr": "Volume général",
+  "en": "Master volume"
+ },
+ "ui.settings.music": {
+  "fr": "Musique",
+  "en": "Music"
+ },
+ "ui.settings.sfx": {
+  "fr": "Bruitages",
+  "en": "Sound effects"
+ },
+ "ui.settings.game": {
+  "fr": "Jeu",
+  "en": "Game"
+ },
+ "ui.settings.lang_fr": {
+  "fr": "Français",
+  "en": "Français"
+ },
+ "ui.settings.lang_en": {
+  "fr": "English",
+  "en": "English"
+ },
+ "ui.settings.pause_focus": {
+  "fr": "Pause si la fenêtre est inactive",
+  "en": "Pause when the window is inactive"
+ },
+ "ui.settings.pause_idle": {
+  "fr": "Pause après inactivité",
+  "en": "Pause when idle"
+ },
+ "ui.settings.help": {
+  "fr": "Aide",
+  "en": "Help"
+ },
+ "ui.settings.on": {
+  "fr": "Oui",
+  "en": "On"
+ },
+ "ui.settings.off": {
+  "fr": "Non",
+  "en": "Off"
+ },
+ "ui.settings.never": {
+  "fr": "Jamais",
+  "en": "Never"
+ },
+ "ui.settings.minutes": {
+  "fr": "{n} min",
+  "en": "{n} min"
+ },
+ "ui.menu.tutorial": {
+  "fr": "Tutoriel",
+  "en": "Tutorial"
+ },
+ "ui.menu.tutorial_desc": {
+  "fr": "Les règles du garage, expliquées par BOLT (avec un peu trop d'opinions).",
+  "en": "The garage rules, explained by BOLT (with slightly too many opinions)."
+ },
+ "ui.menu.settings": {
+  "fr": "Paramètres",
+  "en": "Settings"
+ },
+ "ui.menu.settings_desc": {
+  "fr": "Plein écran, volumes de la musique et des bruitages, langue, pauses automatiques.",
+  "en": "Fullscreen, music and sound volume, language, automatic pauses."
+ },
+ "stat.shift_extra_hours": {
+  "fr": "Heures de service en plus",
+  "en": "Extra shift hours"
+ },
+ "ui.garage.crew_off": {
+  "fr": "Équipe en repos — retour à {hour} h",
+  "en": "Crew off duty — back at {hour}:00"
  }
 }

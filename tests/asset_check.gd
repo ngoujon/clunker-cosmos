@@ -28,6 +28,8 @@ static func required(db: ContentDB) -> Dictionary:
 		req["res://assets/portraits/%s.png" % str(db.species[sp]["portrait"])] = {"kind": "portrait", "w": 48, "h": 48}
 	for p: String in db.staff_portraits:
 		req["res://assets/portraits/%s.png" % p] = {"kind": "portrait", "w": 48, "h": 48}
+		# Personnage en pied de la vue en coupe du garage (scripts/ui/worker_view.gd).
+		req["res://assets/workers/%s.png" % p] = {"kind": "worker", "w": 20, "h": 26}
 	for c: String in db.characters:
 		var por: String = str(db.characters[c].get("portrait", ""))
 		if not por.is_empty():

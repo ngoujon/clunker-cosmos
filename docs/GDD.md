@@ -1,4 +1,4 @@
-# Wreck & Resell — Game Design Document
+# Clunker Cosmos — Game Design Document
 
 *Titre provisoire. Jeu idle / gestion 2D en pixel art pour PC (Steam). Godot 4.7.1, GDScript typé.*
 

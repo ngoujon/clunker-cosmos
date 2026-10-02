@@ -1,41 +1,71 @@
 class_name GarageScreen
 extends GameScreen
 ## Garage en vue en coupe : baies (3 par étage, mezzanines ajoutées avec l'agrandissement), vaisseaux
-## composés et peints, employés à leur poste, travail du patron (« Coup de main ») et fiche détaillée.
+## composés et peints, employés en pied à leur poste (baies, bureaux et labo de l'étage, coin pause),
+## travail du patron (« Coup de main ») et fiche détaillée.
 
 const COLS: int = 3
 const BAY_W: int = 156
-const BAY_H: int = 72
+## Hauteur des baies selon le nombre d'étages de baies (1 à 3) : resserrée pour garder l'étage visible.
+const BAY_H_BY_ROWS: Array[int] = [72, 65, 62]
 const DETAIL_W: int = 206
+## Mezzanine du décor (assets/backgrounds/garage.png, coordonnées du décor) : plancher où se tiennent les
+## employés de l'étage, et bande recopiée au-dessus des baies quand trois étages de baies la recouvrent.
+const MEZZ_FLOOR: int = 111
+const MEZZ_STRIP: Rect2i = Rect2i(0, 84, 480, 28)
+## Barre du garde-corps de la mezzanine (redessinée devant le corps des employés de l'étage).
+const MEZZ_RAIL: Rect2i = Rect2i(0, 99, 480, 5)
+## Places de l'étage, [x du centre, regard à gauche], alignées sur le mobilier du décor : bureau des
+## acheteurs et des vendeurs, labo des chercheurs, coin pause (machine à café, casiers).
+const SPOTS: Dictionary = {
+	"buy": [[132, true], [57, false]],
+	"sell": [[96, false], [115, true], [22, false], [150, true]],
+	"lab": [[225, false], [283, true], [195, false], [254, true]],
+	"break": [[338, false], [359, true], [388, false], [408, true], [428, false], [446, true]],
+}
+## Étendue horizontale de chaque coin de l'étage (places supplémentaires décalées à l'intérieur).
+const ZONE_X: Dictionary = {"buy": [14, 156], "sell": [14, 156], "lab": [180, 300], "break": [326, 452]}
+const ZONE_ORDER: Array[String] = ["buy", "sell", "lab", "break"]
 
 var _detail_scroll_key: String = "detail"
+var _rows: int = 1
+## id du vaisseau → [rect de la baie, rect du vaisseau] (placement des mécaniciens et carrossiers).
+var _ship_rects: Dictionary = {}
 
 
 func background() -> Array:
 	return ["res://assets/backgrounds/garage.png", 0.0]
 
 
+func bay_h() -> int:
+	return BAY_H_BY_ROWS[clampi(_rows, 1, BAY_H_BY_ROWS.size()) - 1]
+
+
 func bay_rect(i: int) -> Rect2:
 	var row: int = i / COLS
 	var col: int = i % COLS
-	return Rect2(4 + col * (BAY_W + 2), size.y - 2 - (row + 1) * (BAY_H + 2), BAY_W, BAY_H)
+	return Rect2(4 + col * (BAY_W + 2), size.y - 2 - (row + 1) * (bay_h() + 2), BAY_W, bay_h())
 
 
 func rebuild() -> void:
 	UIKit.clear(self)
+	_ship_rects.clear()
 	var gm: GameModel = m()
 	var slots: int = gm.ship_slots()
-	var rows: int = clampi(ceili(float(slots) / float(COLS)), 1, 3)
-	for r: int in range(1, rows):
+	_rows = clampi(ceili(float(slots) / float(COLS)), 1, 3)
+	if _rows >= 3:
+		_upper_floor_backdrop()
+	for r: int in range(1, _rows):
 		_mezzanine(r)
 	for i: int in slots:
 		var s: Ship = gm.ships[i] if i < gm.ships.size() else null
 		_bay(i, s)
 	for i: int in range(slots, gm.ships.size()):
 		_bay(i, gm.ships[i])
-	_owner_box()
-	if rows < 3:
-		_staff_strip()
+	var box: Control = _owner_box()
+	_workers(box)
+	move_child(box, get_child_count() - 1)
+	_crew_chip()
 	var sel: Ship = gm.find_ship(main.selected_ship)
 	if sel != null:
 		_detail(sel)
@@ -43,8 +73,42 @@ func rebuild() -> void:
 
 # --- Décor ---------------------------------------------------------------------
 
+## Décalage vertical entre le décor (plein écran) et cet écran (sous la barre du haut).
+func _bg_offset() -> int:
+	return roundi(global_position.y - main.global_position.y)
+
+
+## Bord inférieur (exclu) des personnages de l'étage : plancher de la mezzanine du décor, ou bande
+## recopiée au-dessus du dernier étage de baies quand celles-ci recouvrent la mezzanine.
+func _office_floor() -> int:
+	if _rows >= 3:
+		return int(bay_rect(COLS * (_rows - 1)).position.y) - 1
+	return MEZZ_FLOOR - _bg_offset() + 1
+
+
+## Trois étages de baies : le dernier recouvre la mezzanine du décor. On l'habille comme l'étage du
+## dessous (fond recopié) et on recopie la mezzanine (bureaux, labo, coin pause) au-dessus.
+func _upper_floor_backdrop() -> void:
+	var tex: Texture2D = UIKit.tex("res://assets/backgrounds/garage.png")
+	var src: Rect2 = bay_rect(COLS)
+	var top: Rect2 = bay_rect(COLS * 2)
+	_atlas(tex, Rect2(0, src.position.y + _bg_offset() - 1, size.x, src.size.y + 2), Vector2(0, top.position.y - 1))
+	var strip_y: int = _office_floor() - 1 - (MEZZ_FLOOR - MEZZ_STRIP.position.y)
+	_atlas(tex, Rect2(MEZZ_STRIP), Vector2(MEZZ_STRIP.position.x, strip_y))
+
+
+func _atlas(tex: Texture2D, region: Rect2, at: Vector2) -> void:
+	var a: AtlasTexture = AtlasTexture.new()
+	a.atlas = tex
+	a.region = region
+	var r: TextureRect = TextureRect.new()
+	r.texture = a
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	place(r, Rect2(at, region.size))
+
+
 func _mezzanine(row: int) -> void:
-	var y: float = size.y - 2 - row * (BAY_H + 2) - 3
+	var y: float = size.y - 2 - row * (bay_h() + 2) - 3
 	var deck: ColorRect = ColorRect.new()
 	deck.color = UIKit.C_SLATE
 	deck.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -62,7 +126,7 @@ func _mezzanine(row: int) -> void:
 		var pillar: ColorRect = ColorRect.new()
 		pillar.color = Color("#4a4d66")
 		pillar.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		place(pillar, Rect2(1 + c * (BAY_W + 2), y + 5, 3, BAY_H - 2))
+		place(pillar, Rect2(1 + c * (BAY_W + 2), y + 5, 3, bay_h() - 2))
 
 
 func _bay(i: int, s: Ship) -> void:
@@ -84,9 +148,13 @@ func _bay(i: int, s: Ship) -> void:
 	v.setup(s, db())
 	v.bob = not s.is_busy()
 	var vx: float = r.position.x + floorf((r.size.x - v.size.x) / 2.0)
-	var vy: float = r.position.y + r.size.y - 5 - v.size.y
-	v.position = Vector2(vx, maxf(r.position.y + 10, vy))
+	var vy: float = r.end.y - 5 - v.size.y
+	if vy < r.position.y + 10:
+		# Grand vaisseau dans une baie resserrée : posé au sol, quitte à passer sous la plaque.
+		vy = maxf(r.position.y + 2, r.end.y - v.size.y)
+	v.position = Vector2(vx, vy)
 	add_child(v)
+	_ship_rects[s.id] = [r, Rect2(v.position, v.size)]
 	clickable(frame, func() -> void:
 		main.selected_ship = s.id
 		dirty = true)
@@ -137,7 +205,7 @@ func _ship_job(s: Ship) -> Dictionary:
 	return {}
 
 
-func _owner_box() -> void:
+func _owner_box() -> Control:
 	var gm: GameModel = m()
 	var v: VBoxContainer = UIKit.vbox([], 1)
 	var head: HBoxContainer = UIKit.hbox([UIKit.label(t("ui.garage.you"), UIKit.C_ACCENT)], 3)
@@ -168,38 +236,124 @@ func _owner_box() -> void:
 	var p: PanelContainer = UIKit.panel(v, "DarkPanel")
 	add_child(p)
 	p.position = Vector2(2, 2)
+	p.reset_size()
+	return p
 
 
-func _staff_strip() -> void:
+# --- Employés -------------------------------------------------------------------------
+
+## Employés en service dessinés à leur place (StaffLayout) : dans la baie du vaisseau qu'ils réparent ou
+## peignent, ou à l'étage (bureau, labo, coin pause). Personne hors des heures de service.
+func _workers(owner_box: Control) -> void:
 	var gm: GameModel = m()
-	if gm.staff.is_empty():
+	var upstairs: Array[Dictionary] = []
+	for p: Dictionary in StaffLayout.placements(gm):
+		var e: Employee = gm.find_employee(str(p["employee"]))
+		if e == null:
+			continue
+		if str(p["zone"]) == "bay":
+			_bay_worker(e, p)
+		else:
+			p["e"] = e
+			upstairs.append(p)
+	if upstairs.is_empty():
 		return
-	var row: HBoxContainer = UIKit.hbox([], 2)
-	for e: Employee in gm.staff:
-		var chip: VBoxContainer = UIKit.vbox([], 0)
-		var top: Control = Control.new()
-		top.custom_minimum_size = Vector2(24, 24)
-		top.mouse_filter = Control.MOUSE_FILTER_PASS
-		var pr: TextureRect = TextureRect.new()
-		pr.texture = UIKit.portrait_small(e.portrait)
-		pr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		pr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		pr.custom_minimum_size = Vector2(24, 24)
-		pr.size = Vector2(24, 24)
-		pr.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		if not e.is_working() or not m().is_shift_hour():
-			pr.modulate = Color(0.55, 0.55, 0.6)
-		top.add_child(pr)
-		var ri: TextureRect = UIKit.icon_rect("role_" + e.role, 16)
-		ri.position = Vector2(14, 14)
-		ri.size = Vector2(16, 16)
-		ri.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		top.add_child(ri)
-		chip.add_child(top)
-		chip.add_child(UIKit.bar(100.0 - e.fatigue, 100.0, UIKit.C_GOOD if e.fatigue < 50.0 else UIKit.C_ORANGE, 24, 2))
-		chip.tooltip_text = "%s — %s %d\n%s" % [e.name, t("role.%s.name" % e.role), e.level, StaffScreen.status_text(gm, e)]
-		chip.mouse_filter = Control.MOUSE_FILTER_PASS
-		row.add_child(chip)
+	var feet: int = _office_floor()
+	if _rows >= 3:
+		_strip_workers(upstairs, feet, owner_box)
+		return
+	for p: Dictionary in upstairs:
+		var zone: String = str(p["zone"])
+		var spots: Array = SPOTS[zone]
+		var k: int = int(p["slot"])
+		var spot: Array = spots[k % spots.size()]
+		var extra: int = k / spots.size()
+		# Places supplémentaires : décalées de 7 pixels, alternativement à droite et à gauche.
+		var x: int = int(spot[0]) + (7 if extra % 2 == 1 else -7) * ((extra + 1) / 2)
+		var span: Array = ZONE_X[zone]
+		x = clampi(x, int(span[0]) + WorkerView.W / 2, int(span[1]) - WorkerView.W / 2)
+		var wv: WorkerView = _add_worker(p["e"] as Employee, str(p["activity"]), bool(spot[1]), Vector2(x - WorkerView.W / 2, feet - WorkerView.H))
+		_behind_rail(wv)
+
+
+## Trois étages de baies : l'étage est une bande recopiée en haut de l'écran, en partie cachée par le
+## cadre du patron ; les employés de l'étage s'y alignent à droite de ce cadre, regroupés par coin
+## (bureau, labo, pause) et se faisant face deux à deux.
+func _strip_workers(upstairs: Array[Dictionary], feet: int, owner_box: Control) -> void:
+	upstairs.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		var za: int = ZONE_ORDER.find(str(a["zone"]))
+		var zb: int = ZONE_ORDER.find(str(b["zone"]))
+		return za < zb or (za == zb and int(a["slot"]) < int(b["slot"])))
+	var x0: int = int(owner_box.position.x + owner_box.size.x) + 4 + WorkerView.W / 2
+	var x1: int = int(size.x) - 4 - WorkerView.W / 2
+	var n: int = upstairs.size()
+	var changes: int = 0
+	for k: int in range(1, n):
+		if str(upstairs[k]["zone"]) != str(upstairs[k - 1]["zone"]):
+			changes += 1
+	var gap: float = clampf(float(x1 - x0) / maxf(1.0, float(n - 1) + 0.75 * float(changes)), 8.0, 24.0)
+	var x: float = float(x0)
+	for k: int in n:
+		var p: Dictionary = upstairs[k]
+		if k > 0:
+			x += gap * (1.75 if str(p["zone"]) != str(upstairs[k - 1]["zone"]) else 1.0)
+		var cx: int = mini(roundi(x), x1)
+		var wv: WorkerView = _add_worker(p["e"] as Employee, str(p["activity"]), k % 2 == 1, Vector2(cx - WorkerView.W / 2, feet - WorkerView.H))
+		_behind_rail(wv)
+
+
+## Haut (dans cet écran) de la barre du garde-corps de l'étage.
+func _rail_top() -> int:
+	return _office_floor() - 1 - (MEZZ_FLOOR - MEZZ_RAIL.position.y)
+
+
+func _behind_rail(wv: WorkerView) -> void:
+	var a: AtlasTexture = AtlasTexture.new()
+	a.atlas = UIKit.tex("res://assets/backgrounds/garage.png")
+	a.region = Rect2(wv.position.x, MEZZ_RAIL.position.y, WorkerView.W, MEZZ_RAIL.size.y)
+	wv.rail = a
+	wv.rail_y = _rail_top() - int(wv.position.y)
+
+
+## Mécanicien ou carrossier : au sol de la baie, aux extrémités du vaisseau puis vers son centre,
+## tourné vers lui.
+func _bay_worker(e: Employee, p: Dictionary) -> void:
+	var rects: Array = _ship_rects.get(int(p["ship"]), [])
+	if rects.is_empty():
+		return
+	var r: Rect2 = rects[0]
+	var sr: Rect2 = rects[1]
+	var k: int = int(p["slot"])
+	var left_side: bool = k % 2 == 0
+	var depth: float = float(k / 2) * 15.0
+	var cx: float = sr.position.x + 9.0 + depth if left_side else sr.end.x - 9.0 - depth
+	cx = clampf(cx, r.position.x + WorkerView.W / 2 + 1, r.end.x - WorkerView.W / 2 - 1)
+	var wv: WorkerView = _add_worker(e, str(p["activity"]), not left_side, Vector2(roundi(cx) - WorkerView.W / 2, roundi(r.end.y) - WorkerView.H))
+	var s: Ship = m().find_ship(int(p["ship"]))
+	if s != null and str(p["activity"]) == "paint":
+		var pid: String = str(s.custom_job.get("id", s.paint)) if str(s.custom_job.get("kind", "")) == "paint" else s.paint
+		wv.paint_color = ShipView.paint_ramp(db(), pid)[1]
+
+
+func _add_worker(e: Employee, activity: String, face_left: bool, pos: Vector2) -> WorkerView:
+	var gm: GameModel = m()
+	var wv: WorkerView = WorkerView.new()
+	wv.setup(e.id, e.portrait, activity, face_left)
+	wv.tired = e.fatigue >= 70.0
+	wv.position = pos.round()
+	wv.tooltip_text = "%s — %s %s\n%s\n%s %d %% · %s %d %%" % [e.name, t("role.%s.name" % e.role), t("ui.staff.level", {"n": e.level}),
+		StaffScreen.status_text(gm, e), t("ui.staff.fatigue"), roundi(e.fatigue), t("ui.staff.morale"), roundi(e.morale)]
+	wv.pressed.connect(func() -> void: main.show_screen("staff"))
+	add_child(wv)
+	return wv
+
+
+## Hors des heures de service, l'équipe est absente : une étiquette le rappelle (clic : écran Équipe).
+func _crew_chip() -> void:
+	var gm: GameModel = m()
+	if gm.staff.is_empty() or gm.is_shift_hour():
+		return
+	var row: HBoxContainer = UIKit.hbox([UIKit.icon_rect("ui_staff", 10), UIKit.label(t("ui.garage.crew_off", {"hour": gm.db.cfgi("time", "shift_start", 8)}), UIKit.C_DIM)], 2)
 	var p: PanelContainer = UIKit.panel(row, "DarkPanel")
 	add_child(p)
 	p.reset_size()

@@ -1,14 +1,18 @@
 extends Node
-## Autoload « Game » : détient la partie en cours (GameModel), fait avancer le temps réel,
-## gère la sauvegarde/chargement et la progression hors ligne. Passif tant qu'aucune partie
-## n'est lancée (les tests headless n'en dépendent pas).
+## Autoload « Game » : détient la partie en cours (GameModel), fait avancer le temps réel et gère
+## la sauvegarde. Jeu de gestion, pas un idle : rien n'avance quand le jeu est fermé, et le temps
+## se suspend aussi quand la fenêtre n'est plus active ou après quelques minutes d'inactivité
+## (réglages du joueur). Passif tant qu'aucune partie n'est lancée (les tests headless n'en dépendent pas).
 
 signal model_changed
 signal hour_passed
 signal game_event(ev: Dictionary)
-signal offline_report_ready(report: Dictionary)
+## Pause automatique : raison "focus" ou "idle", "" à la reprise.
+signal away_changed(reason: String)
 
 const SAVE_PATH: String = "user://saves/slot1.json"
+## Ancien nom du projet (dossier de données utilisateur avant le renommage en « Clunker Cosmos »).
+const LEGACY_DIR_NAME: String = "Wreck & Resell"
 const AUTOSAVE_SECONDS: float = 30.0
 const SPEEDS: Array[float] = [0.0, 1.0, 2.0, 4.0]
 
@@ -17,19 +21,43 @@ var running: bool = false
 var speed_index: int = 1
 var _acc: float = 0.0
 var _autosave_acc: float = 0.0
-var last_offline_report: Dictionary = {}
 ## Nombre de fenêtres modales (dialogues, rapports) qui suspendent le temps.
 var hold: int = 0
-## Faux pendant les visites automatiques (captures, vidéo) : la sauvegarde du joueur n'est jamais touchée.
+## Faux pendant les visites automatiques (captures, vidéo) : la sauvegarde et les réglages du joueur
+## ne sont jamais touchés et les pauses automatiques sont désactivées.
 var persist: bool = true
+var settings: GameSettings = null
+## Pause automatique en cours ("" : aucune).
+var away: String = ""
+var _focused: bool = true
+var _idle_seconds: float = 0.0
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	settings = GameSettings.load_file()
 
 
 func has_save() -> bool:
 	return FileAccess.file_exists(SAVE_PATH)
+
+
+## Premier lancement après le renommage du jeu : copie la sauvegarde de l'ancien dossier de données
+## (« Wreck & Resell ») dans le nouveau. L'original n'est ni modifié ni supprimé. Appelé uniquement au
+## démarrage normal (jamais pendant les tests ou les visites automatiques).
+func import_legacy_save() -> bool:
+	if not persist or has_save():
+		return false
+	var legacy: String = OS.get_user_data_dir().get_base_dir().path_join(LEGACY_DIR_NAME).path_join("saves/slot1.json")
+	if not FileAccess.file_exists(legacy):
+		return false
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("user://saves"))
+	return DirAccess.copy_absolute(legacy, ProjectSettings.globalize_path(SAVE_PATH)) == OK
+
+
+func save_settings() -> void:
+	if persist:
+		settings.save_file()
 
 
 func new_game(story: bool, seed_value: int = -1) -> void:
@@ -39,17 +67,13 @@ func new_game(story: bool, seed_value: int = -1) -> void:
 	save()
 
 
+## Recharge la partie exactement où elle en était : le temps ne s'écoule pas jeu fermé.
 func load_game() -> bool:
 	var data: Dictionary = SaveCodec.read_file(SAVE_PATH)
 	if data.is_empty():
 		return false
-	var m: GameModel = SaveCodec.from_dict(Content.db, data)
-	_set_model(m)
-	var elapsed: float = maxf(0.0, Time.get_unix_time_from_system() - float(data.get("saved_at", 0)))
-	last_offline_report = OfflineSim.run(m, elapsed)
+	_set_model(SaveCodec.from_dict(Content.db, data))
 	running = true
-	if int(last_offline_report.get("hours", 0)) > 0:
-		offline_report_ready.emit(last_offline_report)
 	return true
 
 
@@ -65,6 +89,7 @@ func stop() -> void:
 	running = false
 	model = null
 	hold = 0
+	_set_away("")
 
 
 func _set_model(m: GameModel) -> void:
@@ -73,6 +98,7 @@ func _set_model(m: GameModel) -> void:
 	model = m
 	model.game_event.connect(_on_model_event)
 	_acc = 0.0
+	_idle_seconds = 0.0
 	model_changed.emit()
 
 
@@ -100,7 +126,8 @@ func _process(delta: float) -> void:
 	if _autosave_acc >= AUTOSAVE_SECONDS:
 		_autosave_acc = 0.0
 		save()
-	if hold > 0:
+	_update_away(delta)
+	if hold > 0 or not away.is_empty():
 		return
 	var sph: float = Content.db.cfgf("time", "seconds_per_hour", 4.0)
 	_acc += delta * speed()
@@ -112,11 +139,50 @@ func _process(delta: float) -> void:
 		guard += 1
 
 
+## Pauses automatiques (partie du joueur uniquement, jamais pendant les visites automatiques).
+func _update_away(delta: float) -> void:
+	if not persist or settings == null:
+		return
+	_idle_seconds += delta
+	var reason: String = settings.should_pause(_focused, _idle_seconds)
+	if reason.is_empty():
+		_set_away("")
+	elif away.is_empty() and speed_index > 0 and hold == 0:
+		# Le temps tournait : on le suspend (déjà en pause, rien à faire).
+		_set_away(reason)
+
+
+func _set_away(reason: String) -> void:
+	if reason == away:
+		return
+	away = reason
+	if reason.is_empty():
+		_idle_seconds = 0.0
+	else:
+		save()
+	away_changed.emit(away)
+
+
+## Toute action du joueur (souris, clavier, manette) remet à zéro le compteur d'inactivité.
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouse or event is InputEventKey or event is InputEventJoypadButton or event is InputEventScreenTouch:
+		_idle_seconds = 0.0
+		if away == "idle":
+			_set_away("")
+
+
 ## Fraction de l'heure en cours (animations).
 func hour_fraction() -> float:
 	return clampf(_acc / Content.db.cfgf("time", "seconds_per_hour", 4.0), 0.0, 1.0)
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_CLOSE_REQUEST and model != null and running:
-		save()
+	match what:
+		NOTIFICATION_APPLICATION_FOCUS_OUT:
+			_focused = false
+		NOTIFICATION_APPLICATION_FOCUS_IN:
+			_focused = true
+			_idle_seconds = 0.0
+		NOTIFICATION_WM_CLOSE_REQUEST:
+			if model != null and running:
+				save()

@@ -1,4 +1,4 @@
-"""Pipeline d'assets de Wreck & Resell (ComfyUI → pixelize → assets/ + manifeste).
+"""Pipeline d'assets de Clunker Cosmos (ComfyUI → pixelize → assets/ + manifeste).
 
 Étapes :
   generate      génère les images brutes manquantes (art/raw/, ignoré par git) via l'API HTTP de ComfyUI
@@ -309,13 +309,15 @@ def write_disclosure(manifest: list[dict[str, Any]]) -> None:
         "",
         "## Résumé pour la page Steam (section « AI Generated Content Disclosure »)",
         "",
-        "> **Pre-generated content** : all 2D pixel art (spaceship parts, wear overlays, character portraits, icons,",
-        "> backgrounds and UI frames) was generated locally with the open-weights model Z-Image-Turbo (Apache-2.0)",
+        "> **Pre-generated content** : all 2D pixel art (spaceship parts, wear overlays, character portraits and",
+        "> sprites, icons, backgrounds and UI frames) was generated locally with the open-weights model Z-Image-Turbo (Apache-2.0)",
         "> through ComfyUI, then reduced and quantized to a hand-made 32-color palette by our own script",
-        "> (`tools/pixelize.py`). Background removal uses BiRefNet (MIT). No live/runtime AI generation happens in",
-        "> the game. Prompts describe original concepts only: no artist, studio, franchise or existing character",
-        "> was referenced or imitated. Game code, design, story and texts were written with the help of an AI",
-        "> coding assistant (Claude) under human direction.",
+        "> (`tools/pixelize.py`). Background removal uses BiRefNet (MIT). The five instrumental music tracks were",
+        "> pre-generated locally with the open-weights model ACE-Step 1.5 (MIT) from generic style descriptions,",
+        "> then mastered by our own script (`tools/gen_audio.py`); sound effects are synthesized by code, without AI.",
+        "> No live/runtime AI generation happens in the game. Prompts describe original concepts only: no artist,",
+        "> studio, franchise, existing work or character was referenced or imitated. Game code, design, story and",
+        "> texts were written with the help of an AI coding assistant (Claude) under human direction.",
         "",
         "## Outils et modèles",
         "",
@@ -323,6 +325,8 @@ def write_disclosure(manifest: list[dict[str, Any]]) -> None:
         "|---|---|---|",
         "| Génération d'images (retenu) | Z-Image-Turbo bf16 + encodeur Qwen3-4B + VAE ae | Apache-2.0 |",
         "| Détourage | BiRefNet (nœud ComfyUI RemoveBackground) | MIT |",
+        "| Musique (pré-générée) | ACE-Step 1.5 turbo (`ace_step_1.5_turbo_aio.safetensors`) | MIT (reconditionnement Comfy-Org Apache-2.0) |",
+        "| Bruitages | tools/sfx_synth.py (synthèse procédurale, sans IA) | propriétaire du projet |",
         "| Post-traitement | tools/pixelize.py (code du projet) | propriétaire du projet |",
         "| Évalués puis écartés | SDXL base 1.0 + LoRA pixel-art-xl, FLUX.1-schnell, Qwen-Image 2512 | voir MODEL_LICENSES.md |",
         "",
@@ -338,7 +342,30 @@ def write_disclosure(manifest: list[dict[str, Any]]) -> None:
     for m in gen:
         p = m["prompt"].replace("|", "/")
         lines.append(f"| `{m['file']}` | {m['seed']} | {p[:110]}… |")
+    lines += _audio_disclosure()
     (ROOT / "docs" / "AI_DISCLOSURE.md").write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+
+
+def _audio_disclosure() -> list[str]:
+    """Section « Audio » de la divulgation, depuis art/audio_manifest.json (tools/gen_audio.py)."""
+    path = ROOT / "art" / "audio_manifest.json"
+    if not path.exists():
+        return []
+    items = json.loads(path.read_text(encoding="utf-8")).get("assets", [])
+    music = [a for a in items if a.get("type") == "music"]
+    sfx = [a for a in items if a.get("type") == "sfx"]
+    out = ["", "## Audio", "",
+           "- **Musique** : pistes instrumentales **pré-générées localement** avec ACE-Step 1.5 turbo (licence MIT) dans",
+           "  ComfyUI (workflow `comfy/workflows/ace_step15_music.json`, script `tools/gen_audio.py`) à partir de",
+           "  descriptions de style génériques ; trois graines par piste, choix par mesures objectives, puis mastering",
+           "  (-16 LUFS, fondus). Détail (invites, graines, réglages, mesures) dans `art/audio_manifest.json`.",
+           f"- **Bruitages** : {len(sfx)} effets synthétisés par code (numpy, `tools/sfx_synth.py`), sans IA ni échantillon tiers.",
+           "", "| Fichier | Rôle | Graine | Style demandé (début) |", "|---|---|---|---|"]
+    for a in music:
+        src = a.get("source", {})
+        tags = str(src.get("tags", "")).replace("|", "/")
+        out.append(f"| `{a['path']}` | {a.get('role', '')} | {src.get('seed', '')} | {tags[:100]}… |")
+    return out
 
 
 def placeholders() -> None:

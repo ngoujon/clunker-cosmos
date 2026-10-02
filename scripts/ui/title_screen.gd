@@ -1,6 +1,7 @@
 class_name TitleScreen
 extends Control
-## Écran titre : continuer, nouvelle partie (mode Histoire ou Classique), langue, quitter.
+## Écran titre : continuer, nouvelle partie (mode Histoire ou Classique), tutoriel, paramètres,
+## quitter, et bascule rapide de langue.
 ## Une petite parade de vaisseaux générés aléatoirement anime le fond.
 
 var main: MainUI = null
@@ -15,19 +16,24 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_build_parade()
 	var title: Label = UIKit.label(I18n.t("ui.title"), UIKit.C_ACCENT)
-	title.add_theme_font_size_override("font_size", 32)
+	title.add_theme_font_override("font", UIKit.display_font())
+	title.add_theme_font_size_override("font_size", 40)
 	title.add_theme_color_override("font_shadow_color", UIKit.C_DARK)
 	title.add_theme_constant_override("shadow_offset_x", 2)
 	title.add_theme_constant_override("shadow_offset_y", 2)
-	title.position = Vector2(0, 22)
-	title.size = Vector2(MainUI.W, 34)
+	title.add_theme_color_override("font_outline_color", UIKit.C_DARK)
+	title.add_theme_constant_override("outline_size", 4)
+	title.position = Vector2(0, 12)
+	title.size = Vector2(MainUI.W, 46)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_child(title)
 	var sub: Label = UIKit.label(I18n.t("ui.subtitle"), UIKit.C_TEXT)
 	sub.add_theme_color_override("font_shadow_color", UIKit.C_DARK)
 	sub.add_theme_constant_override("shadow_offset_x", 1)
 	sub.add_theme_constant_override("shadow_offset_y", 1)
-	sub.position = Vector2(0, 60)
+	sub.add_theme_color_override("font_outline_color", UIKit.C_DARK)
+	sub.add_theme_constant_override("outline_size", 3)
+	sub.position = Vector2(0, 58)
 	sub.size = Vector2(MainUI.W, 10)
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_child(sub)
@@ -36,13 +42,25 @@ func _ready() -> void:
 		menu.add_child(_menu_button("ui.menu.continue", _continue, "ui_play"))
 	menu.add_child(_menu_button("ui.menu.new_story", func() -> void: _new_game(true), "ui_quests", "ui.menu.story_desc"))
 	menu.add_child(_menu_button("ui.menu.new_classic", func() -> void: _new_game(false), "ui_garage", "ui.menu.classic_desc"))
-	menu.add_child(_menu_button("ui.menu.language", func() -> void: I18n.toggle(), "ui_settings"))
-	menu.add_child(_menu_button("ui.menu.quit", func() -> void: get_tree().quit(), ""))
+	menu.add_child(_menu_button("ui.menu.tutorial", func() -> void: main.open_tutorial(), "ui_research", "ui.menu.tutorial_desc"))
+	menu.add_child(_menu_button("ui.menu.settings", func() -> void: main.open_settings(), "ui_settings", "ui.menu.settings_desc"))
+	menu.add_child(_menu_button("ui.menu.quit", func() -> void: main.quit_game(), ""))
 	var panel: PanelContainer = UIKit.panel(menu, "DarkPanel")
 	panel.custom_minimum_size = Vector2(170, 0)
 	add_child(panel)
 	panel.reset_size()
-	panel.position = Vector2(int((MainUI.W - 170) / 2.0), 150)
+	panel.position = Vector2(int((MainUI.W - 170) / 2.0), MainUI.H - 18 - panel.size.y)
+	# Bascule rapide de langue (aussi dans les paramètres).
+	var langs: HBoxContainer = UIKit.hbox([], 2)
+	for loc: String in ["fr", "en"]:
+		var code: String = loc
+		var lb: Button = UIKit.button(loc.to_upper(), func() -> void: I18n.set_locale(code), "", I18n.t("ui.settings.lang_" + loc))
+		lb.toggle_mode = true
+		lb.set_pressed_no_signal(I18n.locale == loc)
+		langs.add_child(lb)
+	add_child(langs)
+	langs.reset_size()
+	langs.position = Vector2(MainUI.W - 4 - langs.size.x, MainUI.H - 4 - langs.size.y)
 	_mode_info = UIKit.wrap_label("", 300, UIKit.C_DIM)
 	_mode_info.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_mode_info.position = Vector2(90, 252)

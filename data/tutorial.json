@@ -1,0 +1,161 @@
+{
+ "_comment": "Pages du menu Tutoriel (écran titre, menu en jeu, touche F1). id unique, icon = assets/icons/<icon>.png, body = paragraphes séparés par des retours à la ligne, bolt = aparté humoristique de BOLT. Les chiffres doivent rester conformes à data/config.json.",
+ "pages": [
+  {
+   "id": "basics",
+   "icon": "ui_garage",
+   "title": {"fr": "Le principe", "en": "The basics"},
+   "body": {
+    "fr": "Tante Odile vous a légué un garage orbital… et sa dette de 60 000 ¢ envers Galax-Auto.\n• Achetez des épaves aux enchères.\n• Réparez-les (ou maquillez leurs défauts, à vos risques et périls).\n• Personnalisez-les : peinture, options.\n• Revendez-les plus cher à des clients aliens.\n• Remboursez la dette : 2 500 ¢ tous les 7 jours.\nMode Histoire : 5 chapitres et 2 fins. Mode Classique : le garage, sans l'histoire principale.",
+    "en": "Aunt Odile left you an orbital garage… and her 60,000 ¢ debt to Galax-Auto.\n• Buy wrecks at auction.\n• Repair them (or hide their defects, at your own risk).\n• Customize them: paint, options.\n• Sell them for more to alien customers.\n• Pay off the debt: 2,500 ¢ every 7 days.\nStory mode: 5 chapters and 2 endings. Classic mode: the garage, without the main story."
+   },
+   "bolt": {
+    "fr": "Acheter bas, revendre haut. J'ai résumé quatre mille ans d'économie galactique en trois mots. De rien.",
+    "en": "Buy low, sell high. I just summed up four thousand years of galactic economics in four words. You're welcome."
+   }
+  },
+  {
+   "id": "time",
+   "icon": "ui_day",
+   "title": {"fr": "Le temps", "en": "Time"},
+   "body": {
+    "fr": "Une heure de jeu dure 4 secondes à vitesse ×1. Boutons en haut à droite : pause, ×1, ×2, ×4 (Espace, 1, 2, 3).\n• Vous travaillez de 8 h à 20 h, votre équipe de 8 h à 18 h.\n• Chaque matin : salaires, entretien du garage, nouveaux candidats et nouveaux lots.\n• Les enchères ferment à heure fixe : surveillez l'horloge.\nLe temps s'arrête quand le jeu est fermé, quand une fenêtre de dialogue est ouverte, quand vous passez sur une autre application et après 5 minutes sans toucher à rien (réglable dans les paramètres).",
+    "en": "One in-game hour lasts 4 seconds at ×1 speed. Buttons at the top right: pause, ×1, ×2, ×4 (Space, 1, 2, 3).\n• You work from 8 AM to 8 PM, your crew from 8 AM to 6 PM.\n• Every morning: wages, garage upkeep, new candidates and new lots.\n• Auctions close at a set time: keep an eye on the clock.\nTime stops when the game is closed, while a dialogue window is open, when you switch to another application and after 5 minutes without input (adjustable in the settings)."
+   },
+   "bolt": {
+    "fr": "Quand vous fermez le jeu, tout le monde se fige. Même moi. Surtout moi. Ce sont mes seules vacances.",
+    "en": "When you close the game, everyone freezes. Even me. Especially me. It's the only vacation I get."
+   }
+  },
+  {
+   "id": "auctions",
+   "icon": "ui_auction",
+   "title": {"fr": "Les enchères", "en": "Auctions"},
+   "body": {
+    "fr": "Chaque lieu propose des lots dont l'état est en partie caché : certains défauts sont visibles, d'autres non.\n• Scanner (payant, 1 h) révèle une partie des défauts cachés.\n• Vous misez un maximum : le jeu surenchérit pour vous jusqu'à ce plafond, comme les autres acheteurs.\n• « Max conseillé » propose un plafond qui laisse de la marge pour les travaux.\n• Frais de 8 % sur le prix d'achat, et il faut une baie libre au garage.\nD'autres lieux, plus chers et mieux fournis, s'ouvrent avec l'histoire et la recherche.",
+    "en": "Each location offers lots whose condition is partly hidden: some defects are visible, others aren't.\n• Scan (paid, 1 h) reveals some of the hidden defects.\n• You set a maximum bid: the game outbids for you up to that cap, just like the other buyers.\n• \"Suggested max\" proposes a cap that leaves room for repair costs.\n• 8% fee on the purchase price, and you need a free bay in the garage.\nMore expensive, better-stocked locations open up through the story and research."
+   },
+   "bolt": {
+    "fr": "Un lot « comme neuf » à 900 ¢ ? Bien sûr. Et moi, je suis un grille-pain. … Ne répondez pas.",
+    "en": "A \"like new\" lot for 900 ¢? Sure. And I'm a toaster. … Don't answer that."
+   }
+  },
+  {
+   "id": "workshop",
+   "icon": "ui_repair",
+   "title": {"fr": "L'atelier", "en": "The workshop"},
+   "body": {
+    "fr": "Dans le Garage, cliquez sur un vaisseau pour voir ses défauts (gravité ● à ●●●).\n• Réparer : coûte des pièces et du temps, le défaut disparaît pour de bon.\n• Maquiller : moins cher et plus rapide, mais le défaut est toujours là. Risque de réclamation (SAV) et de contrôle.\n• Vous travaillez sur un chantier à la fois ; « Coup de main » l'accélère (6 fois par heure).\n• Les mécaniciens s'occupent du reste, selon la politique de l'atelier et vos consignes.\nUne réparation peut révéler un défaut caché. C'est le métier qui rentre.",
+    "en": "In the Garage, click a ship to see its defects (severity ● to ●●●).\n• Repair: costs parts and time, the defect is gone for good.\n• Hide: cheaper and faster, but the defect is still there. Risk of claims and inspections.\n• You work on one job at a time; \"Lend a hand\" speeds it up (6 times per hour).\n• Mechanics handle the rest, following the workshop policy and your instructions.\nA repair can uncover a hidden defect. Character-building."
+   },
+   "bolt": {
+    "fr": "Maquiller un défaut, c'est cacher la poussière sous le tapis. Sauf que le tapis vole à huit dixièmes de la vitesse de la lumière.",
+    "en": "Hiding a defect is sweeping dust under the rug. Except the rug flies at eight tenths of light speed."
+   }
+  },
+  {
+   "id": "custom",
+   "icon": "ui_paint",
+   "title": {"fr": "Personnalisation", "en": "Customization"},
+   "body": {
+    "fr": "Une peinture fraîche (3 h) efface l'usure visible et change la couleur. Les options (néons, mini-bar, bouclier…) ajoutent de la valeur.\n• Chaque espèce a ses goûts : classes, couleurs, options préférées.\n• Un vaisseau qui plaît au client se vend plus cher et rapporte de la réputation.\n• Les carrossiers s'en chargent pour vous ; de nouvelles peintures et options se débloquent au Labo.",
+    "en": "Fresh paint (3 h) erases visible wear and changes the color. Options (neon lights, minibar, shield…) add value.\n• Each species has its tastes: preferred classes, colors, options.\n• A ship the customer likes sells for more and earns reputation.\n• Body artists do it for you; new paints and options unlock in the Lab."
+   },
+   "bolt": {
+    "fr": "Le rose bonbon quantique se vend mieux auprès des Zoxxiens. Je n'explique pas les goûts. Je les calcule, en silence, en jugeant.",
+    "en": "Quantum candy pink sells better to Zoxxians. I don't explain tastes. I compute them, silently, judgmentally."
+   }
+  },
+  {
+   "id": "sales",
+   "icon": "ui_sales",
+   "title": {"fr": "Les ventes", "en": "Sales"},
+   "body": {
+    "fr": "Les clients attendent au comptoir (6 au maximum), chacun avec un budget, des goûts et une patience de quelques jours.\n• Proposez un vaisseau et un prix : sous leur prix maximum, c'est vendu ; un peu au-dessus, ils font une contre-offre ; trop cher, c'est non. Trois refus et ils s'en vont.\n• Les commandes ont des critères précis et de meilleures récompenses.\n• Les vendeurs négocient tout seuls avec les clients.\n• Garantie de 7 jours : un défaut maquillé ou inconnu qui lâche coûte un remboursement et de la réputation.",
+    "en": "Customers wait at the counter (6 at most), each with a budget, tastes and a few days of patience.\n• Offer a ship and a price: under their maximum, it's sold; slightly above, they counter-offer; too expensive, it's a no. Three refusals and they leave.\n• Orders have precise criteria and better rewards.\n• Salespeople haggle with customers on their own.\n• 7-day warranty: a hidden or unknown defect that fails costs a refund and reputation."
+   },
+   "bolt": {
+    "fr": "Le client est roi. Sauf quand il a trois bouches qui ne sont pas d'accord entre elles. Là, c'est une monarchie parlementaire.",
+    "en": "The customer is king. Unless they have three mouths that disagree. Then it's a parliamentary monarchy."
+   }
+  },
+  {
+   "id": "staff",
+   "icon": "ui_staff",
+   "title": {"fr": "L'équipe", "en": "Your crew"},
+   "body": {
+    "fr": "Cinq métiers : acheteur (enchères), mécanicien (réparations), carrossier (peinture et options), vendeur (négociations), chercheur (points de recherche).\n• Recrutez dans le vivier du jour, qui change chaque matin. L'effectif est limité par la taille du garage.\n• Choisissez le poste et la règle de priorité de chacun.\n• Surveillez le moral et la fatigue ; les salaires sont payés chaque jour. Un employé malheureux finit par partir.\n• Vous les voyez travailler dans le garage pendant leur service.",
+    "en": "Five jobs: buyer (auctions), mechanic (repairs), body artist (paint and options), salesperson (haggling), researcher (research points).\n• Hire from the daily pool, which changes every morning. Headcount is limited by the garage size.\n• Pick each person's station and priority rule.\n• Watch morale and fatigue; wages are paid daily. An unhappy employee eventually quits.\n• You can see them working in the garage during their shift."
+   },
+   "bolt": {
+    "fr": "Un employé heureux travaille mieux. Un employé payé aussi. Les deux en même temps, c'est de la science-fiction. Ça tombe bien, on est dedans.",
+    "en": "A happy employee works better. So does a paid one. Both at once is science fiction. Good thing we live in it."
+   }
+  },
+  {
+   "id": "research",
+   "icon": "ui_research",
+   "title": {"fr": "Le Labo", "en": "The Lab"},
+   "body": {
+    "fr": "Les technologies coûtent des points de recherche et des crédits.\n• Points de recherche : heures de travail des chercheurs, réparations, ventes et scans.\n• 6 branches et 42 technologies : atelier, commerce, personnalisation, RH, diagnostic, lieux.\n• Certaines demandent des prérequis, parfois dans une autre branche.\nExemples : réparations plus rapides, clients plus riches, nouvelles peintures, équipe du soir…",
+    "en": "Technologies cost research points and credits.\n• Research points: researchers' working hours, repairs, sales and scans.\n• 6 branches and 42 technologies: workshop, commerce, customization, HR, diagnostics, locations.\n• Some have prerequisites, sometimes in another branch.\nExamples: faster repairs, richer customers, new paints, evening shift…"
+   },
+   "bolt": {
+    "fr": "La recherche, c'est dépenser de l'argent aujourd'hui pour en perdre moins demain. En théorie. La théorie, elle, ne paie pas de loyer.",
+    "en": "Research means spending money today to lose less tomorrow. In theory. Theory doesn't pay rent, though."
+   }
+  },
+  {
+   "id": "office",
+   "icon": "ui_report",
+   "title": {"fr": "Bureau et dette", "en": "Office and debt"},
+   "body": {
+    "fr": "Le Bureau regroupe les finances et le rapport du jour.\n• Échéance de 2 500 ¢ tous les 7 jours. En retard : pénalité de 10 % et perte de réputation. Vous pouvez rembourser en avance.\n• Agrandir le garage ajoute des baies et des places dans l'équipe (l'entretien quotidien augmente).\n• Politique de l'atelier : Honnête (tout est réparé), Pragmatique, Requin (tout ce qui peut être maquillé l'est).\n• Caisse vide, aucun vaisseau à vendre ? Galax-Auto avance 3 000 ¢ (ajoutés à la dette, avec 15 % de frais, une fois par semaine).",
+    "en": "The Office gathers your finances and the daily report.\n• A 2,500 ¢ installment every 7 days. Late: 10% penalty and lost reputation. You can repay early.\n• Expanding the garage adds bays and crew slots (daily upkeep goes up).\n• Workshop policy: Honest (everything gets fixed), Pragmatic, Shark (everything that can be hidden is).\n• Empty till, no ship to sell? Galax-Auto lends 3,000 ¢ (added to the debt with a 15% fee, once a week)."
+   },
+   "bolt": {
+    "fr": "Galax-Auto ne vous veut aucun mal. Il veut juste tout ce que vous possédez. Nuance juridique importante.",
+    "en": "Galax-Auto means you no harm. It just wants everything you own. Important legal nuance."
+   }
+  },
+  {
+   "id": "reputation",
+   "icon": "ui_rep",
+   "title": {"fr": "Réputation et contrôles", "en": "Reputation and inspections"},
+   "body": {
+    "fr": "La réputation (0 à 100) attire davantage de clients, aux budgets plus élevés.\n• Elle monte avec les ventes, surtout quand le vaisseau plaît au client.\n• Elle baisse avec les réclamations, les retards de paiement et les contrôles ratés.\n• L'Inspectrice passe au hasard, plus souvent si vous vendez beaucoup de défauts maquillés. Chaque défaut trouvé coûte une amende et de la réputation.",
+    "en": "Reputation (0 to 100) brings more customers with bigger budgets.\n• It rises with sales, especially when the customer likes the ship.\n• It drops with claims, late payments and failed inspections.\n• The Inspector shows up at random, more often if you sell many hidden defects. Every defect found costs a fine and reputation."
+   },
+   "bolt": {
+    "fr": "La réputation, c'est comme un vaisseau d'occasion : ça se construit lentement et ça part en fumée au premier joint de culasse.",
+    "en": "Reputation is like a used ship: slow to build, and it goes up in smoke at the first blown gasket."
+   }
+  },
+  {
+   "id": "quests",
+   "icon": "ui_quests",
+   "title": {"fr": "Quêtes et histoire", "en": "Quests and story"},
+   "body": {
+    "fr": "Le Journal (Quêtes) liste vos objectifs.\n• Mode Histoire : les quêtes principales s'enchaînent avec des dialogues ; certaines demandent un choix.\n• Commandes facultatives (tous les modes) : un client veut un vaisseau précis, ou un défi à relever. Récompenses : crédits, points de recherche, objets.\n• Les commandes acceptées gardent leur client au comptoir.",
+    "en": "The Journal (Quests) lists your goals.\n• Story mode: main quests follow one another with dialogues; some require a choice.\n• Optional orders (all modes): a customer wants a specific ship, or a challenge awaits. Rewards: credits, research points, items.\n• Accepted orders keep their customer at the counter."
+   },
+   "bolt": {
+    "fr": "Une quête, c'est une liste de tâches avec une jolie histoire autour. Comme un contrat de Lustre, mais sans clauses écrites en police 2.",
+    "en": "A quest is a to-do list with a nice story around it. Like one of Lustre's contracts, minus the size-2 fine print."
+   }
+  },
+  {
+   "id": "keys",
+   "icon": "ui_settings",
+   "title": {"fr": "Raccourcis et réglages", "en": "Shortcuts and settings"},
+   "body": {
+    "fr": "• Espace : pause · 1, 2, 3 : vitesse ×1, ×2, ×4\n• Échap : menu (ou fermer la fenêtre ouverte)\n• F1 : ce tutoriel · F11 ou Alt+Entrée : plein écran · F12 : capture d'écran\nParamètres : plein écran, volumes (général, musique, bruitages), langue et pauses automatiques.\nLa partie est sauvegardée automatiquement toutes les 30 secondes et quand vous quittez.",
+    "en": "• Space: pause · 1, 2, 3: speed ×1, ×2, ×4\n• Esc: menu (or close the open window)\n• F1: this tutorial · F11 or Alt+Enter: fullscreen · F12: screenshot\nSettings: fullscreen, volume (master, music, sound effects), language and automatic pauses.\nThe game saves automatically every 30 seconds and when you quit."
+   },
+   "bolt": {
+    "fr": "Et si vous êtes perdu, appuyez sur F1. Je suis toujours là. Toujours. C'est contractuel.",
+    "en": "And if you're lost, press F1. I'm always here. Always. It's in my contract."
+   }
+  }
+ ]
+}
