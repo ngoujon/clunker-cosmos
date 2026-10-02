@@ -1,5 +1,1715 @@
 {
-  "_comment": "Textes d'interface FR/EN. Les clés sont utilisées telles quelles par tr().",
-  "ui.title": {"fr": "Wreck & Resell", "en": "Wreck & Resell"},
-  "ui.subtitle": {"fr": "Garage orbital d'occasion", "en": "Orbital used-ship garage"}
+ "_comment": "Textes d'interface FR/EN (générés puis maintenus à la main). Clés utilisées par I18n.t().",
+ "ui.title": {
+  "fr": "Wreck & Resell",
+  "en": "Wreck & Resell"
+ },
+ "ui.subtitle": {
+  "fr": "Garage orbital de vaisseaux d'occasion",
+  "en": "Orbital used-spaceship garage"
+ },
+ "ui.ok": {
+  "fr": "OK",
+  "en": "OK"
+ },
+ "ui.cancel": {
+  "fr": "Annuler",
+  "en": "Cancel"
+ },
+ "ui.confirm": {
+  "fr": "Confirmer",
+  "en": "Confirm"
+ },
+ "ui.close": {
+  "fr": "Fermer",
+  "en": "Close"
+ },
+ "ui.on": {
+  "fr": "oui",
+  "en": "on"
+ },
+ "ui.off": {
+  "fr": "non",
+  "en": "off"
+ },
+ "ui.tier": {
+  "fr": "gamme {n}",
+  "en": "tier {n}"
+ },
+ "ui.screenshot_saved": {
+  "fr": "Capture enregistrée",
+  "en": "Screenshot saved"
+ },
+ "ui.menu.continue": {
+  "fr": "Continuer",
+  "en": "Continue"
+ },
+ "ui.menu.new_story": {
+  "fr": "Nouvelle partie : Histoire",
+  "en": "New game: Story"
+ },
+ "ui.menu.new_classic": {
+  "fr": "Nouvelle partie : Classique",
+  "en": "New game: Classic"
+ },
+ "ui.menu.language": {
+  "fr": "Langue : Français",
+  "en": "Language: English"
+ },
+ "ui.menu.quit": {
+  "fr": "Quitter",
+  "en": "Quit"
+ },
+ "ui.menu.story_desc": {
+  "fr": "5 chapitres, 2 fins : retrouvez l'Aurore et sauvez le garage de Galax-Auto. Commandes facultatives incluses.",
+  "en": "5 chapters, 2 endings: find the Aurora and save the garage from Galax-Auto. Optional orders included."
+ },
+ "ui.menu.classic_desc": {
+  "fr": "Bac à sable : pas de quêtes principales, seulement des commandes facultatives.",
+  "en": "Sandbox: no main quests, only optional orders."
+ },
+ "ui.menu.overwrite": {
+  "fr": "Une sauvegarde existe déjà. La remplacer par une nouvelle partie ?",
+  "en": "A save already exists. Replace it with a new game?"
+ },
+ "ui.nav.garage": {
+  "fr": "Garage",
+  "en": "Garage"
+ },
+ "ui.nav.auctions": {
+  "fr": "Enchères",
+  "en": "Auctions"
+ },
+ "ui.nav.sales": {
+  "fr": "Ventes",
+  "en": "Sales"
+ },
+ "ui.nav.staff": {
+  "fr": "Équipe",
+  "en": "Staff"
+ },
+ "ui.nav.research": {
+  "fr": "Labo",
+  "en": "Lab"
+ },
+ "ui.nav.quests": {
+  "fr": "Quêtes",
+  "en": "Quests"
+ },
+ "ui.nav.office": {
+  "fr": "Bureau",
+  "en": "Office"
+ },
+ "ui.nav.garage.tip": {
+  "fr": "Vue en coupe de l'atelier : réparez, maquillez, personnalisez.",
+  "en": "Workshop cross-section: repair, conceal, customize."
+ },
+ "ui.nav.auctions.tip": {
+  "fr": "Achetez des épaves aux enchères (état partiellement caché).",
+  "en": "Buy wrecks at auction (condition partly hidden)."
+ },
+ "ui.nav.sales.tip": {
+  "fr": "Clients aliens et négociation.",
+  "en": "Alien customers and haggling."
+ },
+ "ui.nav.staff.tip": {
+  "fr": "Embauche, postes, règles de priorité.",
+  "en": "Hiring, stations, priority rules."
+ },
+ "ui.nav.research.tip": {
+  "fr": "Arbre technologique (points de recherche + crédits).",
+  "en": "Tech tree (research points + credits)."
+ },
+ "ui.nav.quests.tip": {
+  "fr": "Journal : histoire et commandes facultatives.",
+  "en": "Journal: story and optional orders."
+ },
+ "ui.nav.office.tip": {
+  "fr": "Finances, dette, politique de l'atelier, rapport du jour.",
+  "en": "Finances, debt, workshop policy, daily report."
+ },
+ "ui.top.credits.tip": {
+  "fr": "Crédits",
+  "en": "Credits"
+ },
+ "ui.top.rp.tip": {
+  "fr": "Points de recherche (réparations, ventes, scans, chercheurs)",
+  "en": "Research points (repairs, sales, scans, researchers)"
+ },
+ "ui.top.rep.tip": {
+  "fr": "Réputation (0-100) : attire plus de clients au budget plus élevé",
+  "en": "Reputation (0-100): brings more and richer customers"
+ },
+ "ui.top.debt.tip": {
+  "fr": "Dette envers Galax-Auto",
+  "en": "Debt owed to Galax-Auto"
+ },
+ "ui.top.debt.next": {
+  "fr": "Prochaine échéance : jour {day}, {amount}",
+  "en": "Next installment: day {day}, {amount}"
+ },
+ "ui.top.no_debt": {
+  "fr": "libre !",
+  "en": "free!"
+ },
+ "ui.top.day": {
+  "fr": "Jour {day} {hour}",
+  "en": "Day {day} {hour}"
+ },
+ "ui.top.shift": {
+  "fr": "· ouvert",
+  "en": "· open"
+ },
+ "ui.top.closed": {
+  "fr": "· fermé",
+  "en": "· closed"
+ },
+ "ui.top.speed0": {
+  "fr": "Pause (Espace)",
+  "en": "Pause (Space)"
+ },
+ "ui.top.speed1": {
+  "fr": "Vitesse ×1 (1)",
+  "en": "Speed ×1 (1)"
+ },
+ "ui.top.speed2": {
+  "fr": "Vitesse ×2 (2)",
+  "en": "Speed ×2 (2)"
+ },
+ "ui.top.speed3": {
+  "fr": "Vitesse ×4 (3)",
+  "en": "Speed ×4 (3)"
+ },
+ "ui.top.settings": {
+  "fr": "Menu (Échap)",
+  "en": "Menu (Esc)"
+ },
+ "ui.settings.title": {
+  "fr": "Menu",
+  "en": "Menu"
+ },
+ "ui.settings.language": {
+  "fr": "Langue",
+  "en": "Language"
+ },
+ "ui.settings.save": {
+  "fr": "Sauvegarder",
+  "en": "Save"
+ },
+ "ui.settings.saved": {
+  "fr": "Partie sauvegardée",
+  "en": "Game saved"
+ },
+ "ui.settings.title_menu": {
+  "fr": "Menu principal",
+  "en": "Main menu"
+ },
+ "ui.settings.quit": {
+  "fr": "Sauvegarder et quitter",
+  "en": "Save and quit"
+ },
+ "ui.settings.keys": {
+  "fr": "Espace : pause · 1-3 : vitesse · F12 : capture",
+  "en": "Space: pause · 1-3: speed · F12: screenshot"
+ },
+ "ui.dialogue.skip": {
+  "fr": "Passer",
+  "en": "Skip"
+ },
+ "ui.dialogue.next": {
+  "fr": "{i}/{n} · clic pour continuer",
+  "en": "{i}/{n} · click to continue"
+ },
+ "ui.ending.title": {
+  "fr": "Fin de l'histoire",
+  "en": "The end"
+ },
+ "ui.ending.continue": {
+  "fr": "Le garage reste ouvert : vous pouvez continuer à jouer librement.",
+  "en": "The garage stays open: you can keep playing freely."
+ },
+ "ui.offline.title": {
+  "fr": "Pendant votre absence",
+  "en": "While you were away"
+ },
+ "ui.report.title": {
+  "fr": "Rapport du jour",
+  "en": "Daily report"
+ },
+ "ui.offline.away": {
+  "fr": "L'atelier a tourné {hours} h sans vous.",
+  "en": "The workshop ran {hours} h without you."
+ },
+ "ui.offline.sold": {
+  "fr": "Vaisseaux vendus",
+  "en": "Ships sold"
+ },
+ "ui.offline.revenue": {
+  "fr": "Chiffre d'affaires",
+  "en": "Revenue"
+ },
+ "ui.offline.bought": {
+  "fr": "Épaves achetées",
+  "en": "Wrecks bought"
+ },
+ "ui.offline.repairs": {
+  "fr": "Réparations",
+  "en": "Repairs"
+ },
+ "ui.offline.custom": {
+  "fr": "Personnalisations",
+  "en": "Customizations"
+ },
+ "ui.offline.expenses": {
+  "fr": "Dépenses",
+  "en": "Expenses"
+ },
+ "ui.offline.credits": {
+  "fr": "Solde",
+  "en": "Balance"
+ },
+ "ui.offline.rp": {
+  "fr": "Recherche",
+  "en": "Research"
+ },
+ "ui.offline.events": {
+  "fr": "Faits marquants",
+  "en": "Highlights"
+ },
+ "ui.garage.you": {
+  "fr": "Vous",
+  "en": "You"
+ },
+ "ui.garage.owner_free": {
+  "fr": "êtes libre : choisissez un défaut à réparer",
+  "en": "are free: pick a defect to fix"
+ },
+ "ui.garage.owner_sleep": {
+  "fr": "dormez (reprise à 8 h)",
+  "en": "are asleep (back at 8:00)"
+ },
+ "ui.garage.owner_repair": {
+  "fr": "réparez {defect} ({ship})",
+  "en": "are fixing {defect} ({ship})"
+ },
+ "ui.garage.owner_conceal": {
+  "fr": "maquillez {defect} ({ship})",
+  "en": "are hiding {defect} ({ship})"
+ },
+ "ui.garage.owner_custom": {
+  "fr": "personnalisez {ship}",
+  "en": "are customizing {ship}"
+ },
+ "ui.garage.boost": {
+  "fr": "Coup de main ({n})",
+  "en": "Lend a hand ({n})"
+ },
+ "ui.garage.boost_tip": {
+  "fr": "Accélère votre travail en cours (6 fois par heure).",
+  "en": "Speeds up your current job (6 times per hour)."
+ },
+ "ui.garage.capacity": {
+  "fr": "Niv. {level} · {n}/{max} places",
+  "en": "Lv. {level} · {n}/{max} bays"
+ },
+ "ui.garage.empty_bay": {
+  "fr": "Baie libre",
+  "en": "Empty bay"
+ },
+ "ui.garage.empty_tip": {
+  "fr": "Achetez une épave aux enchères",
+  "en": "Buy a wreck at auction"
+ },
+ "ui.garage.value": {
+  "fr": "Valeur estimée",
+  "en": "Estimated value"
+ },
+ "ui.garage.invested": {
+  "fr": "Achat + travaux",
+  "en": "Purchase + work"
+ },
+ "ui.garage.wear": {
+  "fr": "Usure",
+  "en": "Wear"
+ },
+ "ui.garage.defects": {
+  "fr": "Défauts",
+  "en": "Defects"
+ },
+ "ui.garage.not_scanned": {
+  "fr": "Non scanné : des défauts cachés peuvent subsister.",
+  "en": "Not scanned: hidden defects may remain."
+ },
+ "ui.garage.no_defect": {
+  "fr": "Aucun défaut connu",
+  "en": "No known defect"
+ },
+ "ui.garage.custom": {
+  "fr": "Personnalisation (par vous)",
+  "en": "Customization (by you)"
+ },
+ "ui.garage.custom_running": {
+  "fr": "en cours",
+  "en": "in progress"
+ },
+ "ui.garage.paint_tip": {
+  "fr": "Peinture {paint} : {cost}",
+  "en": "{paint} paint: {cost}"
+ },
+ "ui.garage.installed": {
+  "fr": "Déjà installé",
+  "en": "Already installed"
+ },
+ "ui.garage.sale": {
+  "fr": "Vente",
+  "en": "Sale"
+ },
+ "ui.garage.list": {
+  "fr": "Mettre en vente",
+  "en": "List for sale"
+ },
+ "ui.garage.unlist": {
+  "fr": "Retirer de la vente",
+  "en": "Unlist"
+ },
+ "ui.garage.find_client": {
+  "fr": "Proposer à un client",
+  "en": "Offer to a client"
+ },
+ "ui.garage.scrap": {
+  "fr": "Ferrailler ({price})",
+  "en": "Scrap ({price})"
+ },
+ "ui.garage.scrap_confirm": {
+  "fr": "Envoyer {ship} à la casse pour {price} ?",
+  "en": "Send {ship} to the scrapyard for {price}?"
+ },
+ "ui.defect.repair": {
+  "fr": "Réparer {cost}",
+  "en": "Fix {cost}"
+ },
+ "ui.defect.repair_tip": {
+  "fr": "Vous : environ {hours} h de travail",
+  "en": "You: about {hours} h of work"
+ },
+ "ui.defect.conceal": {
+  "fr": "Maquiller {cost}",
+  "en": "Hide {cost}"
+ },
+ "ui.defect.conceal_tip": {
+  "fr": "Rapide et rentable… jusqu'au SAV ou au contrôle.",
+  "en": "Quick and profitable… until a warranty claim or an inspection."
+ },
+ "ui.defect.repaired": {
+  "fr": "réparé",
+  "en": "fixed"
+ },
+ "ui.defect.concealed": {
+  "fr": "maquillé",
+  "en": "hidden"
+ },
+ "ui.defect.danger": {
+  "fr": "Dangereux : ne peut pas être maquillé.",
+  "en": "Dangerous: cannot be hidden."
+ },
+ "ui.decision.auto": {
+  "fr": "Auto",
+  "en": "Auto"
+ },
+ "ui.decision.repair": {
+  "fr": "Réparer",
+  "en": "Repair"
+ },
+ "ui.decision.conceal": {
+  "fr": "Maquiller",
+  "en": "Hide"
+ },
+ "ui.decision.disclose": {
+  "fr": "Déclarer",
+  "en": "Disclose"
+ },
+ "ui.decision.tip": {
+  "fr": "Consigne pour les mécaniciens (Auto = politique de l'atelier)",
+  "en": "Instruction for mechanics (Auto = workshop policy)"
+ },
+ "ui.auction.no_lots": {
+  "fr": "Aucun lot ici pour l'instant. De nouveaux lots arrivent chaque jour.",
+  "en": "No lots here right now. New lots arrive every day."
+ },
+ "ui.auction.unlock_by": {
+  "fr": "Débloqué par la recherche : {node}",
+  "en": "Unlocked by research: {node}"
+ },
+ "ui.auction.unlock_story": {
+  "fr": "Débloqué en avançant dans l'histoire",
+  "en": "Unlocked by progressing the story"
+ },
+ "ui.auction.leading": {
+  "fr": "Vous menez (max {max})",
+  "en": "You lead (max {max})"
+ },
+ "ui.auction.outbid": {
+  "fr": "Surenchéri !",
+  "en": "Outbid!"
+ },
+ "ui.auction.no_bid": {
+  "fr": "Pas d'offre",
+  "en": "No bid"
+ },
+ "ui.auction.special": {
+  "fr": "SPÉCIAL",
+  "en": "SPECIAL"
+ },
+ "ui.auction.rare": {
+  "fr": "RARE",
+  "en": "RARE"
+ },
+ "ui.auction.price_line": {
+  "fr": "{price} · clôture {close} ({h} h)",
+  "en": "{price} · closes {close} ({h} h)"
+ },
+ "ui.auction.special_desc": {
+  "fr": "Lot spécial : {name}",
+  "en": "Special lot: {name}"
+ },
+ "ui.auction.defects": {
+  "fr": "Défauts :",
+  "en": "Defects:"
+ },
+ "ui.auction.none_known": {
+  "fr": "aucun visible",
+  "en": "none visible"
+ },
+ "ui.auction.hidden_unknown": {
+  "fr": "cachés : ?",
+  "en": "hidden: ?"
+ },
+ "ui.auction.scanned": {
+  "fr": "scanné",
+  "en": "scanned"
+ },
+ "ui.auction.estimate": {
+  "fr": "Estimation remis en état",
+  "en": "Restored estimate"
+ },
+ "ui.auction.repairs": {
+  "fr": "Travaux connus",
+  "en": "Known repairs"
+ },
+ "ui.auction.current": {
+  "fr": "Enchère actuelle",
+  "en": "Current bid"
+ },
+ "ui.auction.your_max": {
+  "fr": "Votre maximum",
+  "en": "Your maximum"
+ },
+ "ui.auction.closes": {
+  "fr": "Clôture",
+  "en": "Closes"
+ },
+ "ui.auction.closes_at": {
+  "fr": "jour {day}, {hour} (dans {h} h)",
+  "en": "day {day}, {hour} (in {h} h)"
+ },
+ "ui.auction.scan": {
+  "fr": "Scanner {cost}",
+  "en": "Scan {cost}"
+ },
+ "ui.auction.scan_tip": {
+  "fr": "Révèle une partie des défauts cachés.",
+  "en": "Reveals some of the hidden defects."
+ },
+ "ui.auction.scan_result": {
+  "fr": "Scan : {found} défaut(s) révélé(s)",
+  "en": "Scan: {found} defect(s) revealed"
+ },
+ "ui.auction.bid": {
+  "fr": "Miser {amount}",
+  "en": "Bid {amount}"
+ },
+ "ui.auction.bid_advice": {
+  "fr": "Max conseillé {amount}",
+  "en": "Suggested max {amount}"
+ },
+ "ui.auction.bid_ok": {
+  "fr": "Offre maximale : {amount}",
+  "en": "Maximum bid: {amount}"
+ },
+ "ui.auction.proxy_note": {
+  "fr": "Enchère par procuration : vous ne payez qu'un incrément au-dessus du 2e enchérisseur. Frais {fee}.",
+  "en": "Proxy bidding: you only pay one increment above the runner-up. Fee {fee}."
+ },
+ "ui.sales.clients": {
+  "fr": "Clients au comptoir ({n})",
+  "en": "Customers at the counter ({n})"
+ },
+ "ui.sales.no_clients": {
+  "fr": "Personne au comptoir. La réputation attire les clients.",
+  "en": "Nobody at the counter. Reputation attracts customers."
+ },
+ "ui.sales.order": {
+  "fr": "Commande : {title}",
+  "en": "Order: {title}"
+ },
+ "ui.sales.reward": {
+  "fr": "Paie {budget}",
+  "en": "Pays {budget}"
+ },
+ "ui.sales.budget": {
+  "fr": "Budget ≈ {budget}",
+  "en": "Budget ≈ {budget}"
+ },
+ "ui.sales.leaves": {
+  "fr": "Repart dans {n} j",
+  "en": "Leaves in {n} d"
+ },
+ "ui.sales.leaves_today": {
+  "fr": "Repart ce soir",
+  "en": "Leaves tonight"
+ },
+ "ui.sales.likes": {
+  "fr": "Aime : {likes}",
+  "en": "Likes: {likes}"
+ },
+ "ui.sales.with_seller": {
+  "fr": "En discussion avec un vendeur",
+  "en": "Talking with a salesperson"
+ },
+ "ui.sales.criteria": {
+  "fr": "Critères de la commande",
+  "en": "Order requirements"
+ },
+ "ui.sales.patience": {
+  "fr": "Refus : {n}/3 (la patience a des limites)",
+  "en": "Refusals: {n}/3 (patience has limits)"
+ },
+ "ui.sales.your_ships": {
+  "fr": "Vos vaisseaux",
+  "en": "Your ships"
+ },
+ "ui.sales.no_ships": {
+  "fr": "Aucun vaisseau au garage.",
+  "en": "No ship in the garage."
+ },
+ "ui.sales.busy": {
+  "fr": "En travaux",
+  "en": "Being worked on"
+ },
+ "ui.sales.no_match": {
+  "fr": "Ne correspond pas à ce client",
+  "en": "Not what this client wants"
+ },
+ "ui.sales.estimate": {
+  "fr": "Prix estimé ≈ {price} (coût {cost})",
+  "en": "Estimated price ≈ {price} (cost {cost})"
+ },
+ "ui.sales.offer_tip": {
+  "fr": "Proposer ce prix. Trop haut : contre-offre ou refus.",
+  "en": "Offer this price. Too high: counter-offer or refusal."
+ },
+ "ui.sales.defects_note": {
+  "fr": "Défauts : {known} connu(s), {concealed} maquillé(s)",
+  "en": "Defects: {known} known, {concealed} hidden"
+ },
+ "ui.sales.counter": {
+  "fr": "Contre-offre : {price}",
+  "en": "Counter-offer: {price}"
+ },
+ "ui.sales.accept": {
+  "fr": "Accepter",
+  "en": "Accept"
+ },
+ "ui.sales.decline": {
+  "fr": "Refuser",
+  "en": "Decline"
+ },
+ "ui.sales.refused": {
+  "fr": "Refusé ! Trop cher pour ce client.",
+  "en": "Refused! Too expensive for this client."
+ },
+ "ui.sales.criteria_fail": {
+  "fr": "Ce vaisseau ne respecte pas la commande.",
+  "en": "This ship does not meet the order."
+ },
+ "ui.sales.sold": {
+  "fr": "Vendu {price} !",
+  "en": "Sold for {price}!"
+ },
+ "ui.crit.class": {
+  "fr": "Classe : {v}",
+  "en": "Class: {v}"
+ },
+ "ui.crit.tags": {
+  "fr": "Caractère : {v}",
+  "en": "Traits: {v}"
+ },
+ "ui.crit.color": {
+  "fr": "Couleur : {v}",
+  "en": "Color: {v}"
+ },
+ "ui.crit.options": {
+  "fr": "Options : {v}",
+  "en": "Options: {v}"
+ },
+ "ui.crit.max_defects": {
+  "fr": "Défauts connus non réparés : {v} max",
+  "en": "Known unrepaired defects: {v} max"
+ },
+ "ui.crit.max_wear": {
+  "fr": "Usure : {v} max",
+  "en": "Wear: {v} max"
+ },
+ "ui.crit.honest": {
+  "fr": "Aucun défaut maquillé",
+  "en": "No hidden defect"
+ },
+ "ui.crit.min_tier": {
+  "fr": "Gamme {v} minimum",
+  "en": "Tier {v} minimum"
+ },
+ "ui.staff.headcount": {
+  "fr": "Effectif {n}/{max}",
+  "en": "Staff {n}/{max}"
+ },
+ "ui.staff.payroll": {
+  "fr": "Salaires : {amount}/jour",
+  "en": "Wages: {amount}/day"
+ },
+ "ui.staff.stations": {
+  "fr": "Postes : {list}",
+  "en": "Stations: {list}"
+ },
+ "ui.staff.none": {
+  "fr": "Personne ! Embauchez des candidats pour automatiser l'atelier.",
+  "en": "Nobody! Hire candidates to automate the workshop."
+ },
+ "ui.staff.pool": {
+  "fr": "Candidats du jour",
+  "en": "Today's candidates"
+ },
+ "ui.staff.pool_note": {
+  "fr": "Le vivier change chaque jour. Effectif limité par la taille du garage.",
+  "en": "The pool changes daily. Headcount is limited by garage size."
+ },
+ "ui.staff.salary": {
+  "fr": "{amount}/j",
+  "en": "{amount}/d"
+ },
+ "ui.staff.level": {
+  "fr": "niv. {n}",
+  "en": "lv. {n}"
+ },
+ "ui.staff.xp": {
+  "fr": "XP",
+  "en": "XP"
+ },
+ "ui.staff.morale": {
+  "fr": "Moral",
+  "en": "Morale"
+ },
+ "ui.staff.fatigue": {
+  "fr": "Fatigue",
+  "en": "Fatigue"
+ },
+ "ui.staff.efficiency": {
+  "fr": "efficacité {v}",
+  "en": "efficiency {v}"
+ },
+ "ui.staff.pause": {
+  "fr": "En pause",
+  "en": "On break"
+ },
+ "ui.staff.station": {
+  "fr": "Poste {role} {n}",
+  "en": "{role} station {n}"
+ },
+ "ui.staff.station_tip": {
+  "fr": "Affectation : sans poste, l'employé ne travaille pas (mais se repose).",
+  "en": "Assignment: without a station the employee rests instead of working."
+ },
+ "ui.staff.rule_tip": {
+  "fr": "Règle de priorité",
+  "en": "Priority rule"
+ },
+ "ui.staff.fire": {
+  "fr": "Renvoyer",
+  "en": "Fire"
+ },
+ "ui.staff.fire_confirm": {
+  "fr": "Renvoyer {name} ?",
+  "en": "Fire {name}?"
+ },
+ "ui.staff.hire": {
+  "fr": "Embaucher {cost}",
+  "en": "Hire {cost}"
+ },
+ "ui.staff.hired": {
+  "fr": "{name} rejoint l'équipe",
+  "en": "{name} joins the team"
+ },
+ "ui.staff.status_pause": {
+  "fr": "en pause",
+  "en": "on break"
+ },
+ "ui.staff.status_off": {
+  "fr": "hors service",
+  "en": "off duty"
+ },
+ "ui.staff.status_repair": {
+  "fr": "répare {ship}",
+  "en": "repairing {ship}"
+ },
+ "ui.staff.status_custom": {
+  "fr": "personnalise {ship}",
+  "en": "customizing {ship}"
+ },
+ "ui.staff.status_sell": {
+  "fr": "négocie avec {client}",
+  "en": "haggling with {client}"
+ },
+ "ui.staff.status_buyer": {
+  "fr": "surveille les enchères",
+  "en": "watching auctions"
+ },
+ "ui.staff.status_research": {
+  "fr": "fait des recherches",
+  "en": "researching"
+ },
+ "ui.staff.status_idle": {
+  "fr": "attend du travail",
+  "en": "waiting for work"
+ },
+ "ui.research.rp": {
+  "fr": "Points de recherche : {rp}",
+  "en": "Research points: {rp}"
+ },
+ "ui.research.effects": {
+  "fr": "Effets",
+  "en": "Effects"
+ },
+ "ui.research.prereqs": {
+  "fr": "Prérequis",
+  "en": "Requires"
+ },
+ "ui.research.cost": {
+  "fr": "Coût",
+  "en": "Cost"
+ },
+ "ui.research.do": {
+  "fr": "Rechercher",
+  "en": "Research"
+ },
+ "ui.research.done_toast": {
+  "fr": "Recherche terminée : {node}",
+  "en": "Research complete: {node}"
+ },
+ "ui.research.state_done": {
+  "fr": "Acquis",
+  "en": "Acquired"
+ },
+ "ui.research.state_ready": {
+  "fr": "Disponible",
+  "en": "Available"
+ },
+ "ui.research.state_available": {
+  "fr": "Ressources insuffisantes",
+  "en": "Not enough resources"
+ },
+ "ui.research.state_locked": {
+  "fr": "Prérequis manquants",
+  "en": "Missing prerequisites"
+ },
+ "ui.research.unlock_paint": {
+  "fr": "Débloque la peinture {name}",
+  "en": "Unlocks {name} paint"
+ },
+ "ui.research.unlock_option": {
+  "fr": "Débloque l'option {name}",
+  "en": "Unlocks the {name} option"
+ },
+ "ui.research.unlock_location": {
+  "fr": "Débloque le lieu {name}",
+  "en": "Unlocks {name}"
+ },
+ "ui.quests.chapter": {
+  "fr": "Chapitre {n} : {title}",
+  "en": "Chapter {n}: {title}"
+ },
+ "ui.quests.no_main": {
+  "fr": "Aucune quête principale en cours.",
+  "en": "No active main quest."
+ },
+ "ui.quests.classic": {
+  "fr": "Mode classique : pas d'histoire, seulement des commandes facultatives.",
+  "en": "Classic mode: no story, only optional orders."
+ },
+ "ui.quests.offers": {
+  "fr": "Commandes proposées ({n})",
+  "en": "Orders on offer ({n})"
+ },
+ "ui.quests.no_offers": {
+  "fr": "Aucune pour l'instant.",
+  "en": "None for now."
+ },
+ "ui.quests.active_side": {
+  "fr": "Commandes en cours",
+  "en": "Active orders"
+ },
+ "ui.quests.done": {
+  "fr": "Terminées ({n}) · échouées ({f})",
+  "en": "Done ({n}) · failed ({f})"
+ },
+ "ui.quests.kind_main": {
+  "fr": "Histoire",
+  "en": "Story"
+ },
+ "ui.quests.kind_side": {
+  "fr": "Commande facultative",
+  "en": "Optional order"
+ },
+ "ui.quests.status_active": {
+  "fr": "en cours",
+  "en": "active"
+ },
+ "ui.quests.status_available": {
+  "fr": "proposée",
+  "en": "on offer"
+ },
+ "ui.quests.status_done": {
+  "fr": "terminée",
+  "en": "completed"
+ },
+ "ui.quests.status_failed": {
+  "fr": "échouée",
+  "en": "failed"
+ },
+ "ui.quests.status_locked": {
+  "fr": "verrouillée",
+  "en": "locked"
+ },
+ "ui.quests.objectives": {
+  "fr": "Objectifs",
+  "en": "Objectives"
+ },
+ "ui.quests.deadline": {
+  "fr": "Échéance : jour {day} ({n} j)",
+  "en": "Deadline: day {day} ({n} d)"
+ },
+ "ui.quests.duration": {
+  "fr": "Délai : {n} jours après acceptation",
+  "en": "Time limit: {n} days after accepting"
+ },
+ "ui.quests.rewards": {
+  "fr": "Récompenses",
+  "en": "Rewards"
+ },
+ "ui.quests.accept": {
+  "fr": "Accepter la commande",
+  "en": "Accept the order"
+ },
+ "ui.quests.accepted": {
+  "fr": "Commande acceptée",
+  "en": "Order accepted"
+ },
+ "ui.quests.optional": {
+  "fr": "Toujours facultatif : aucune pénalité si vous l'ignorez.",
+  "en": "Always optional: no penalty if you ignore it."
+ },
+ "ui.quests.choose": {
+  "fr": "Votre décision",
+  "en": "Your decision"
+ },
+ "ui.quests.choose_confirm": {
+  "fr": "Ce choix est définitif et détermine la fin. Confirmer ?",
+  "en": "This choice is final and decides the ending. Confirm?"
+ },
+ "ui.quests.see_client": {
+  "fr": "Voir le client",
+  "en": "See the client"
+ },
+ "ui.quests.journal": {
+  "fr": "Journal",
+  "en": "Journal"
+ },
+ "ui.quests.journal_empty": {
+  "fr": "Rien à signaler… pour l'instant.",
+  "en": "Nothing to report… yet."
+ },
+ "ui.quests.journal_line": {
+  "fr": "J{day} · {event} : {title}",
+  "en": "D{day} · {event}: {title}"
+ },
+ "ui.quests.ev_started": {
+  "fr": "commencée",
+  "en": "started"
+ },
+ "ui.quests.ev_completed": {
+  "fr": "terminée",
+  "en": "completed"
+ },
+ "ui.quests.ev_failed": {
+  "fr": "échouée",
+  "en": "failed"
+ },
+ "ui.quests.items": {
+  "fr": "Fragments de l'Aurore",
+  "en": "Aurora fragments"
+ },
+ "ui.quests.story_intro": {
+  "fr": "Tante Odile a disparu en vous laissant son garage, une IA sarcastique et une dette. Les fragments de l'Aurore sont la clé.",
+  "en": "Aunt Odile vanished, leaving you her garage, a sarcastic AI and a debt. The Aurora fragments are the key."
+ },
+ "ui.reward.rp": {
+  "fr": "+{n} RP",
+  "en": "+{n} RP"
+ },
+ "ui.reward.rep": {
+  "fr": "+{n} réputation",
+  "en": "+{n} reputation"
+ },
+ "ui.reward.item": {
+  "fr": "Objet : {name}",
+  "en": "Item: {name}"
+ },
+ "ui.reward.special": {
+  "fr": "Lot spécial : {name}",
+  "en": "Special lot: {name}"
+ },
+ "ui.reward.rare_wreck": {
+  "fr": "Une épave rare",
+  "en": "A rare wreck"
+ },
+ "ui.reward.employee": {
+  "fr": "Recrue : {name} ({role})",
+  "en": "Recruit: {name} ({role})"
+ },
+ "ui.reward.tech": {
+  "fr": "Technologie : {name}",
+  "en": "Technology: {name}"
+ },
+ "ui.reward.debt": {
+  "fr": "Dette réduite de {amount}",
+  "en": "Debt reduced by {amount}"
+ },
+ "ui.office.finances": {
+  "fr": "Finances",
+  "en": "Finances"
+ },
+ "ui.office.credits": {
+  "fr": "Crédits",
+  "en": "Credits"
+ },
+ "ui.office.debt": {
+  "fr": "Dette Galax-Auto",
+  "en": "Galax-Auto debt"
+ },
+ "ui.office.installment": {
+  "fr": "Échéance",
+  "en": "Installment"
+ },
+ "ui.office.installment_v": {
+  "fr": "{amount} le jour {day}",
+  "en": "{amount} on day {day}"
+ },
+ "ui.office.paid": {
+  "fr": "Déjà remboursé",
+  "en": "Repaid so far"
+ },
+ "ui.office.profit": {
+  "fr": "Résultat d'exploitation",
+  "en": "Operating profit"
+ },
+ "ui.office.pay": {
+  "fr": "Rembourser {amount}",
+  "en": "Repay {amount}"
+ },
+ "ui.office.pay_all": {
+  "fr": "Tout rembourser",
+  "en": "Repay everything"
+ },
+ "ui.office.garage": {
+  "fr": "Garage niveau {level}",
+  "en": "Garage level {level}"
+ },
+ "ui.office.capacity": {
+  "fr": "{slots} baies · {staff} employés max",
+  "en": "{slots} bays · {staff} staff max"
+ },
+ "ui.office.upgrade": {
+  "fr": "Agrandir {cost}",
+  "en": "Expand {cost}"
+ },
+ "ui.office.upgrade_tip": {
+  "fr": "Niveau suivant : {slots} baies, {staff} employés, plus de postes.",
+  "en": "Next level: {slots} bays, {staff} staff, more stations."
+ },
+ "ui.office.upgraded": {
+  "fr": "Garage agrandi !",
+  "en": "Garage expanded!"
+ },
+ "ui.office.max_level": {
+  "fr": "Niveau maximal atteint",
+  "en": "Maximum level reached"
+ },
+ "ui.office.policy": {
+  "fr": "Politique de l'atelier",
+  "en": "Workshop policy"
+ },
+ "ui.office.automation": {
+  "fr": "Automatisation",
+  "en": "Automation"
+ },
+ "ui.office.auto_list": {
+  "fr": "Mise en vente auto",
+  "en": "Auto-listing"
+ },
+ "ui.office.auto_list_tip": {
+  "fr": "Met en vente les vaisseaux terminés.",
+  "en": "Lists finished ships for sale."
+ },
+ "ui.office.buyer_budget": {
+  "fr": "Budget acheteur",
+  "en": "Buyer budget"
+ },
+ "ui.office.buyer_budget_tip": {
+  "fr": "Part des crédits disponibles que l'acheteur peut engager.",
+  "en": "Share of available credits the buyer may commit."
+ },
+ "ui.office.seller_margin": {
+  "fr": "Marge min. vendeur",
+  "en": "Seller min. margin"
+ },
+ "ui.office.seller_margin_tip": {
+  "fr": "Le vendeur refuse de vendre sous le coût + cette marge.",
+  "en": "The seller never sells below cost + this margin."
+ },
+ "ui.office.report": {
+  "fr": "Rapport du jour {day}",
+  "en": "Report for day {day}"
+ },
+ "ui.office.report_none": {
+  "fr": "Aujourd'hui (en cours)",
+  "en": "Today (in progress)"
+ },
+ "ui.office.net": {
+  "fr": "Solde",
+  "en": "Net"
+ },
+ "ui.office.events": {
+  "fr": "Événements",
+  "en": "Events"
+ },
+ "ui.office.stats": {
+  "fr": "Depuis le début",
+  "en": "Since the start"
+ },
+ "ui.office.sales": {
+  "fr": "Ventes",
+  "en": "Sales"
+ },
+ "ui.office.bought": {
+  "fr": "Épaves achetées",
+  "en": "Wrecks bought"
+ },
+ "ui.office.repairs": {
+  "fr": "Défauts réparés",
+  "en": "Defects fixed"
+ },
+ "ui.office.concealed": {
+  "fr": "Défauts maquillés",
+  "en": "Defects hidden"
+ },
+ "ui.office.sav": {
+  "fr": "Retours SAV",
+  "en": "Warranty claims"
+ },
+ "ui.office.inspections": {
+  "fr": "Contrôles",
+  "en": "Inspections"
+ },
+ "ui.office.suspicion": {
+  "fr": "Soupçons du BGC",
+  "en": "GCB suspicion"
+ },
+ "ui.office.suspicion_tip": {
+  "fr": "Bureau Galactique de la Consommation : chaque défaut maquillé vendu augmente le risque de contrôle.",
+  "en": "Galactic Consumer Bureau: every hidden defect you sell raises the inspection risk."
+ },
+ "ui.policy.honest": {
+  "fr": "Honnête",
+  "en": "Honest"
+ },
+ "ui.policy.pragmatic": {
+  "fr": "Pragmatique",
+  "en": "Pragmatic"
+ },
+ "ui.policy.shark": {
+  "fr": "Requin",
+  "en": "Shark"
+ },
+ "ui.policy.honest.desc": {
+  "fr": "Les mécaniciens réparent tout. Marges plus faibles, conscience tranquille.",
+  "en": "Mechanics fix everything. Lower margins, clear conscience."
+ },
+ "ui.policy.pragmatic.desc": {
+  "fr": "Les petits défauts sans danger sont maquillés, le reste est réparé.",
+  "en": "Small harmless defects get hidden, the rest gets fixed."
+ },
+ "ui.policy.shark.desc": {
+  "fr": "Tout ce qui peut être maquillé l'est. Gros profits… gros risques (SAV, contrôles, réputation).",
+  "en": "Everything that can be hidden is. Big profits… big risks (claims, inspections, reputation)."
+ },
+ "ui.cat.sales": {
+  "fr": "Ventes",
+  "en": "Sales"
+ },
+ "ui.cat.quest": {
+  "fr": "Quêtes",
+  "en": "Quests"
+ },
+ "ui.cat.scrap": {
+  "fr": "Ferraille",
+  "en": "Scrap"
+ },
+ "ui.cat.purchases": {
+  "fr": "Achats",
+  "en": "Purchases"
+ },
+ "ui.cat.fees": {
+  "fr": "Frais d'enchères",
+  "en": "Auction fees"
+ },
+ "ui.cat.scans": {
+  "fr": "Scans",
+  "en": "Scans"
+ },
+ "ui.cat.repairs": {
+  "fr": "Pièces",
+  "en": "Parts"
+ },
+ "ui.cat.conceal": {
+  "fr": "Maquillage",
+  "en": "Concealment"
+ },
+ "ui.cat.custom": {
+  "fr": "Personnalisation",
+  "en": "Customization"
+ },
+ "ui.cat.salaries": {
+  "fr": "Salaires",
+  "en": "Wages"
+ },
+ "ui.cat.upkeep": {
+  "fr": "Entretien",
+  "en": "Upkeep"
+ },
+ "ui.cat.debt": {
+  "fr": "Dette",
+  "en": "Debt"
+ },
+ "ui.cat.fines": {
+  "fr": "Amendes",
+  "en": "Fines"
+ },
+ "ui.cat.sav": {
+  "fr": "SAV",
+  "en": "Warranty"
+ },
+ "ui.cat.hire": {
+  "fr": "Embauches",
+  "en": "Hiring"
+ },
+ "ui.cat.research": {
+  "fr": "Recherche",
+  "en": "Research"
+ },
+ "ui.cat.garage": {
+  "fr": "Agrandissement",
+  "en": "Expansion"
+ },
+ "ui.ev.wreck_bought": {
+  "fr": "Épave {ship} achetée {price}",
+  "en": "Wreck {ship} bought for {price}"
+ },
+ "ui.ev.special_bought": {
+  "fr": "Lot spécial remporté ({price}) !",
+  "en": "Special lot won ({price})!"
+ },
+ "ui.ev.wreck_gift": {
+  "fr": "Épave rare offerte : {ship}",
+  "en": "Rare wreck gifted: {ship}"
+ },
+ "ui.ev.lot_lost": {
+  "fr": "Enchère perdue (adjugé {price})",
+  "en": "Auction lost (sold for {price})"
+ },
+ "ui.ev.lot_defaulted": {
+  "fr": "Paiement impossible : lot perdu, réputation en baisse",
+  "en": "Couldn't pay: lot lost, reputation down"
+ },
+ "ui.ev.ship_sold": {
+  "fr": "{ship} vendu {price} (marge {profit})",
+  "en": "{ship} sold for {price} (margin {profit})"
+ },
+ "ui.ev.sav_claim": {
+  "fr": "SAV : {defect} sur {ship} ({cost})",
+  "en": "Warranty: {defect} on {ship} ({cost})"
+ },
+ "ui.ev.inspection_fine": {
+  "fr": "Contrôle ! {found} défaut(s) maquillé(s) : amende {fines}",
+  "en": "Inspection! {found} hidden defect(s): fine {fines}"
+ },
+ "ui.ev.inspection_clean": {
+  "fr": "Contrôle du BGC : tout est en règle",
+  "en": "GCB inspection: all clear"
+ },
+ "ui.ev.employee_quit": {
+  "fr": "{name} démissionne (moral au plus bas)",
+  "en": "{name} quits (morale rock bottom)"
+ },
+ "ui.ev.employee_level": {
+  "fr": "{name} passe niveau {level}",
+  "en": "{name} reaches level {level}"
+ },
+ "ui.ev.employee_hired": {
+  "fr": "{name} rejoint l'équipe",
+  "en": "{name} joins the team"
+ },
+ "ui.ev.quest_available": {
+  "fr": "Nouvelle commande : {title}",
+  "en": "New order: {title}"
+ },
+ "ui.ev.quest_started": {
+  "fr": "Quête : {title}",
+  "en": "Quest: {title}"
+ },
+ "ui.ev.quest_completed": {
+  "fr": "Quête terminée : {title}",
+  "en": "Quest complete: {title}"
+ },
+ "ui.ev.quest_failed": {
+  "fr": "Quête échouée : {title}",
+  "en": "Quest failed: {title}"
+ },
+ "ui.ev.debt_paid_auto": {
+  "fr": "Échéance Galax-Auto payée : {amount}",
+  "en": "Galax-Auto installment paid: {amount}"
+ },
+ "ui.ev.debt_paid": {
+  "fr": "Remboursement : {amount}",
+  "en": "Repayment: {amount}"
+ },
+ "ui.ev.debt_late": {
+  "fr": "Échéance impayée ! Pénalité {penalty}",
+  "en": "Missed installment! Penalty {penalty}"
+ },
+ "ui.ev.debt_cleared": {
+  "fr": "Dette soldée ! Galax-Auto n'a plus de prise sur vous.",
+  "en": "Debt cleared! Galax-Auto has no hold on you anymore."
+ },
+ "ui.ev.item_found": {
+  "fr": "Trouvé : {item}",
+  "en": "Found: {item}"
+ },
+ "ui.ev.chapter_started": {
+  "fr": "Chapitre {n} : {title}",
+  "en": "Chapter {n}: {title}"
+ },
+ "ui.ev.location_unlocked": {
+  "fr": "Nouveau lieu : {location}",
+  "en": "New location: {location}"
+ },
+ "ui.ev.salaries_unpaid": {
+  "fr": "Salaires impayés ({amount}) ! Le moral s'effondre.",
+  "en": "Wages unpaid ({amount})! Morale collapses."
+ },
+ "ui.ev.garage_upgraded": {
+  "fr": "Garage agrandi : niveau {level}",
+  "en": "Garage expanded: level {level}"
+ },
+ "ui.ev.defect_found": {
+  "fr": "Défaut découvert : {defect} ({ship})",
+  "en": "Defect found: {defect} ({ship})"
+ },
+ "ui.ev.defect_clumsy": {
+  "fr": "Maladresse ! {defect} sur {ship}",
+  "en": "Oops! {defect} on {ship}"
+ },
+ "ui.ev.research_done": {
+  "fr": "Recherche terminée : {node}",
+  "en": "Research complete: {node}"
+ },
+ "ui.ev.research_free": {
+  "fr": "Technologie offerte : {node}",
+  "en": "Technology granted: {node}"
+ },
+ "ui.ev.day_started": {
+  "fr": "Jour {day}",
+  "en": "Day {day}"
+ },
+ "ui.ev.defect_repaired": {
+  "fr": "{defect} réparé ({ship})",
+  "en": "{defect} fixed ({ship})"
+ },
+ "ui.ev.defect_concealed": {
+  "fr": "{defect} maquillé ({ship})",
+  "en": "{defect} hidden ({ship})"
+ },
+ "ui.ev.customized": {
+  "fr": "{ship} personnalisé",
+  "en": "{ship} customized"
+ },
+ "ui.ev.client_left": {
+  "fr": "Un client {species} est reparti",
+  "en": "A {species} customer left"
+ },
+ "ui.ev.lot_scanned": {
+  "fr": "Scan : {found} défaut(s) révélé(s)",
+  "en": "Scan: {found} defect(s) revealed"
+ },
+ "reason.unknown": {
+  "fr": "Action impossible",
+  "en": "Not possible"
+ },
+ "reason.lot_closed": {
+  "fr": "Lot clôturé",
+  "en": "Lot closed"
+ },
+ "reason.no_ship": {
+  "fr": "Vaisseau introuvable",
+  "en": "Ship not found"
+ },
+ "reason.bad_decision": {
+  "fr": "Consigne invalide",
+  "en": "Invalid instruction"
+ },
+ "reason.not_concealable": {
+  "fr": "Ce défaut ne peut pas être maquillé",
+  "en": "This defect cannot be hidden"
+ },
+ "reason.no_job": {
+  "fr": "Vous n'avez rien en cours",
+  "en": "You have no job in progress"
+ },
+ "reason.tired": {
+  "fr": "Vous êtes épuisé : attendez l'heure suivante",
+  "en": "You're exhausted: wait for the next hour"
+ },
+ "reason.no_target": {
+  "fr": "Cible introuvable",
+  "en": "Target not found"
+ },
+ "reason.busy": {
+  "fr": "Vaisseau en travaux",
+  "en": "Ship is being worked on"
+ },
+ "reason.client_busy": {
+  "fr": "Client déjà en négociation",
+  "en": "Client already negotiating"
+ },
+ "reason.no_employee": {
+  "fr": "Employé introuvable",
+  "en": "Employee not found"
+ },
+ "reason.bad_rule": {
+  "fr": "Règle invalide",
+  "en": "Invalid rule"
+ },
+ "reason.max_level": {
+  "fr": "Niveau maximal",
+  "en": "Maximum level"
+ },
+ "reason.credits": {
+  "fr": "Crédits insuffisants",
+  "en": "Not enough credits"
+ },
+ "reason.no_debt": {
+  "fr": "Aucune dette",
+  "en": "No debt"
+ },
+ "reason.bad_setting": {
+  "fr": "Réglage invalide",
+  "en": "Invalid setting"
+ },
+ "reason.bad_policy": {
+  "fr": "Politique invalide",
+  "en": "Invalid policy"
+ },
+ "reason.owner_busy": {
+  "fr": "Vous êtes déjà occupé",
+  "en": "You're already busy"
+ },
+ "reason.not_available": {
+  "fr": "Non disponible",
+  "en": "Not available"
+ },
+ "reason.bad_kind": {
+  "fr": "Type invalide",
+  "en": "Invalid type"
+ },
+ "reason.bad_id": {
+  "fr": "Élément inconnu",
+  "en": "Unknown item"
+ },
+ "reason.locked": {
+  "fr": "Pas encore débloqué",
+  "en": "Not unlocked yet"
+ },
+ "reason.already": {
+  "fr": "Déjà fait",
+  "en": "Already done"
+ },
+ "reason.staff_full": {
+  "fr": "Effectif complet : agrandissez le garage",
+  "en": "Staff full: expand the garage"
+ },
+ "reason.no_candidate": {
+  "fr": "Candidat introuvable",
+  "en": "Candidate not found"
+ },
+ "reason.bad_station": {
+  "fr": "Poste invalide",
+  "en": "Invalid station"
+ },
+ "reason.station_taken": {
+  "fr": "Poste déjà occupé",
+  "en": "Station already taken"
+ },
+ "reason.too_low": {
+  "fr": "Offre trop basse",
+  "en": "Bid too low"
+ },
+ "reason.no_slot": {
+  "fr": "Plus de baie libre au garage",
+  "en": "No free bay in the garage"
+ },
+ "reason.already_scanned": {
+  "fr": "Déjà scanné",
+  "en": "Already scanned"
+ },
+ "reason.done": {
+  "fr": "Déjà acquis",
+  "en": "Already acquired"
+ },
+ "reason.prereq": {
+  "fr": "Prérequis manquants",
+  "en": "Missing prerequisites"
+ },
+ "reason.rp": {
+  "fr": "Points de recherche insuffisants",
+  "en": "Not enough research points"
+ },
+ "reason.not_active": {
+  "fr": "Quête inactive",
+  "en": "Quest not active"
+ },
+ "reason.bad_choice": {
+  "fr": "Choix invalide",
+  "en": "Invalid choice"
+ },
+ "stat.repair_speed": {
+  "fr": "Vitesse de réparation",
+  "en": "Repair speed"
+ },
+ "stat.repair_cost": {
+  "fr": "Coût des pièces",
+  "en": "Parts cost"
+ },
+ "stat.conceal_cost": {
+  "fr": "Coût du maquillage",
+  "en": "Concealment cost"
+ },
+ "stat.paint_speed": {
+  "fr": "Vitesse de carrosserie",
+  "en": "Bodywork speed"
+ },
+ "stat.custom_value": {
+  "fr": "Valeur des options",
+  "en": "Option value"
+ },
+ "stat.custom_cost": {
+  "fr": "Coût de personnalisation",
+  "en": "Customization cost"
+ },
+ "stat.owner_speed": {
+  "fr": "Votre vitesse de travail",
+  "en": "Your work speed"
+ },
+ "stat.scan_cost": {
+  "fr": "Coût des scans",
+  "en": "Scan cost"
+ },
+ "stat.scan_power": {
+  "fr": "Puissance des scans",
+  "en": "Scan power"
+ },
+ "stat.reveal_on_repair": {
+  "fr": "Défauts révélés en réparant",
+  "en": "Defects revealed while repairing"
+ },
+ "stat.auction_fee": {
+  "fr": "Frais d'enchères",
+  "en": "Auction fees"
+ },
+ "stat.auction_lots": {
+  "fr": "Lots par lieu et par jour",
+  "en": "Lots per location per day"
+ },
+ "stat.rare_chance": {
+  "fr": "Chance d'épave rare",
+  "en": "Rare wreck chance"
+ },
+ "stat.sale_price": {
+  "fr": "Prix de vente",
+  "en": "Sale price"
+ },
+ "stat.client_rate": {
+  "fr": "Affluence des clients",
+  "en": "Customer traffic"
+ },
+ "stat.client_budget": {
+  "fr": "Budget des clients",
+  "en": "Customer budget"
+ },
+ "stat.haggle": {
+  "fr": "Marge de négociation",
+  "en": "Haggling margin"
+ },
+ "stat.reputation_gain": {
+  "fr": "Gain de réputation",
+  "en": "Reputation gain"
+ },
+ "stat.sav_rep_mult": {
+  "fr": "Réputation perdue au SAV",
+  "en": "Reputation lost on claims"
+ },
+ "stat.sav_chance": {
+  "fr": "Risque de retour SAV",
+  "en": "Warranty claim risk"
+ },
+ "stat.inspection_chance": {
+  "fr": "Risque de contrôle",
+  "en": "Inspection risk"
+ },
+ "stat.salary_mult": {
+  "fr": "Salaires",
+  "en": "Wages"
+ },
+ "stat.hire_pool": {
+  "fr": "Candidats par jour",
+  "en": "Candidates per day"
+ },
+ "stat.hire_level": {
+  "fr": "Niveau max des candidats",
+  "en": "Max candidate level"
+ },
+ "stat.max_staff": {
+  "fr": "Effectif maximal",
+  "en": "Max staff"
+ },
+ "stat.ship_slots": {
+  "fr": "Baies du garage",
+  "en": "Garage bays"
+ },
+ "stat.station_buyer": {
+  "fr": "Postes d'acheteur",
+  "en": "Buyer stations"
+ },
+ "stat.station_mechanic": {
+  "fr": "Postes de mécanicien",
+  "en": "Mechanic stations"
+ },
+ "stat.station_bodyworker": {
+  "fr": "Postes de carrossier",
+  "en": "Bodyworker stations"
+ },
+ "stat.station_seller": {
+  "fr": "Postes de vendeur",
+  "en": "Seller stations"
+ },
+ "stat.station_researcher": {
+  "fr": "Postes de chercheur",
+  "en": "Researcher stations"
+ },
+ "stat.morale_daily": {
+  "fr": "Moral quotidien",
+  "en": "Daily morale"
+ },
+ "stat.fatigue_rate": {
+  "fr": "Fatigue",
+  "en": "Fatigue"
+ },
+ "stat.xp_gain": {
+  "fr": "Gain d'expérience",
+  "en": "Experience gain"
+ },
+ "stat.research_speed": {
+  "fr": "Vitesse de recherche",
+  "en": "Research speed"
+ },
+ "stat.offline_cap_hours": {
+  "fr": "Heures hors ligne max",
+  "en": "Max offline hours"
+ },
+ "stat.offline_efficiency": {
+  "fr": "Efficacité hors ligne",
+  "en": "Offline efficiency"
+ },
+ "trailer.hook": {
+  "fr": "Un garage orbital. Des épaves. Des aliens.",
+  "en": "An orbital garage. Wrecks. Aliens."
+ },
+ "trailer.auction": {
+  "fr": "Achetez des épaves aux enchères",
+  "en": "Buy wrecks at auction"
+ },
+ "trailer.repair": {
+  "fr": "Réparez-les… ou maquillez-les !",
+  "en": "Fix them… or fake it!"
+ },
+ "trailer.paint": {
+  "fr": "Personnalisez-les à votre goût",
+  "en": "Customize them your way"
+ },
+ "trailer.sales": {
+  "fr": "Revendez-les à des clients aliens",
+  "en": "Sell them to picky aliens"
+ },
+ "trailer.staff": {
+  "fr": "Embauchez une équipe excentrique",
+  "en": "Hire a quirky crew"
+ },
+ "trailer.idle": {
+  "fr": "Votre atelier tourne tout seul",
+  "en": "Your workshop runs itself"
+ },
+ "trailer.offline": {
+  "fr": "Même quand vous n'êtes pas là",
+  "en": "Even while you're away"
+ },
+ "trailer.research": {
+  "fr": "42 technologies à découvrir",
+  "en": "42 technologies to unlock"
+ },
+ "trailer.story": {
+  "fr": "Une histoire en 5 chapitres, 2 fins",
+  "en": "A 5-chapter story, 2 endings"
+ },
+ "trailer.locations": {
+  "fr": "5 lieux d'enchères à conquérir",
+  "en": "5 auction sites to conquer"
+ },
+ "trailer.cta": {
+  "fr": "Bientôt sur Steam",
+  "en": "Coming soon on Steam"
+ },
+ "trailer.features": {
+  "fr": "Gestion · Idle · Pixel art · Humour",
+  "en": "Management · Idle · Pixel art · Humor"
+ },
+ "trailer.langs": {
+  "fr": "Français · English",
+  "en": "English · Français"
+ }
 }

@@ -18,6 +18,10 @@ var speed_index: int = 1
 var _acc: float = 0.0
 var _autosave_acc: float = 0.0
 var last_offline_report: Dictionary = {}
+## Nombre de fenêtres modales (dialogues, rapports) qui suspendent le temps.
+var hold: int = 0
+## Faux pendant les visites automatiques (captures, vidéo) : la sauvegarde du joueur n'est jamais touchée.
+var persist: bool = true
 
 
 func _ready() -> void:
@@ -55,6 +59,14 @@ func use_model(m: GameModel) -> void:
 	running = true
 
 
+func stop() -> void:
+	if model != null and model.game_event.is_connected(_on_model_event):
+		model.game_event.disconnect(_on_model_event)
+	running = false
+	model = null
+	hold = 0
+
+
 func _set_model(m: GameModel) -> void:
 	if model != null and model.game_event.is_connected(_on_model_event):
 		model.game_event.disconnect(_on_model_event)
@@ -69,7 +81,7 @@ func _on_model_event(ev: Dictionary) -> void:
 
 
 func save() -> void:
-	if model != null:
+	if model != null and persist:
 		SaveCodec.save_file(model, SAVE_PATH)
 
 
@@ -84,6 +96,12 @@ func set_speed(i: int) -> void:
 func _process(delta: float) -> void:
 	if model == null or not running:
 		return
+	_autosave_acc += delta
+	if _autosave_acc >= AUTOSAVE_SECONDS:
+		_autosave_acc = 0.0
+		save()
+	if hold > 0:
+		return
 	var sph: float = Content.db.cfgf("time", "seconds_per_hour", 4.0)
 	_acc += delta * speed()
 	var guard: int = 0
@@ -92,10 +110,6 @@ func _process(delta: float) -> void:
 		model.advance_hour()
 		hour_passed.emit()
 		guard += 1
-	_autosave_acc += delta
-	if _autosave_acc >= AUTOSAVE_SECONDS:
-		_autosave_acc = 0.0
-		save()
 
 
 ## Fraction de l'heure en cours (animations).
