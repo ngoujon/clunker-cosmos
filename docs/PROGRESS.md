@@ -26,17 +26,26 @@
   (`docs/steam/trailer_fr.mp4`, `trailer_en.mp4` : 1 min 08 s, 1920×1080, H.264), 9 captures 1920×1080 par
   langue, capsules et icônes provisoires, `docs/STEAM_STORE.md` (fiche FR/EN, configuration requise, langues,
   tags, divulgation IA, reste à faire). Ajouts au jeu : plein écran (F11), icône BOLT, rapport hors-ligne borné.
+- [x] **J6 — Version 0.2** (demandes de l'utilisateur après le kit Steam) : polices lisibles (Barlow Semi
+  Condensed, Lilita One) ; tutoriel (12 pages, F1) ; plein écran par défaut et fenêtre Paramètres ; musique
+  (ACE-Step 1.5, 5 pistes) et 32 bruitages synthétisés, volumes ; humour dans les dialogues ; nom « Clunker
+  Cosmos » ; jeu de gestion sans progression hors ligne (pauses automatiques) ; infobulles des ressources ;
+  employés visibles au travail dans le garage ; curseur pixel art ; **taille de l'interface réglable**
+  (résolution logique fenêtre / k : 853×480 en 1440p par défaut, jusqu'à 1280×720), décors à leur propre échelle
+  entière, bords de panneaux continus. Kit Steam régénéré (bande-annonce de 1 min 10 s avec son, captures avec
+  la nouvelle interface, capsules).
 
 ## État actuel
 
-- `python tools/check_all.py` : 12/12 contrôles (dont le kit Steam), `ALL CHECKS PASSED`, code de sortie 0.
-- Tests headless : 122/122 (11 suites). Simulation 30 j (graine 7, mode classique) : 54 ventes, résultat
-  d'exploitation 327 752 ¢, 0 erreur. Histoire (graine 11) : chapitres 1 et 2 bouclés au jour 8.
-- Assets : 180 fichiers validés (palette de 32 couleurs), 209 entrées de manifeste dont 197 générées.
+- `python tools/check_all.py` : `ALL CHECKS PASSED` (13 contrôles, exit 0).
+- Tests headless : 147/147 tests unitaires (15 suites) ; simulation 30 j (graine 7, mode classique) : 54 ventes,
+  0 erreur ; histoire (graine 11) : chapitres 1-2 bouclés au jour 8.
+- Interface vérifiée en 1920×1080 (×3), 2560×1440 (×3 et ×2), 1600×900 et 1280×720 (redimensionnement) ; test de
+  fumée sur toutes les tailles d'interface possibles.
 
 ## Prochaines étapes (hors périmètre de cette version)
 
-1. Audio (musique, bruitages) puis bande-annonce sonorisée.
+1. Écouter les musiques générées (choisies par mesures automatiques) et ajuster les volumes si besoin.
 2. Export Windows (modèles d'export Godot), test sur configuration minimale, envoi Steamworks
    (voir `docs/STEAM_STORE.md`, section « Reste à faire »).
 3. Succès et Steam Cloud (GodotSteam), éventuellement macOS / Linux / Steam Deck.

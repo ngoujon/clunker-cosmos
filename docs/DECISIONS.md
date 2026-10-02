@@ -9,6 +9,7 @@ Format : décision — raison (option la plus simple quand il y avait un doute).
 2. **Renderer GL Compatibility** au lieu de Forward+/D3D12 du squelette — jeu 2D, meilleure compatibilité
    matérielle sur Steam. Jolt (3D) retiré.
 3. **Stretch mode `viewport` + `scale_mode = integer`**, fenêtre 1440×810 (×3) — pixels parfaits.
+   *(Remplacée par les n° 51 et 67 : rendu `canvas_items`, taille d'interface variable.)*
 4. **Typage strict** : `untyped_declaration` passé en erreur → impossible d'oublier un type.
 5. **Logique en classes statiques « systèmes » + objets de données RefCounted** (pas de références
    croisées entre RefCounted → pas de fuites de cycles), testable sans arbre de scènes.
@@ -16,6 +17,7 @@ Format : décision — raison (option la plus simple quand il y avait un doute).
    pendant le service (8 h-18 h) ; le patron travaille 8 h-20 h quand le joueur est en ligne.
 7. **Hors-ligne** : au chargement, le temps écoulé est simulé (plafond 24 h de jeu, +24 h avec « Veilleur de
    nuit ») ; le patron ne travaille pas hors ligne, les employés oui. Rapport affiché au retour.
+   *(Remplacée par le n° 54 : plus aucune progression hors ligne.)*
 8. **Sauvegarde JSON versionnée** (`save_version` = 2, migration v1→v2 testée) ; état du générateur
    aléatoire sauvegardé → reprise déterministe.
 9. **Enchères par procuration** (second prix + incrément) : simple, juste et testable ; les PNJ montent
@@ -23,7 +25,7 @@ Format : décision — raison (option la plus simple quand il y avait un doute).
 10. **Textes bilingues inline dans le contenu** (`{"fr", "en"}`) convertis en clés de traduction au
     chargement : impossible d'oublier une langue (vérifié par les tests).
 11. **Police Tiny5 (OFL)** en 8 px (16 px pour les titres) : seule candidate testée qui reste nette en 480×270
-    avec tous les accents français (comparatif `art/compare/fonts.png`).
+    avec tous les accents français (comparatif `art/compare/fonts.png`). *(Remplacée par le n° 51.)*
 12. **UI construite en code** (pas de .tscn par écran) : plus simple à maintenir et à tester.
 13. **Quêtes principales seulement en mode Histoire** ; les quêtes secondaires (commandes) existent dans les
     deux modes, sont proposées et jamais obligatoires.
@@ -118,23 +120,89 @@ Format : décision — raison (option la plus simple quand il y avait un doute).
 43. **Bande-annonce rendue par le jeu** (Movie Maker de Godot, `--fixed-fps 30`) : une séquence scénarisée
     (`scripts/ui/trailer.gd`) pilote la vraie interface (signaux des boutons) avec un faux curseur dessiné en
     pixels. Les images sont celles du viewport (480×270), agrandies ×4 au plus proche voisin : pixels nets et
-    rendu déterministe, en FR et en EN.
+    rendu déterministe, en FR et en EN. *(Texte désormais rastérisé en 1080p : n° 69.)*
 44. **ffmpeg du paquet `imageio-ffmpeg` installé dans le venv** (rien hors du projet) ; H.264 High CRF 12,
     yuv420p BT.709 (le ×4 tombe sur la grille 2×2 du 4:2:0 : aucune bavure de couleur) ; piste AAC muette, car
-    l'audio est hors périmètre (Steam lance de toute façon les vidéos sans le son).
+    l'audio est hors périmètre (Steam lance de toute façon les vidéos sans le son). *(Remplacée par le n° 69 :
+    son du jeu, AAC 192 kb/s.)*
 45. **Parties mises en scène pour la vitrine** (vidéo et captures Steam) : garage agrandi et rempli, crédits
     ajoutés, mises automatiques de la démo retirées, technologies accordées comme une récompense de quête. Les
     écrans restent ceux du jeu, sans retouche. La souris réelle est ignorée pendant les visites (sinon des
     infobulles parasites apparaissaient à l'image).
 46. **Capsules provisoires composées avec les assets du jeu** dans un SubViewport (taille de base × facteur
     entier) : logo Tiny5 à une taille multiple de 8, aucun autre texte (règles Steam), une épave d'origine à
-    côté du même vaisseau remis à neuf pour résumer la boucle de jeu.
+    côté du même vaisseau remis à neuf pour résumer la boucle de jeu. *(Logo en Lilita One : n° 69.)*
 47. **Icône du jeu = BOLT** (portrait existant) : `icon.svg` du projet remplacé par une version « pixel »
     (un rectangle par suite de pixels, net à toute taille) et `icon.ico` multi-tailles pour l'export Windows ;
     l'icône Godot par défaut ne convient pas à un jeu publié.
 48. **Plein écran** (F11, Alt+Entrée, bouton des paramètres) mémorisé dans `user://settings.cfg` : attendu sur
     PC. Le rapport hors-ligne a une liste d'événements défilante et les fenêtres modales sont recentrées après
-    mise en page (la vidéo a montré un rapport qui débordait de l'écran).
+    mise en page (la vidéo a montré un rapport qui débordait de l'écran). *(Rapport hors-ligne supprimé : n° 54.)*
 49. **Configuration requise déduite** des exigences de Godot 4.7 (rendu Compatibility, OpenGL 3.3) et du poids du
     jeu, à confirmer après le premier export : les modèles d'export s'installent hors du projet, donc aucun
     exécutable n'a été produit ici.
+
+## Version 0.2 — demandes après le kit Steam
+
+51. **Polices lisibles au lieu du pixel** (demande) : Barlow Semi Condensed Medium pour le texte, Lilita One pour
+    le logo et les titres (OFL toutes deux, non modifiées). Rendu `canvas_items` : le texte est rastérisé à la
+    résolution de la fenêtre (net à toute taille), le pixel art reste au plus proche voisin, à l'échelle entière.
+52. **Repli de symboles « Cosmos Symbols »** : sous-ensemble (→ ● ★ ✓…) de Noto Sans Math, renommé, aux
+    métriques de Barlow (`tools/make_symbol_font.py`) : avec la police complète, Godot agrandissait toutes les
+    lignes (la hauteur de ligne est le maximum de la chaîne de repli).
+53. **Nom « Clunker Cosmos »** (demande) : le dossier de données de Godot suit le nom du projet ; au premier
+    lancement, la sauvegarde de l'ancien dossier (« Wreck & Resell ») est copiée, l'originale restant intacte.
+54. **Jeu de gestion, pas un idle** (demande) : plus aucune simulation hors ligne (OfflineSim et rapport
+    supprimés), la partie reprend exactement où elle était. Le temps se suspend aussi quand la fenêtre perd le
+    focus et après 5 min sans souris ni clavier (réglables ; jamais pendant les visites automatiques).
+55. **« Veilleur de nuit » devient « Équipe du soir »** (+2 h de service des employés, réparations +10 %) : les
+    bonus hors ligne n'avaient plus de sens.
+56. **Tutoriel en menu** (demande) : 12 pages courtes (`data/tutorial.json`) avec un aparté de BOLT, ouvert depuis
+    l'écran titre, le bouton « ? » de la barre, les paramètres ou F1 ; aucun tutoriel imposé.
+57. **Fenêtre Paramètres** commune à l'écran titre et à la partie : affichage, audio, langue, pauses automatiques,
+    aide ; réglages dans `user://settings.cfg` (`GameSettings`, logique pure testée). Plein écran par défaut au
+    premier lancement (demande).
+58. **Infobulles riches de la barre du haut** (demande) : titre et explication avec les valeurs du moment
+    (prochaine échéance de la dette, heures de service…), curseur « ? » sur les ressources.
+59. **Musique** : ACE-Step 1.5 turbo (MIT) via ComfyUI avec les réglages officiels (8 étapes, cfg 1, euler/simple,
+    shift 3 ; codes audio cfg 2, température 0,85, top_p 0,9), paroles `[Instrumental]`, -6 dB avant la
+    sauvegarde FLAC (écrêtage 16 bits). Graine choisie automatiquement parmi 3 par morceau, faute d'écoute
+    (critère dans `tools/gen_audio.py`, mesures dans le manifeste). Mastering -16 LUFS, crête ≤ -1 dBTP, OGG Vorbis.
+60. **Stable Audio Open écarté** (licence plafonnée en revenus) : les 32 bruitages sont synthétisés par code
+    (numpy, rendu identique à chaque exécution), niveaux calibrés par catégorie, un « bip de voix » par
+    personnage joué avec une légère variation de hauteur.
+61. **Audio côté jeu** : autoload `Audio` (bus Master, Music, SFX), playlists (titre ; atelier, trois pistes) en
+    fondu enchaîné, jingle de victoire avec la musique atténuée de 18 dB. Coupé dans les tests et les visites
+    (sauf la bande-annonce) et arrêté avant de quitter (sinon Godot signale des ressources audio non libérées).
+62. **Humour dans les dialogues** (demande) : textes des quêtes et de l'histoire réécrits en FR et en EN, sans
+    changer les faits ni les objectifs.
+63. **Employés visibles au travail** (demande) : un personnage en pied (20×26 px, Z-Image, revue des planches) par
+    portrait ; le rôle se lit à la place et à l'outil. Placement en logique pure (`StaffLayout`) : baie du
+    vaisseau en cours, bureaux et labo de la mezzanine, coin pause pour les inactifs ; absents hors service
+    (étiquette « Équipe en repos ») ; animation figée quand le jeu est en pause.
+64. **Pixelisation des personnages** : réduction par moyenne puis palette, et remplissage des trous du masque
+    (`pixelize.py`, options réservées à ces sprites de 26 px ; les autres assets restent identiques au pixel près).
+65. **Hauteur des baies selon le nombre de rangées** (72/65/62 px) pour garder l'étage visible ; à 3 rangées, la
+    bande de la mezzanine est recopiée au-dessus des baies.
+66. **Curseur personnalisé** (demande) : flèche, main et « ? » dessinés en code avec la palette ; curseurs
+    matériels (aucune latence) à la taille des pixels de l'interface (un cran en dessous au-delà de ×2).
+67. **Taille de l'interface réglable** (demande : interface trop zoomée en 1440p) : la fenêtre est divisée par un
+    facteur entier k (pixels d'écran par pixel d'interface) et la résolution logique vaut fenêtre / k, au moins
+    480×270 (`ViewScale`, testé). Automatique : hauteur logique au plus 480 (853×480 en 1440p, 640×360 en
+    1080p) ; dans les paramètres, de ×2 (texte de 16 px à l'écran) à l'échelle maximale, résolution affichée.
+    Facteurs entiers uniquement : 9-slices et icônes restent nets. Recomposition après un redimensionnement de
+    la fenêtre (une fois le geste terminé).
+68. **Décors et vaisseaux à leur propre échelle entière** : la scène du garage (coordonnées du décor 480×270 :
+    baies, vaisseaux, employés) est agrandie du plus grand nombre entier de pixels d'écran par pixel d'image qui
+    tient ; plaques, cadre du patron et fiche restent à la taille de l'interface, par-dessus. Les autres fonds
+    couvrent l'écran (rognés). Les écrans « liste + fiche » s'élargissent proportionnellement (lignes bornées pour
+    rester lisibles), les candidats passent sur plusieurs colonnes, le graphe du labo s'étire ; les aperçus de
+    vaisseaux et le menu de l'écran titre suivent l'échelle des décors quand l'interface est fine.
+69. **Bande-annonce et visuels Steam** : la vidéo garde la mise en page 480×270 (interface ×4 en 1080p, lisible
+    dans un petit lecteur) mais le texte est rastérisé en 1080p ; son du jeu (musique et bruitages) en AAC
+    192 kb/s, H.264 CRF 14. Captures Steam et `docs/screens` en 1920×1080 avec la taille d'interface automatique
+    (640×360 ×3), ce que voit un joueur en 1080p. Capsules rendues directement à la taille finale (logo Lilita One).
+70. **Bords des panneaux continus** : les 9-slices des panneaux (quart miroité) ont une encoche au milieu de chaque
+    bord ; étirée sur les panneaux larges des grandes résolutions, elle devenait un trou. Au chargement du thème,
+    la partie étirée de chaque ligne et colonne de bord prend sa couleur la plus fréquente
+    (`UIKit.seamless_image`, testé) ; coins et fichiers d'assets inchangés, boutons non concernés.

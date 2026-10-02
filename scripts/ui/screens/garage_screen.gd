@@ -3,14 +3,23 @@ extends GameScreen
 ## Garage en vue en coupe : baies (3 par étage, mezzanines ajoutées avec l'agrandissement), vaisseaux
 ## composés et peints, employés en pied à leur poste (baies, bureaux et labo de l'étage, coin pause),
 ## travail du patron (« Coup de main ») et fiche détaillée.
+## La scène (baies, vaisseaux, employés) est posée dans les coordonnées du décor (garage.png, 480×270) et
+## agrandie d'un nombre entier de pixels d'écran par pixel d'image, la plus grande échelle qui tient ;
+## plaques, cadre du patron et fiche restent à la taille de l'interface, par-dessus.
 
 const COLS: int = 3
 const BAY_W: int = 156
 ## Hauteur des baies selon le nombre d'étages de baies (1 à 3) : resserrée pour garder l'étage visible.
 const BAY_H_BY_ROWS: Array[int] = [72, 65, 62]
+## Largeur minimale de la fiche du vaisseau (pixels d'interface) ; elle s'élargit avec l'écran.
 const DETAIL_W: int = 206
-## Mezzanine du décor (assets/backgrounds/garage.png, coordonnées du décor) : plancher où se tiennent les
-## employés de l'étage, et bande recopiée au-dessus des baies quand trois étages de baies la recouvrent.
+const ART_SIZE: Vector2 = Vector2(480, 270)
+## Bande du décor toujours visible (entre les barres du haut et du bas à 480×270).
+const ART_VIEW: Rect2 = Rect2(0, 20, 480, 230)
+## Base de la grille des baies (coordonnées du décor).
+const FLOOR_Y: int = 248
+## Mezzanine du décor (coordonnées du décor) : plancher où se tiennent les employés de l'étage, et bande
+## recopiée au-dessus des baies quand trois étages de baies la recouvrent.
 const MEZZ_FLOOR: int = 111
 const MEZZ_STRIP: Rect2i = Rect2i(0, 84, 480, 28)
 ## Barre du garde-corps de la mezzanine (redessinée devant le corps des employés de l'étage).
@@ -31,25 +40,72 @@ var _detail_scroll_key: String = "detail"
 var _rows: int = 1
 ## id du vaisseau → [rect de la baie, rect du vaisseau] (placement des mécaniciens et carrossiers).
 var _ship_rects: Dictionary = {}
+## Scène agrandie (coordonnées du décor) et son échelle (pixels d'interface par pixel d'image).
+var _stage: Control = null
+var _stage_scale: float = 1.0
 
 
 func background() -> Array:
 	return ["res://assets/backgrounds/garage.png", 0.0]
 
 
+## Échelle de la scène : la bande utile du décor tient entière dans l'écran, pixels nets.
+func stage_scale() -> float:
+	return ViewScale.fit_scale(size, ART_VIEW.size, MainUI.K)
+
+
+## Position (dans cet écran) du coin du décor : bande utile centrée.
+func stage_origin() -> Vector2:
+	var sc: float = stage_scale()
+	return ViewScale.snap((size - ART_VIEW.size * sc) / 2.0 - ART_VIEW.position * sc, MainUI.K)
+
+
+## Le décor du fond (dessiné par MainUI) est cadré exactement sous la scène.
+func art_rect() -> Rect2:
+	var offset: Vector2 = global_position - main.global_position if main != null else Vector2.ZERO
+	return Rect2(offset + stage_origin(), ART_SIZE * stage_scale())
+
+
+## Point de la scène (coordonnées du décor) → position dans cet écran (pixels d'interface).
+func to_screen(p: Vector2) -> Vector2:
+	return _stage.position + p * _stage_scale
+
+
 func bay_h() -> int:
 	return BAY_H_BY_ROWS[clampi(_rows, 1, BAY_H_BY_ROWS.size()) - 1]
 
 
+## Rectangle d'une baie, en coordonnées du décor.
 func bay_rect(i: int) -> Rect2:
 	var row: int = i / COLS
 	var col: int = i % COLS
-	return Rect2(4 + col * (BAY_W + 2), size.y - 2 - (row + 1) * (bay_h() + 2), BAY_W, bay_h())
+	return Rect2(4 + col * (BAY_W + 2), FLOOR_Y - (row + 1) * (bay_h() + 2), BAY_W, bay_h())
+
+
+## Largeur de la fiche du vaisseau : un tiers de l'écran, entre 206 et 320 pixels d'interface.
+func detail_w() -> int:
+	return clampi(int(size.x * 0.3), DETAIL_W, 320)
+
+
+func stage_place(c: Control, rect: Rect2) -> Control:
+	c.position = rect.position
+	c.size = rect.size
+	_stage.add_child(c)
+	return c
 
 
 func rebuild() -> void:
 	UIKit.clear(self)
 	_ship_rects.clear()
+	_stage_scale = stage_scale()
+	_stage = Control.new()
+	_stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_stage.position = stage_origin()
+	_stage.size = ART_SIZE
+	_stage.scale = Vector2(_stage_scale, _stage_scale)
+	add_child(_stage)
+	if main != null and visible:
+		main.place_background()
 	var gm: GameModel = m()
 	var slots: int = gm.ship_slots()
 	_rows = clampi(ceili(float(slots) / float(COLS)), 1, 3)
@@ -73,17 +129,12 @@ func rebuild() -> void:
 
 # --- Décor ---------------------------------------------------------------------
 
-## Décalage vertical entre le décor (plein écran) et cet écran (sous la barre du haut).
-func _bg_offset() -> int:
-	return roundi(global_position.y - main.global_position.y)
-
-
 ## Bord inférieur (exclu) des personnages de l'étage : plancher de la mezzanine du décor, ou bande
 ## recopiée au-dessus du dernier étage de baies quand celles-ci recouvrent la mezzanine.
 func _office_floor() -> int:
 	if _rows >= 3:
 		return int(bay_rect(COLS * (_rows - 1)).position.y) - 1
-	return MEZZ_FLOOR - _bg_offset() + 1
+	return MEZZ_FLOOR + 1
 
 
 ## Trois étages de baies : le dernier recouvre la mezzanine du décor. On l'habille comme l'étage du
@@ -92,7 +143,7 @@ func _upper_floor_backdrop() -> void:
 	var tex: Texture2D = UIKit.tex("res://assets/backgrounds/garage.png")
 	var src: Rect2 = bay_rect(COLS)
 	var top: Rect2 = bay_rect(COLS * 2)
-	_atlas(tex, Rect2(0, src.position.y + _bg_offset() - 1, size.x, src.size.y + 2), Vector2(0, top.position.y - 1))
+	_atlas(tex, Rect2(0, src.position.y - 1, ART_SIZE.x, src.size.y + 2), Vector2(0, top.position.y - 1))
 	var strip_y: int = _office_floor() - 1 - (MEZZ_FLOOR - MEZZ_STRIP.position.y)
 	_atlas(tex, Rect2(MEZZ_STRIP), Vector2(MEZZ_STRIP.position.x, strip_y))
 
@@ -104,29 +155,29 @@ func _atlas(tex: Texture2D, region: Rect2, at: Vector2) -> void:
 	var r: TextureRect = TextureRect.new()
 	r.texture = a
 	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	place(r, Rect2(at, region.size))
+	stage_place(r, Rect2(at, region.size))
 
 
 func _mezzanine(row: int) -> void:
-	var y: float = size.y - 2 - row * (bay_h() + 2) - 3
+	var y: float = FLOOR_Y - row * (bay_h() + 2) - 3
 	var deck: ColorRect = ColorRect.new()
 	deck.color = UIKit.C_SLATE
 	deck.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	place(deck, Rect2(0, y, size.x, 5))
+	stage_place(deck, Rect2(0, y, ART_SIZE.x, 5))
 	var edge: ColorRect = ColorRect.new()
 	edge.color = Color("#8a8fa6")
 	edge.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	place(edge, Rect2(0, y, size.x, 1))
+	stage_place(edge, Rect2(0, y, ART_SIZE.x, 1))
 	for k: int in 12:
 		var stripe: ColorRect = ColorRect.new()
 		stripe.color = Color("#e0a42a") if k % 2 == 0 else UIKit.C_DARK
 		stripe.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		place(stripe, Rect2(k * 40, y + 2, 20, 2))
+		stage_place(stripe, Rect2(k * 40, y + 2, 20, 2))
 	for c: int in COLS + 1:
 		var pillar: ColorRect = ColorRect.new()
 		pillar.color = Color("#4a4d66")
 		pillar.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		place(pillar, Rect2(1 + c * (BAY_W + 2), y + 5, 3, bay_h() - 2))
+		stage_place(pillar, Rect2(1 + c * (BAY_W + 2), y + 5, 3, bay_h() - 2))
 
 
 func _bay(i: int, s: Ship) -> void:
@@ -136,11 +187,13 @@ func _bay(i: int, s: Ship) -> void:
 	var frame: BayFrame = BayFrame.new()
 	frame.selected = selected
 	frame.empty = s == null
-	place(frame, r)
+	stage_place(frame, r)
 	if s == null:
 		var hint: Label = UIKit.label(t("ui.garage.empty_bay"), UIKit.C_DIM)
 		hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		place(hint, Rect2(r.position.x, r.position.y + r.size.y - 16, r.size.x, 10))
+		hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var bottom: Vector2 = to_screen(Vector2(r.position.x, r.end.y))
+		place(hint, Rect2(bottom.x, bottom.y - 16, r.size.x * _stage_scale, 10))
 		clickable(frame, func() -> void: main.show_screen("auctions"))
 		frame.tooltip_text = t("ui.garage.empty_tip")
 		return
@@ -153,7 +206,7 @@ func _bay(i: int, s: Ship) -> void:
 		# Grand vaisseau dans une baie resserrée : posé au sol, quitte à passer sous la plaque.
 		vy = maxf(r.position.y + 2, r.end.y - v.size.y)
 	v.position = Vector2(vx, vy)
-	add_child(v)
+	_stage.add_child(v)
 	_ship_rects[s.id] = [r, Rect2(v.position, v.size)]
 	clickable(frame, func() -> void:
 		main.selected_ship = s.id
@@ -174,7 +227,7 @@ func _bay(i: int, s: Ship) -> void:
 	var plate_p: PanelContainer = UIKit.panel(plate, "DarkPanel")
 	plate_p.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(plate_p)
-	plate_p.position = r.position + Vector2(2, 1)
+	plate_p.position = to_screen(r.position) + Vector2(2, 1)
 	# Travail en cours : barre + travailleur
 	var job: Dictionary = _ship_job(s)
 	if not job.is_empty():
@@ -192,7 +245,8 @@ func _bay(i: int, s: Ship) -> void:
 		var jp: PanelContainer = UIKit.panel(jr, "DarkPanel")
 		jp.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(jp)
-		jp.position = Vector2(r.position.x + r.size.x - 86, r.position.y + 1)
+		jp.reset_size()
+		jp.position = to_screen(Vector2(r.end.x, r.position.y)) + Vector2(-jp.size.x - 2, 1)
 
 
 ## {worker, icon, done, total} du travail en cours sur le vaisseau, ou {}.
@@ -284,8 +338,9 @@ func _strip_workers(upstairs: Array[Dictionary], feet: int, owner_box: Control) 
 		var za: int = ZONE_ORDER.find(str(a["zone"]))
 		var zb: int = ZONE_ORDER.find(str(b["zone"]))
 		return za < zb or (za == zb and int(a["slot"]) < int(b["slot"])))
-	var x0: int = int(owner_box.position.x + owner_box.size.x) + 4 + WorkerView.W / 2
-	var x1: int = int(size.x) - 4 - WorkerView.W / 2
+	var box_right: float = (owner_box.position.x + owner_box.size.x - _stage.position.x) / _stage_scale
+	var x0: int = maxi(0, ceili(box_right)) + 4 + WorkerView.W / 2
+	var x1: int = int(ART_SIZE.x) - 4 - WorkerView.W / 2
 	var n: int = upstairs.size()
 	var changes: int = 0
 	for k: int in range(1, n):
@@ -344,7 +399,7 @@ func _add_worker(e: Employee, activity: String, face_left: bool, pos: Vector2) -
 	wv.tooltip_text = "%s — %s %s\n%s\n%s %d %% · %s %d %%" % [e.name, t("role.%s.name" % e.role), t("ui.staff.level", {"n": e.level}),
 		StaffScreen.status_text(gm, e), t("ui.staff.fatigue"), roundi(e.fatigue), t("ui.staff.morale"), roundi(e.morale)]
 	wv.pressed.connect(func() -> void: main.show_screen("staff"))
-	add_child(wv)
+	_stage.add_child(wv)
 	return wv
 
 
@@ -376,9 +431,13 @@ func _detail(s: Ship) -> void:
 	var preview: CenterContainer = CenterContainer.new()
 	var sv: ShipView = ShipView.new()
 	sv.setup(s, db())
-	preview.add_child(sv)
+	var zoom: int = UIKit.art_zoom()
+	while zoom > 1 and sv.size.x * zoom > detail_w() - 16:
+		zoom -= 1
+	preview.add_child(UIKit.zoomed(sv, zoom))
 	v.add_child(preview)
-	var parts: Label = UIKit.wrap_label("%s / %s / %s / %s" % [t("part.%s.name" % s.hull), t("part.%s.name" % s.engine), t("part.%s.name" % s.cockpit), t("part.%s.name" % s.wings)], DETAIL_W - 16, UIKit.C_DIM)
+	var dw: int = detail_w()
+	var parts: Label = UIKit.wrap_label("%s / %s / %s / %s" % [t("part.%s.name" % s.hull), t("part.%s.name" % s.engine), t("part.%s.name" % s.cockpit), t("part.%s.name" % s.wings)], dw - 16, UIKit.C_DIM)
 	v.add_child(parts)
 	var val: GridContainer = GridContainer.new()
 	val.columns = 2
@@ -394,7 +453,7 @@ func _detail(s: Ship) -> void:
 	# Défauts
 	v.add_child(section(t("ui.garage.defects")))
 	if not s.scanned:
-		v.add_child(UIKit.wrap_label(t("ui.garage.not_scanned"), DETAIL_W - 16, UIKit.C_DIM))
+		v.add_child(UIKit.wrap_label(t("ui.garage.not_scanned"), dw - 16, UIKit.C_DIM))
 	var any: bool = false
 	for i: int in s.defects.size():
 		var d: ShipDefect = s.defects[i]
@@ -440,7 +499,7 @@ func _detail(s: Ship) -> void:
 			act(m().act_scrap(s.id)))))
 	v.add_child(sale)
 	var p: PanelContainer = UIKit.panel(v, "DarkPanel")
-	var sc: ScrollContainer = make_scroll(_detail_scroll_key, p, Rect2(size.x - DETAIL_W - 2, 2, DETAIL_W, size.y - 4))
+	var sc: ScrollContainer = make_scroll(_detail_scroll_key, p, Rect2(size.x - dw - 2, 2, dw, size.y - 4))
 	sc.get_v_scroll_bar().custom_minimum_size = Vector2(4, 0)
 
 

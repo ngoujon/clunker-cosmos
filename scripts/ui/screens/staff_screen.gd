@@ -40,18 +40,27 @@ func rebuild() -> void:
 	var st: Label = UIKit.label(t("ui.staff.stations", {"list": ", ".join(st_parts)}), UIKit.C_DIM)
 	head.add_child(st)
 	place(UIKit.panel(head, "DarkPanel"), Rect2(2, 2, size.x - 4, 14))
+	var lw: int = split(290)
 	var list: VBoxContainer = UIKit.vbox([], 2)
 	if gm.staff.is_empty():
-		list.add_child(UIKit.panel(UIKit.wrap_label(t("ui.staff.none"), 260, UIKit.C_DIM), "DarkPanel"))
+		list.add_child(UIKit.panel(UIKit.wrap_label(t("ui.staff.none"), 260 + list_grow, UIKit.C_DIM), "DarkPanel"))
 	for e: Employee in gm.staff:
 		list.add_child(_employee_card(e))
-	make_scroll("staff", list, Rect2(2, 20, 290, size.y - 22))
+	make_scroll("staff", list, Rect2(2, 20, lw, size.y - 22))
+	var pool_w: float = size.x - 298 - list_grow
 	var pool: VBoxContainer = UIKit.vbox([], 2)
 	pool.add_child(section(t("ui.staff.pool")))
-	pool.add_child(backdrop(UIKit.wrap_label(t("ui.staff.pool_note"), 160, UIKit.C_DIM)))
+	pool.add_child(backdrop(UIKit.wrap_label(t("ui.staff.pool_note"), 160 + detail_grow, UIKit.C_DIM)))
+	var cards: GridContainer = GridContainer.new()
+	cards.columns = clampi(int(pool_w / 180.0), 1, 3)
+	cards.add_theme_constant_override("h_separation", 2)
+	cards.add_theme_constant_override("v_separation", 2)
 	for c: Employee in gm.candidates:
-		pool.add_child(_candidate_card(c))
-	make_scroll("pool", pool, Rect2(296, 20, size.x - 298, size.y - 22))
+		var cc: Control = _candidate_card(c)
+		cc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		cards.add_child(cc)
+	pool.add_child(cards)
+	make_scroll("pool", pool, Rect2(296 + list_grow, 20, pool_w, size.y - 22))
 
 
 func _traits_label(e: Employee, width: int) -> Label:
@@ -84,7 +93,7 @@ func _employee_card(e: Employee) -> Control:
 	bars.add_child(UIKit.label(t("ui.staff.fatigue"), UIKit.C_DIM))
 	bars.add_child(UIKit.bar(e.fatigue, 100.0, UIKit.C_ORANGE, 30, 4))
 	v.add_child(bars)
-	v.add_child(_traits_label(e, 220))
+	v.add_child(_traits_label(e, 220 + list_grow))
 	v.add_child(UIKit.label(status_text(gm, e) + "  ·  " + t("ui.staff.efficiency", {"v": pct(StaffSystem.efficiency(gm, e))}), UIKit.C_DIM))
 	var ctl: HBoxContainer = UIKit.hbox([], 2)
 	var st: OptionButton = OptionButton.new()

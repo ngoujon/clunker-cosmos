@@ -54,16 +54,17 @@ func rebuild() -> void:
 		b.mouse_filter = Control.MOUSE_FILTER_STOP
 		tabs.add_child(b)
 	place(tabs, Rect2(2, 1, size.x - 4, 18))
+	var lw: int = split(190)
 	var lots: Array[AuctionLot] = _open_lots()
 	if selected_lot < 0 or gm.find_lot(selected_lot) == null or gm.find_lot(selected_lot).closed:
 		selected_lot = lots[0].id if not lots.is_empty() else -1
 	# Liste des lots
 	var list: VBoxContainer = UIKit.vbox([], 2)
 	if lots.is_empty():
-		list.add_child(UIKit.panel(UIKit.wrap_label(t("ui.auction.no_lots"), 170, UIKit.C_DIM), "DarkPanel"))
+		list.add_child(UIKit.panel(UIKit.wrap_label(t("ui.auction.no_lots"), 170 + list_grow, UIKit.C_DIM), "DarkPanel"))
 	for l: AuctionLot in lots:
 		list.add_child(_lot_card(l))
-	make_scroll("lots_" + location, list, Rect2(2, 21, 190, size.y - 23))
+	make_scroll("lots_" + location, list, Rect2(2, 21, lw, size.y - 23))
 	var sel: AuctionLot = gm.find_lot(selected_lot)
 	if sel != null:
 		_detail(sel)
@@ -121,14 +122,15 @@ func _detail(l: AuctionLot) -> void:
 	var head: HBoxContainer = UIKit.hbox([UIKit.label(s.name, UIKit.C_ACCENT), UIKit.label("%s · %s" % [t("class.%s" % s.ship_class(db())), t("ui.tier", {"n": s.tier(db())})], UIKit.C_DIM)], 4)
 	v.add_child(head)
 	if not l.special.is_empty():
-		v.add_child(UIKit.wrap_label(t("ui.auction.special_desc", {"name": t("special.%s.name" % l.special)}), 250, UIKit.C_ACCENT))
+		v.add_child(UIKit.wrap_label(t("ui.auction.special_desc", {"name": t("special.%s.name" % l.special)}), 250 + detail_grow, UIKit.C_ACCENT))
 	var mid: HBoxContainer = UIKit.hbox([], 4)
 	var preview: CenterContainer = CenterContainer.new()
-	preview.custom_minimum_size = Vector2(150, 66)
 	var sv: ShipView = ShipView.new()
 	sv.setup(s, db())
 	sv.bob = true
-	preview.add_child(sv)
+	var zoom: int = mini(UIKit.art_zoom(), maxi(1, int((size.x - 198 - list_grow - 140) / 150.0)))
+	preview.custom_minimum_size = Vector2(150, 66) * float(zoom)
+	preview.add_child(UIKit.zoomed(sv, zoom))
 	preview.tooltip_text = "%s / %s / %s / %s" % [t("part.%s.name" % s.hull), t("part.%s.name" % s.engine), t("part.%s.name" % s.cockpit), t("part.%s.name" % s.wings)]
 	preview.mouse_filter = Control.MOUSE_FILTER_PASS
 	mid.add_child(preview)
@@ -186,6 +188,6 @@ func _detail(l: AuctionLot) -> void:
 		acts.add_child(UIKit.button(t(key, {"amount": UIKit.credits(amount)}), func() -> void:
 			act(m().act_bid(l.id, amount), t("ui.auction.bid_ok", {"amount": UIKit.credits(amount)})), "ui_bid"))
 	v.add_child(acts)
-	v.add_child(UIKit.wrap_label(t("ui.auction.proxy_note", {"fee": pct(gm.stat("auction_fee"))}), 250, UIKit.C_DIM))
+	v.add_child(UIKit.wrap_label(t("ui.auction.proxy_note", {"fee": pct(gm.stat("auction_fee"))}), 250 + detail_grow, UIKit.C_DIM))
 	var p: PanelContainer = UIKit.panel(v, "DarkPanel")
-	make_scroll("lot_detail", p, Rect2(196, 21, size.x - 198, size.y - 23))
+	make_scroll("lot_detail", p, Rect2(196 + list_grow, 21, size.x - 198 - list_grow, size.y - 23))

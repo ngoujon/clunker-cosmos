@@ -1,6 +1,7 @@
 class_name GameSettings
 extends RefCounted
-## Réglages du joueur (user://settings.cfg) : affichage, audio, langue, pauses automatiques.
+## Réglages du joueur (user://settings.cfg) : affichage (plein écran, taille de l'interface), audio,
+## langue, pauses automatiques.
 ## Logique pure : conversion depuis/vers un ConfigFile avec valeurs bornées ; l'application
 ## (fenêtre, bus audio, langue) est faite par l'interface et l'autoload Audio.
 
@@ -8,9 +9,13 @@ const PATH: String = "user://settings.cfg"
 ## Pause après inactivité : choix proposés, en minutes (0 = jamais).
 const IDLE_CHOICES: PackedInt32Array = [0, 2, 5, 10]
 const LOCALES: PackedStringArray = ["fr", "en"]
+## Taille de l'interface : facteur entier maximal accepté (voir ViewScale).
+const MAX_UI_SCALE: int = 12
 
 ## Plein écran par défaut au premier lancement.
 var fullscreen: bool = true
+## Pixels d'écran par pixel d'interface (0 = automatique selon la taille de l'écran, voir ViewScale).
+var ui_scale: int = 0
 var master_volume: float = 0.8
 var music_volume: float = 0.6
 var sfx_volume: float = 0.8
@@ -25,6 +30,8 @@ var idle_pause_minutes: int = 5
 static func from_config(cfg: ConfigFile) -> GameSettings:
 	var s: GameSettings = GameSettings.new()
 	s.fullscreen = bool(cfg.get_value("display", "fullscreen", s.fullscreen))
+	var ui: Variant = cfg.get_value("display", "ui_scale", s.ui_scale)
+	s.ui_scale = int(ui) if (ui is int or ui is float) and int(ui) >= 0 and int(ui) <= MAX_UI_SCALE else s.ui_scale
 	s.master_volume = _volume(cfg.get_value("audio", "master", s.master_volume), s.master_volume)
 	s.music_volume = _volume(cfg.get_value("audio", "music", s.music_volume), s.music_volume)
 	s.sfx_volume = _volume(cfg.get_value("audio", "sfx", s.sfx_volume), s.sfx_volume)
@@ -38,6 +45,7 @@ static func from_config(cfg: ConfigFile) -> GameSettings:
 
 func to_config(cfg: ConfigFile) -> void:
 	cfg.set_value("display", "fullscreen", fullscreen)
+	cfg.set_value("display", "ui_scale", ui_scale)
 	cfg.set_value("audio", "master", master_volume)
 	cfg.set_value("audio", "music", music_volume)
 	cfg.set_value("audio", "sfx", sfx_volume)

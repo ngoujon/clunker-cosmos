@@ -2,10 +2,11 @@ class_name MainUI
 extends Control
 ## Racine de l'interface : écran titre, HUD (barre du haut + navigation), écrans de jeu, dialogues,
 ## notifications, fenêtres modales (paramètres, tutoriel), musique et bruitages des événements.
-## Toute l'UI est construite en code (thème UIKit).
+## Toute l'UI est construite en code (thème UIKit). Sa résolution logique dépend de la fenêtre et de la
+## taille d'interface choisie (ViewScale) : au moins 480×270, la taille de conception des décors.
 
-const W: int = 480
-const H: int = 270
+const BASE_W: int = 480
+const BASE_H: int = 270
 const TOP_H: int = 20
 const NAV_H: int = 20
 const SCREEN_IDS: PackedStringArray = ["garage", "auctions", "sales", "staff", "research", "quests", "office"]
@@ -42,8 +43,18 @@ const EVENT_SFX: Dictionary = {
 	"emergency_loan": "warning", "low_funds": "warning", "bid_placed": "bid", "lot_scanned": "scan",
 	"defect_repaired": "repair_done", "defect_concealed": "paint", "client_left": "notify", "story_ending": "level_up",
 }
+## Délai avant d'adapter l'interface à une fenêtre redimensionnée (une seule fois à la fin du geste).
+const RESIZE_DELAY_MS: int = 120
 
-var bg: TextureRect
+## Résolution logique actuelle de l'interface, et pixels d'écran par pixel d'interface (ViewScale).
+static var W: int = BASE_W
+static var H: int = BASE_H
+static var K: int = 1
+## Taille imposée par les visites automatiques (captures, bande-annonce) : -1 réglage du joueur,
+## 0 automatique, sinon le facteur k.
+static var forced_scale: int = -1
+
+var bg: Backdrop
 var bg_dim: ColorRect
 var host: Control
 var top_bar: TopBar
@@ -63,17 +74,20 @@ var auto_dialogues: bool = true
 var _modal_stack: Array[Control] = []
 var _tour: Node = null
 var _tutorial_layer: Control = null
+var _view_applied: bool = false
+var _resize_at_ms: int = 0
+## Bouton « Taille de l'interface » de la fenêtre des paramètres ouverte (texte mis à jour au besoin).
+var _ui_scale_button: Button = null
 
 
 func _ready() -> void:
 	theme = UIKit.theme()
 	position = Vector2.ZERO
-	size = Vector2(W, H)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	# Curseur pixel art du jeu, redimensionné avec la fenêtre (plein écran, redimensionnement).
-	CursorKit.apply(get_window())
-	get_window().size_changed.connect(func() -> void: CursorKit.apply(get_window()))
 	_build()
+	apply_view()
+	# Fenêtre redimensionnée ou plein écran : résolution logique et curseur adaptés (voir apply_view).
+	get_window().size_changed.connect(func() -> void: _resize_at_ms = Time.get_ticks_msec())
 	Game.model_changed.connect(_on_model_changed)
 	Game.hour_passed.connect(_on_hour)
 	Game.game_event.connect(_on_event)
@@ -114,43 +128,96 @@ static func parse_args() -> Dictionary:
 	return d
 
 
+## Taille de l'interface (réglage du joueur ou facteur imposé) appliquée à la taille de la fenêtre :
+## résolution logique de la fenêtre, curseur, puis mise en page si elle a changé.
+func apply_view(force: bool = false) -> void:
+	_resize_at_ms = 0
+	var win: Vector2i = get_window().size
+	var k: int = ViewScale.resolve(win, forced_scale if forced_scale >= 0 else Game.settings.ui_scale)
+	var logical: Vector2i = ViewScale.logical_size(win, k)
+	if _view_applied and not force and k == K and logical == Vector2i(W, H):
+		return
+	_view_applied = true
+	K = k
+	W = logical.x
+	H = logical.y
+	get_window().content_scale_size = logical
+	size = Vector2(W, H)
+	CursorKit.apply(K)
+	_relayout()
+
+
+func _process(_delta: float) -> void:
+	if _resize_at_ms > 0 and Time.get_ticks_msec() - _resize_at_ms >= RESIZE_DELAY_MS:
+		apply_view()
+
+
+## Nouvelle résolution logique : les conteneurs suivent par leurs ancres ; les écrans se reconstruisent,
+## l'écran titre est recomposé, les fenêtres modales restent centrées.
+func _relayout() -> void:
+	dialogue.layout(Vector2(W, H))
+	_center_away_banner()
+	for id: String in screens:
+		(screens[id] as GameScreen).dirty = true
+	if title_screen != null:
+		_make_title()
+	if is_instance_valid(_ui_scale_button):
+		_ui_scale_button.text = _ui_scale_text()
+	place_background()
+
+
+## Rectangle d'une image de décor 480×270 qui couvre toute la zone (pixels nets, débordement rogné).
+static func cover_rect(area: Vector2) -> Rect2:
+	var s: float = ViewScale.cover_scale(area, Vector2(BASE_W, BASE_H), K)
+	var sz: Vector2 = Vector2(BASE_W, BASE_H) * s
+	return Rect2(ViewScale.snap((area - sz) / 2.0, K), sz)
+
+
+func _full_rect(c: Control) -> Control:
+	c.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	return c
+
+
 func _build() -> void:
-	bg = TextureRect.new()
-	bg.size = Vector2(W, H)
+	bg = Backdrop.new()
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	bg.stretch_mode = TextureRect.STRETCH_KEEP
 	add_child(bg)
+	_full_rect(bg)
 	bg_dim = ColorRect.new()
-	bg_dim.size = Vector2(W, H)
 	bg_dim.color = Color(UIKit.C_DARK, 0.0)
 	bg_dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(bg_dim)
+	_full_rect(bg_dim)
 	game_layer = Control.new()
-	game_layer.size = Vector2(W, H)
 	game_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(game_layer)
+	_full_rect(game_layer)
 	host = Control.new()
-	host.position = Vector2(0, TOP_H)
-	host.size = Vector2(W, H - TOP_H - NAV_H)
 	host.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	host.clip_contents = true
 	game_layer.add_child(host)
+	_full_rect(host)
+	host.offset_top = TOP_H
+	host.offset_bottom = -NAV_H
 	top_bar = TopBar.new()
 	top_bar.main = self
-	top_bar.position = Vector2.ZERO
-	top_bar.size = Vector2(W, TOP_H)
 	game_layer.add_child(top_bar)
+	top_bar.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	top_bar.offset_bottom = TOP_H
 	nav = PanelContainer.new()
 	nav.theme_type_variation = "NavPanel"
-	nav.position = Vector2(0, H - NAV_H)
-	nav.size = Vector2(W, NAV_H)
 	game_layer.add_child(nav)
+	nav.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	nav.offset_top = -NAV_H
 	toasts = VBoxContainer.new()
-	toasts.position = Vector2(W - 172, TOP_H + 2)
-	toasts.size = Vector2(170, 10)
 	toasts.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	toasts.add_theme_constant_override("separation", 1)
 	game_layer.add_child(toasts)
+	toasts.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	toasts.offset_left = -172
+	toasts.offset_right = -2
+	toasts.offset_top = TOP_H + 2
+	toasts.offset_bottom = TOP_H + 12
 	dialogue = DialogueBox.new()
 	dialogue.main = self
 	dialogue.visible = false
@@ -160,9 +227,9 @@ func _build() -> void:
 	away_banner.visible = false
 	game_layer.add_child(away_banner)
 	modal_layer = Control.new()
-	modal_layer.size = Vector2(W, H)
 	modal_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(modal_layer)
+	_full_rect(modal_layer)
 	game_layer.visible = false
 
 
@@ -200,14 +267,19 @@ func show_title() -> void:
 	close_all_modals()
 	game_layer.visible = false
 	Game.running = false
+	_make_title()
+	_set_background("res://assets/backgrounds/loc_ferropolis.png", 0.25)
+	Audio.play_music("title")
+
+
+## (Re)compose l'écran titre à la résolution logique actuelle, sous les fenêtres modales.
+func _make_title() -> void:
 	if title_screen != null:
 		title_screen.queue_free()
 	title_screen = TitleScreen.new()
 	title_screen.main = self
 	add_child(title_screen)
-	move_child(title_screen, get_child_count() - 2)
-	_set_background("res://assets/backgrounds/loc_ferropolis.png", 0.25)
-	Audio.play_music("title")
+	move_child(title_screen, modal_layer.get_index())
 
 
 func start_game() -> void:
@@ -234,10 +306,9 @@ func _rebuild_all() -> void:
 	for id: String in SCREEN_IDS:
 		var scr: GameScreen = _make_screen(id)
 		scr.main = self
-		scr.position = Vector2.ZERO
-		scr.size = host.size
 		scr.visible = false
 		host.add_child(scr)
+		_full_rect(scr)
 		screens[id] = scr
 	_build_nav()
 	top_bar.rebuild()
@@ -285,6 +356,18 @@ func _apply_screen_background(scr: GameScreen) -> void:
 func _set_background(path: String, dim: float) -> void:
 	bg.texture = UIKit.tex(path)
 	bg_dim.color = Color(UIKit.C_DARK, dim)
+	place_background()
+
+
+## Le décor couvre l'écran, sauf si l'écran courant impose son cadrage (scène du garage).
+func place_background() -> void:
+	var r: Rect2 = Rect2()
+	if game_layer.visible and screens.has(current):
+		r = (screens[current] as GameScreen).art_rect()
+	if r.size == Vector2.ZERO:
+		r = cover_rect(Vector2(W, H))
+	bg.rect = r
+	bg.queue_redraw()
 
 
 func screen(id: String) -> GameScreen:
@@ -329,6 +412,10 @@ func _on_away(reason: String) -> void:
 		return
 	var lbl: Label = away_banner.get_child(0).get_child(1) as Label
 	lbl.text = I18n.t("ui.away." + reason)
+	_center_away_banner()
+
+
+func _center_away_banner() -> void:
 	away_banner.reset_size()
 	away_banner.position = Vector2(floorf((W - away_banner.size.x) / 2.0), TOP_H + 6)
 
@@ -394,19 +481,19 @@ func dialogue_closed(d: Dictionary) -> void:
 
 func open_modal(content: Control, min_size: Vector2 = Vector2(300, 0)) -> Control:
 	var layer: Control = Control.new()
-	layer.size = Vector2(W, H)
 	layer.mouse_filter = Control.MOUSE_FILTER_STOP
+	modal_layer.add_child(layer)
+	_full_rect(layer)
 	var dim: ColorRect = ColorRect.new()
-	dim.size = Vector2(W, H)
 	dim.color = Color(UIKit.C_DARK, 0.6)
 	layer.add_child(dim)
+	_full_rect(dim)
 	var p: PanelContainer = UIKit.panel(content, "FramePanel")
 	p.custom_minimum_size = min_size
 	layer.add_child(p)
 	p.set_anchors_and_offsets_preset(Control.PRESET_CENTER, Control.PRESET_MODE_MINSIZE)
 	p.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	p.grow_vertical = Control.GROW_DIRECTION_BOTH
-	modal_layer.add_child(layer)
 	_modal_stack.append(layer)
 	Game.hold += 1
 	Audio.play("ui_open")
@@ -482,6 +569,17 @@ func open_settings() -> void:
 	left.add_child(UIKit.label(I18n.t("ui.settings.display"), UIKit.C_ACCENT))
 	left.add_child(_setting_row(I18n.t("ui.settings.fullscreen"), _toggle_button(is_fullscreen(), func(on: bool) -> void:
 		set_fullscreen(on))))
+	# Taille de l'interface : cycle Auto → plus grande → … → plus fine (résolution logique affichée).
+	var ui_b: Button = UIKit.button(_ui_scale_text(), func() -> void: pass, "", I18n.t("ui.settings.ui_scale_tip"))
+	ui_b.pressed.connect(func() -> void:
+		s.ui_scale = ViewScale.next_setting(get_window().size, s.ui_scale)
+		Game.save_settings()
+		apply_view()
+		ui_b.text = _ui_scale_text())
+	ui_b.custom_minimum_size = Vector2(76, 0)
+	_ui_scale_button = ui_b
+	left.add_child(_setting_row(I18n.t("ui.settings.ui_scale"), ui_b))
+	left.add_child(UIKit.wrap_label(I18n.t("ui.settings.ui_scale_hint"), 190, UIKit.C_DIM))
 	left.add_child(UIKit.label(I18n.t("ui.settings.audio"), UIKit.C_ACCENT))
 	left.add_child(_volume_row("ui.settings.master", s.master_volume, func(x: float) -> void: s.master_volume = x))
 	left.add_child(_volume_row("ui.settings.music", s.music_volume, func(x: float) -> void: s.music_volume = x))
@@ -561,6 +659,12 @@ func _volume_row(key: String, value: float, setter: Callable) -> HBoxContainer:
 		Game.save_settings(), 80)
 	var row: HBoxContainer = UIKit.hbox([UIKit.label(I18n.t(key)), UIKit.spacer(0, 0, true), sl, pct], 4)
 	return row
+
+
+## « Auto · 853×480 » ou « 1280×720 » : résolution logique de l'interface.
+func _ui_scale_text() -> String:
+	var res: String = "%d×%d" % [W, H]
+	return I18n.t("ui.settings.ui_auto", {"res": res}) if Game.settings.ui_scale <= 0 else res
 
 
 func _idle_text(minutes: int) -> String:
@@ -707,6 +811,16 @@ func quit_game() -> void:
 	for i: int in 3:
 		await get_tree().process_frame
 	get_tree().quit()
+
+
+## Décor plein écran : l'image est dessinée dans `rect` (pixels d'interface), au plus proche voisin.
+class Backdrop extends Control:
+	var texture: Texture2D = null
+	var rect: Rect2 = Rect2()
+
+	func _draw() -> void:
+		if texture != null and rect.size != Vector2.ZERO:
+			draw_texture_rect(texture, rect, false)
 
 
 func _save_screenshot() -> void:

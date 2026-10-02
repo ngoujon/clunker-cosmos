@@ -1,4 +1,4 @@
-# Kit Steam — Wreck & Resell *(titre provisoire)*
+# Kit Steam — Clunker Cosmos
 
 Tout ce qu'il faut pour remplir la fiche magasin Steam : fichiers prêts à envoyer, textes FR/EN à copier,
 configuration requise, langues, tags, divulgation IA, et la liste de ce qui reste à faire avant la publication.
@@ -10,7 +10,7 @@ configuration requise, langues, tags, divulgation IA, et la liste de ce qui rest
 
 | Fichier | Usage sur Steam | Caractéristiques |
 |---|---|---|
-| `docs/steam/trailer_fr.mp4` | Bande-annonce (version française) | 1 min 08 s, 1920×1080, H.264 High, 30 i/s, BT.709, piste AAC muette, 6,6 Mo |
+| `docs/steam/trailer_fr.mp4` | Bande-annonce (version française) | 1 min 10 s, 1920×1080, H.264 High, 30 i/s, BT.709, son du jeu (AAC 192 kb/s) |
 | `docs/steam/trailer_en.mp4` | Bande-annonce (version anglaise) | idem, textes en anglais |
 | `docs/steam/screenshots/en/01…09.png` | Captures d'écran (série principale) | 9 captures 1920×1080 (16:9), jeu en anglais |
 | `docs/steam/screenshots/fr/01…09.png` | Captures en français (fiche localisée) | les mêmes scènes, jeu en français |
@@ -27,9 +27,9 @@ configuration requise, langues, tags, divulgation IA, et la liste de ce qui rest
 | `docs/steam/capsules/icon.ico`, `icon_256x256.png` | Icône du client / de l'exécutable Windows | 16 à 256 px |
 
 Tous ces visuels sortent **du vrai jeu** : la vidéo et les captures sont rendues par Godot (aucune retouche),
-les capsules sont composées avec les assets du jeu (décors, vaisseaux peints par le shader du jeu, police Tiny5)
-et agrandies au plus proche voisin, sans flou. Les capsules sont des **versions provisoires** propres et
-conformes (logo lisible, aucun autre texte) ; un graphiste pourra les remplacer.
+les capsules sont composées avec les assets du jeu (décors, vaisseaux peints par le shader du jeu, logo en
+Lilita One) et rendues directement à la taille demandée : pixel art net, logo sans flou. Les capsules sont des
+**versions provisoires** propres et conformes (logo lisible, aucun autre texte) ; un graphiste pourra les remplacer.
 
 Régénérer le kit :
 
@@ -43,21 +43,22 @@ python tools/screenshots.py --steam                 # captures 1920×1080 FR + E
 
 | Champ | Valeur |
 |---|---|
-| Nom | Wreck & Resell (provisoire — vérifier la disponibilité du nom et des marques) |
+| Nom | Clunker Cosmos (vérifier la disponibilité du nom et des marques avant la publication) |
 | Genres Steam | Simulation, Stratégie, Occasionnel, Indépendant |
-| Type | Gestion / idle, solo, mode Histoire facultatif ou mode Classique |
+| Type | Jeu de gestion solo (pas un idle : rien n'avance jeu fermé), mode Histoire facultatif ou mode Classique |
 | Développeur / éditeur | *à compléter* |
 | Date de sortie | *à définir* (« Bientôt disponible » / *Coming soon*) |
 | Prix | *à définir* |
 | Plateforme | Windows 64 bits (macOS et Linux possibles avec Godot, non testés) |
 | Moteur | Godot 4.7.1 (licence MIT), rendu « Compatibility » (OpenGL 3.3) |
-| Contrôles | Souris (obligatoire) + raccourcis clavier (Espace : pause, 1-3 : vitesse, Échap : menu, F11 ou Alt+Entrée : plein écran, F12 : capture) ; pas de manette |
-| Affichage | fenêtré 1440×810 ou plein écran (mémorisé) ; image 480×270 agrandie d'un facteur entier, bandes noires si besoin |
+| Contrôles | Souris (obligatoire) + raccourcis clavier (Espace : pause, 1-3 : vitesse, Échap : paramètres, F1 : tutoriel, F11 ou Alt+Entrée : plein écran, F12 : capture) ; pas de manette |
+| Affichage | plein écran par défaut ou fenêtré (mémorisé) ; **taille de l'interface** automatique (853×480 en 1440p, 640×360 en 1080p) ou réglable, pixel art à l'échelle entière, texte net à toutes les résolutions |
+| Aide | tutoriel intégré (12 pages), infobulles sur les ressources |
 | Steam Deck | non testé (souris nécessaire : jouable a priori au pavé tactile, sans garantie) |
 | Connexion Internet | non requise (aucune donnée collectée) |
 | Fonctions Steam | aucune pour l'instant (succès, Steam Cloud, cartes à échanger : à ajouter, par ex. avec GodotSteam) |
-| Sauvegarde | locale, versionnée, sauvegarde automatique ; progression hors ligne au retour |
-| Audio | **aucun pour l'instant** (hors périmètre de cette version) |
+| Sauvegarde | locale, versionnée, automatique ; pause automatique quand la fenêtre n'est plus active |
+| Audio | 5 musiques originales et 32 bruitages, volumes réglables ; pas de voix |
 
 ## 3. Langues
 
@@ -66,9 +67,9 @@ python tools/screenshots.py --steam                 # captures 1920×1080 FR + E
 | Français | ✔ | — | — |
 | Anglais (English) | ✔ | — | — |
 
-- Tous les textes sont traduits : interface, dialogues, quêtes, journal, descriptions. Changement de langue à
-  l'écran titre ou dans les paramètres.
-- Le jeu n'a ni voix ni son : ne cochez ni « Audio complet » ni « Sous-titres ».
+- Tous les textes sont traduits : interface, tutoriel, dialogues, quêtes, journal, descriptions. Changement de
+  langue à l'écran titre ou dans les paramètres.
+- Le jeu n'a pas de voix (musique et bruitages uniquement) : ne cochez ni « Audio complet » ni « Sous-titres ».
 - La fiche peut être en anglais (langue par défaut) avec une traduction française : textes ci-dessous.
   Deux versions de la bande-annonce et des captures sont fournies : la série anglaise pour la fiche par défaut,
   la série française pour la fiche localisée (ou pour vos réseaux).
@@ -82,35 +83,38 @@ python tools/screenshots.py --steam                 # captures 1920×1080 FR + E
 | Mémoire vive | 2 Go | 4 Go |
 | Graphismes | compatible OpenGL 3.3 (Intel HD Graphics 4000, NVIDIA GeForce GT 630, AMD Radeon HD 5570) | carte de 2015 ou plus récente (Intel UHD Graphics 620, NVIDIA GeForce GTX 750, AMD Radeon R7 260) |
 | DirectX | version 11 (Godot peut basculer sur Direct3D 11 via ANGLE si le pilote OpenGL est absent) | version 11 |
-| Stockage | 200 Mo d'espace disponible | 200 Mo d'espace disponible |
-| Écran | 1280×720 | 1920×1080 (image ×4 exacte) |
+| Stockage | 250 Mo d'espace disponible | 250 Mo d'espace disponible |
+| Carte son | compatible DirectX (stéréo) | compatible DirectX (stéréo) |
+| Écran | 1280×720 | 1920×1080 ou plus |
 | Notes | souris requise ; aucune connexion requise | |
 
 Ces valeurs viennent de la configuration du moteur (Godot 4.7, rendu Compatibility) et du poids du jeu
-(quelques Mo de contenu + ≈ 100 Mo de moteur une fois exporté) : le jeu est très léger. **À confirmer** sur
-une machine modeste après le premier export Windows.
+(≈ 15 Mo de contenu dont 11 Mo d'audio, + ≈ 100 Mo de moteur une fois exporté) : le jeu est très léger.
+**À confirmer** sur une machine modeste après le premier export Windows.
 
 Textes prêts à coller dans Steamworks :
 
 ```
 MINIMUM — OS: Windows 10 64-bit | Processor: 64-bit dual core 2 GHz with SSE4.2 | Memory: 2 GB RAM |
 Graphics: OpenGL 3.3 compatible (Intel HD Graphics 4000 / GeForce GT 630 / Radeon HD 5570) |
-DirectX: Version 11 | Storage: 200 MB available space | Additional notes: Mouse required. No audio yet.
+DirectX: Version 11 | Storage: 250 MB available space | Sound Card: DirectX compatible |
+Additional notes: Mouse required. 1280×720 display or higher.
 
 RECOMMENDED — OS: Windows 10/11 64-bit | Processor: quad core 2.5 GHz | Memory: 4 GB RAM |
 Graphics: Intel UHD Graphics 620 / GeForce GTX 750 / Radeon R7 260 | DirectX: Version 11 |
-Storage: 200 MB available space | Additional notes: 1920×1080 display for pixel-perfect ×4 scaling.
+Storage: 250 MB available space | Sound Card: DirectX compatible |
+Additional notes: 1920×1080 display or higher (adjustable interface size).
 ```
 
 ## 5. Textes de la fiche
 
 ### Description courte (≤ 300 caractères)
 
-**FR (276 caractères)** —
-Héritez d'un garage orbital criblé de dettes : achetez des épaves aux enchères, réparez-les (ou maquillez leurs défauts…), repeignez-les et revendez-les à des clients aliens exigeants. Embauchez une équipe excentrique qui fait tourner l'atelier, même quand vous n'êtes pas là.
+**FR (257 caractères)** —
+Héritez d'un garage orbital criblé de dettes : achetez des épaves aux enchères, réparez-les (ou maquillez leurs défauts…), repeignez-les et revendez-les à des clients aliens exigeants. Embauchez une équipe excentrique et regardez-la faire tourner l'atelier.
 
-**EN (224 characters)** —
-Inherit a debt-ridden orbital garage: buy wrecks at auction, fix them (or hide their flaws…), repaint them and resell them to picky alien customers. Hire a quirky crew that keeps the workshop running, even while you're away.
+**EN (200 characters)** —
+Inherit a debt-ridden orbital garage: buy wrecks at auction, fix them (or hide their flaws…), repaint them and resell them to picky alien customers. Hire a quirky crew and watch them run the workshop.
 
 ### « À propos du jeu » — EN (balises Steam)
 
@@ -127,17 +131,18 @@ Aunt Odile, a legendary mechanic, has vanished, leaving you an orbital garage, a
 [*][b]Reinvest[/b]: expand the garage and research 42 technologies across 6 branches.
 [/list]
 
-[h2]A workshop that runs itself[/h2]
-Hire buyers, mechanics, body artists, salespeople and researchers from a pool that changes every day. Each one has a level, personality traits, morale and fatigue. Assign stations and priority rules, then watch the workshop automate itself. It even keeps working while you're away, with a detailed report when you come back.
+[h2]A crew you can watch at work[/h2]
+Hire buyers, mechanics, body artists, salespeople and researchers from a pool that changes every day. Each one has a level, personality traits, morale and fatigue. Assign stations and priority rules, then watch them in the garage's cross-section: mechanics hammering away in the bays, buyers glued to their tablets, researchers busy in the lab, and a well-deserved coffee break. A management game, not an idler: nothing happens while the game is closed.
 
 [h2]An optional story[/h2]
 Story mode: 5 chapters, 2 endings, the hunt for the 5 pieces of the legendary Aurora, a rival with far too many teeth and plenty of jokes. Prefer pure management? Play Classic mode.
 
 [h2]Features[/h2]
 [list]
-[*]Crisp pixel art at any resolution (integer scaling)
+[*]Crisp pixel art at any resolution, with an adjustable interface size
 [*]Animated cross-section of your garage, real time with pause and 3 speeds
-[*]Capped offline progress and daily reports
+[*]Original music and sound effects
+[*]Built-in tutorial and tooltips that explain every resource
 [*]Fully playable in English and French
 [/list]
 ```
@@ -157,27 +162,30 @@ Tante Odile, garagiste légendaire, a disparu en vous laissant un garage orbital
 [*][b]Réinvestissez[/b] : agrandissez le garage et recherchez 42 technologies réparties sur 6 branches.
 [/list]
 
-[h2]Un atelier qui tourne tout seul[/h2]
-Embauchez acheteurs, mécaniciens, carrossiers, vendeurs et chercheurs parmi un vivier renouvelé chaque jour. Chacun a un niveau, des traits de caractère, un moral et de la fatigue. Affectez les postes et les règles de priorité, puis regardez l'atelier s'automatiser. Il continue même de tourner en votre absence, avec un rapport détaillé à votre retour.
+[h2]Une équipe que l'on voit travailler[/h2]
+Embauchez acheteurs, mécaniciens, carrossiers, vendeurs et chercheurs parmi un vivier renouvelé chaque jour. Chacun a un niveau, des traits de caractère, un moral et de la fatigue. Affectez les postes et les règles de priorité, puis regardez-les dans la vue en coupe du garage : mécaniciens à l'ouvrage dans les baies, acheteurs rivés à leur tablette, chercheurs au labo, et pause café bien méritée. Un jeu de gestion, pas un idle : rien n'avance quand le jeu est fermé.
 
 [h2]Une histoire facultative[/h2]
 Mode Histoire : 5 chapitres, 2 fins, la quête des 5 pièces de la légendaire Aurore, un rival aux dents bien trop nombreuses et beaucoup d'humour. Envie de gestion pure ? Jouez en mode Classique.
 
 [h2]Caractéristiques[/h2]
 [list]
-[*]Pixel art net à toutes les résolutions (mise à l'échelle entière)
+[*]Pixel art net à toutes les résolutions, taille de l'interface réglable
 [*]Coupe animée de votre garage, temps réel avec pause et 3 vitesses
-[*]Progression hors ligne plafonnée et rapports quotidiens
+[*]Musiques et bruitages originaux
+[*]Tutoriel intégré et infobulles qui expliquent chaque ressource
 [*]Entièrement jouable en français et en anglais
 [/list]
 ```
 
 ### Tags suggérés (par ordre d'importance)
 
-Idler, Management, Simulation, Pixel Graphics, Space, Economy, Casual, Funny, Sci-fi, 2D, Singleplayer,
-Resource Management, Automation, Trading, Strategy, Indie, Cute, Relaxing, Comedy, Story Rich.
+Management, Simulation, Pixel Graphics, Space, Economy, Casual, Funny, Sci-fi, 2D, Singleplayer,
+Resource Management, Automation, Trading, Strategy, Indie, Cute, Relaxing, Comedy, Story Rich, Cozy.
 
 ## 6. Captures d'écran (contenu et légendes pour la presse / les réseaux)
+
+Rendues en 1920×1080 avec la taille d'interface automatique (640×360 ×3), comme chez un joueur en 1080p.
 
 | # | Fichier | Légende FR | Caption EN |
 |---|---|---|---|
@@ -188,7 +196,7 @@ Resource Management, Automation, Trading, Strategy, Indie, Cute, Relaxing, Comed
 | 5 | `05_staff.png` | Votre équipe : postes, règles de priorité, traits de caractère | Your crew: stations, priority rules, personality traits |
 | 6 | `06_research.png` | 42 technologies sur 6 branches | 42 technologies across 6 branches |
 | 7 | `07_story.png` | Galax-Auto veut votre garage… pour 12 crédits | Galax-Auto wants your garage… for 12 credits |
-| 8 | `08_offline.png` | L'atelier a tourné 24 h sans vous | The workshop ran for 24 hours without you |
+| 8 | `08_crew.png` | L'équipe au travail : mécaniciens dans les baies, acheteurs et chercheurs à l'étage | Your crew at work: mechanics in the bays, buyers and researchers upstairs |
 | 9 | `09_quests.png` | Chapitres, commandes et journal de quêtes | Chapters, orders and quest journal |
 
 Les parties montrées sont de vraies parties de démonstration jouées par l'autopilote du jeu, mises en scène pour
@@ -196,8 +204,9 @@ la vitrine (garage agrandi et plein, tous les lieux ouverts, quelques technologi
 
 ## 7. Bande-annonce
 
-Rendue image par image par le jeu lui-même (Movie Maker de Godot, 30 i/s), agrandie ×4 au plus proche voisin
-puis encodée en H.264 : le pixel art reste parfaitement net. Un faux curseur montre les clics.
+Rendue image par image par le jeu lui-même (Movie Maker de Godot, 30 i/s) directement en 1920×1080 : pixel art
+agrandi ×4 (interface en 480×270, lisible même dans un petit lecteur) et texte rastérisé en 1080p, avec la
+musique et les bruitages du jeu. Un faux curseur montre les clics.
 
 | Temps | Plan | Légende FR | Caption EN |
 |---|---|---|---|
@@ -207,17 +216,17 @@ puis encodée en H.264 : le pixel art reste parfaitement net. Un faux curseur mo
 | 0:17 | Peintures qui défilent, usure qui disparaît | Personnalisez-les à votre goût | Customize them your way |
 | 0:22 | Vente conclue à un client alien | Revendez-les à des clients aliens | Sell them to picky aliens |
 | 0:27 | Embauche | Embauchez une équipe excentrique | Hire a quirky crew |
-| 0:31 | Temps accéléré ×4, puis rapport hors ligne | Votre atelier tourne tout seul / Même quand vous n'êtes pas là | Your workshop runs itself / Even while you're away |
-| 0:40 | Arbre technologique | 42 technologies à découvrir | 42 technologies to unlock |
-| 0:44 | Dialogues : Tante Odile, Augustin Lustre, BOLT | Une histoire en 5 chapitres, 2 fins | A 5-chapter story, 2 endings |
-| 0:55 | Les 5 lieux en plein écran | 5 lieux d'enchères à conquérir | 5 auction sites to conquer |
-| 1:02 | Carton final | Bientôt sur Steam | Coming soon on Steam |
+| 0:31 | Temps accéléré : l'équipe au travail dans le garage | Regardez votre équipe s'activer | Watch your crew get to work |
+| 0:38 | Politique de l'atelier (honnête, pragmatique, requin) | Honnête… ou requin ? À vous de voir | Honest… or a shark? Your call |
+| 0:42 | Arbre technologique | 42 technologies à découvrir | 42 technologies to unlock |
+| 0:45 | Dialogues : Tante Odile, Augustin Lustre, BOLT | Une histoire en 5 chapitres, 2 fins | A 5-chapter story, 2 endings |
+| 0:56 | Les 5 lieux en plein écran | 5 lieux d'enchères à conquérir | 5 auction sites to conquer |
+| 1:03 | Carton final | Bientôt sur Steam | Coming soon on Steam |
 
-- **Muette** : le jeu n'a pas encore d'audio. La piste son silencieuse est là pour la compatibilité ; Steam lance
-  de toute façon les vidéos sans le son sur la fiche. Pour ajouter une musique (sous licence commerciale) :
-  `ffmpeg -i trailer_en.mp4 -i musique.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest trailer_en_music.mp4`
-- Débit vidéo faible (≈ 0,8 Mbit/s) car le pixel art se compresse très bien ; la qualité est quasi sans perte
-  (CRF 12). Steam réencode de toute façon les vidéos envoyées.
+- **Son** : musique et bruitages du jeu (AAC 192 kb/s, 48 kHz). Steam lance les vidéos sans le son sur la
+  fiche : les légendes incrustées suffisent à suivre la vidéo.
+- Débit vidéo faible car le pixel art se compresse très bien ; qualité quasi sans perte (CRF 14). Steam
+  réencode de toute façon les vidéos envoyées.
 - Le carton final dit « Bientôt sur Steam » : à refaire au lancement (texte `trailer.cta` dans
   `data/ui_text.json`, puis `tools/make_trailer.py`).
 
@@ -234,23 +243,27 @@ puis encodée en H.264 : le pixel art reste parfaitement net. Un faux curseur mo
 
 Rubrique *AI Generated Content Disclosure* — **contenu pré-généré** (aucune génération pendant le jeu) :
 
-> **EN** — All 2D pixel art (spaceship parts, wear overlays, character portraits, icons, backgrounds and UI
-> frames) was generated locally with the open-weights model Z-Image-Turbo (Apache-2.0) through ComfyUI, then
-> reduced and quantized to a hand-made 32-color palette by our own tools. Prompts describe original concepts
-> only: no artist, studio, franchise or existing character was referenced or imitated. The game's code, design,
-> story and texts were written with the help of an AI coding assistant (Claude) under human direction. Store
-> trailer and screenshots are captured from the game itself. No AI content is generated while playing.
+> **EN** — All 2D pixel art (spaceship parts, wear overlays, character portraits and sprites, icons,
+> backgrounds and UI frames) was generated locally with the open-weights model Z-Image-Turbo (Apache-2.0) through
+> ComfyUI, then reduced and quantized to a hand-made 32-color palette by our own tools. The instrumental music
+> was generated locally with ACE-Step 1.5 (MIT license) from generic style descriptions; sound effects are
+> synthesized by code. Prompts describe original concepts only: no artist, studio, franchise, song or existing
+> character was referenced or imitated. The game's code, design, story and texts were written with the help of
+> an AI coding assistant (Claude) under human direction. Store trailer and screenshots are captured from the game
+> itself. No AI content is generated while playing.
 
-> **FR** — Tout le pixel art 2D (pièces de vaisseaux, calques d'usure, portraits, icônes, décors et cadres
-> d'interface) a été généré localement avec le modèle open-weights Z-Image-Turbo (Apache-2.0) via ComfyUI, puis
-> réduit et quantifié sur une palette de 32 couleurs par nos propres outils. Les prompts décrivent uniquement des
-> concepts originaux : aucun artiste, studio, licence ou personnage existant n'a été cité ni imité. Le code, le
-> game design, l'histoire et les textes ont été écrits avec l'aide d'un assistant de programmation IA (Claude)
-> sous direction humaine. La bande-annonce et les captures proviennent du jeu lui-même. Aucun contenu n'est
-> généré par IA pendant la partie.
+> **FR** — Tout le pixel art 2D (pièces de vaisseaux, calques d'usure, portraits et personnages, icônes, décors
+> et cadres d'interface) a été généré localement avec le modèle open-weights Z-Image-Turbo (Apache-2.0) via
+> ComfyUI, puis réduit et quantifié sur une palette de 32 couleurs par nos propres outils. Les musiques
+> instrumentales ont été générées localement avec ACE-Step 1.5 (licence MIT) à partir de descriptions de style
+> génériques ; les bruitages sont synthétisés par code. Les invites décrivent uniquement des concepts originaux :
+> aucun artiste, studio, licence, morceau ou personnage existant n'a été cité ni imité. Le code, le game design,
+> l'histoire et les textes ont été écrits avec l'aide d'un assistant de programmation IA (Claude) sous direction
+> humaine. La bande-annonce et les captures proviennent du jeu lui-même. Aucun contenu n'est généré par IA
+> pendant la partie.
 
-Détail par fichier (prompt, graine, workflow, empreinte) : `art/manifest.json` ; modèles et licences :
-`docs/MODEL_LICENSES.md` ; synthèse : `docs/AI_DISCLOSURE.md`.
+Détail par fichier (invite, graine, workflow, empreinte) : `art/manifest.json` et `art/audio_manifest.json` ;
+modèles et licences : `docs/MODEL_LICENSES.md` ; synthèse : `docs/AI_DISCLOSURE.md`.
 
 ## 10. Reste à faire avant la publication
 
@@ -263,6 +276,6 @@ Détail par fichier (prompt, graine, workflow, empreinte) : `art/manifest.json` 
 4. **Fiche** : textes ci-dessus, captures, capsules, bande-annonce, tags, configuration, langues, divulgation IA,
    questionnaire de contenu ; page « Bientôt disponible » publiée au moins 2 semaines avant la sortie (examen de
    Valve de quelques jours ouvrés pour la fiche puis pour le build).
-5. **Recommandé avant la sortie** : musique et bruitages (puis une version sonorisée de la bande-annonce),
-   succès Steam et Steam Cloud (par ex. via GodotSteam, MIT), vérification du nom « Wreck & Resell »
-   (provisoire), site ou adresse de support, prix et date de sortie.
+5. **Recommandé avant la sortie** : succès Steam et Steam Cloud (par ex. via GodotSteam, MIT), vérification du nom
+   « Clunker Cosmos » (marques, autres jeux), site ou adresse de support, prix et date de sortie, écoute des
+   musiques générées (choisies par mesures automatiques) et test sur Steam Deck si souhaité.

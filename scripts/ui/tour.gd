@@ -2,10 +2,12 @@ extends Node
 ## Visite automatique de l'interface, lancée par `-- --tour=<mode>` :
 ##   smoke    (headless) construit chaque écran sur une partie avancée, déclenche les principales
 ##            interactions et imprime « ##RESULT {json} » (vérifié par tools/check_all.py) ;
-##   screens  (fenêtré) enregistre des captures PNG de chaque écran dans --out (×--scale) ;
-##   steam    (fenêtré) captures pour la fiche magasin Steam, sur une partie mise en scène (--lang, --out, --scale) ;
+##   screens  (fenêtré) enregistre des captures PNG de chaque écran dans --out ;
+##   steam    (fenêtré) captures pour la fiche magasin Steam, sur une partie mise en scène (--lang, --out) ;
 ##   trailer  (fenêtré, avec --write-movie) joue une séquence scénarisée pour la vidéo promotionnelle ;
 ##   capsules (fenêtré) rend les visuels de la page Steam (scripts/ui/capsules.gd).
+## Captures : fenêtre --window=LxH (1920x1080 par défaut) et taille d'interface --ui-scale=k (0 : réglage
+## automatique, comme chez le joueur). La bande-annonce garde l'interface en 480×270 (×4 en 1080p).
 
 const DEMO_SEED: int = 20261
 const DEMO_DAYS: int = 14
@@ -27,8 +29,14 @@ func start(p_main: MainUI, p_args: Dictionary) -> void:
 		Audio.enabled = false
 	if mode in ["screens", "steam"]:
 		# Rendu « canvas_items » : l'image capturée a la taille de la fenêtre (texte net à cette résolution).
-		var k: int = int(args.get("scale", "3"))
-		main.get_window().size = Vector2i(MainUI.W * k, MainUI.H * k)
+		var dims: PackedStringArray = str(args.get("window", "1920x1080")).split("x")
+		main.get_window().size = Vector2i(int(dims[0]), int(dims[1]))
+		MainUI.forced_scale = int(args.get("ui-scale", "0"))
+		main.apply_view(true)
+	elif mode == "trailer":
+		MainUI.forced_scale = int(args.get("ui-scale", "4"))
+		main.apply_view(true)
+	print("TOUR: fenêtre %dx%d, interface %dx%d ×%d" % [main.get_window().size.x, main.get_window().size.y, MainUI.W, MainUI.H, MainUI.K])
 	if args.has("lang"):
 		I18n.set_locale(str(args["lang"]), false)
 	match mode:
@@ -109,6 +117,17 @@ func _smoke() -> void:
 	for nid: String in Content.db.tech:
 		rs.selected_node = nid
 		rs.force_rebuild()
+	# Changement de taille d'interface (comme depuis les paramètres) : tous les écrans se recomposent.
+	for k: int in ViewScale.choices(main.get_window().size):
+		MainUI.forced_scale = k
+		main.apply_view(true)
+		for id: String in MainUI.SCREEN_IDS:
+			var s2: GameScreen = open_screen(id)
+			if s2.get_child_count() == 0:
+				errors.append("écran vide en ×%d : %s" % [k, id])
+		await frames(1)
+	MainUI.forced_scale = 0
+	main.apply_view(true)
 	main.open_settings()
 	await frames(1)
 	main.close_all_modals()
@@ -150,10 +169,9 @@ func capture(name: String) -> void:
 	await frames(3)
 	await RenderingServer.frame_post_draw
 	var img: Image = get_viewport().get_texture().get_image()
-	var scale: int = int(args.get("scale", "3"))
 	var out_dir: String = str(args.get("out", ProjectSettings.globalize_path("res://docs/screens")))
 	DirAccess.make_dir_recursive_absolute(out_dir)
-	var want: Vector2i = Vector2i(MainUI.W * scale, MainUI.H * scale)
+	var want: Vector2i = main.get_window().size
 	if img.get_size() != want:
 		push_warning("capture %s : fenêtre de %s au lieu de %s" % [name, img.get_size(), want])
 		img.resize(want.x, want.y, Image.INTERPOLATE_LANCZOS)
@@ -202,6 +220,17 @@ func _screens() -> void:
 		await frames(2)
 		await capture("11_tutorial")
 		main.close_all_modals()
+	if only.contains("resize"):
+		# Uniquement sur demande (--only=resize) : la fenêtre change de taille, l'interface doit suivre
+		# (résolution logique attendue vérifiée après le délai de redimensionnement, puis capturée).
+		main.dialogue.advance()
+		for dims: Vector2i in [Vector2i(1600, 900), Vector2i(1280, 720)]:
+			main.get_window().size = dims
+			await get_tree().create_timer(0.5).timeout
+			var want: Vector2i = ViewScale.logical_size(dims, ViewScale.resolve(dims, MainUI.forced_scale))
+			if Vector2i(MainUI.W, MainUI.H) != want:
+				push_error("redimensionnement %s : interface %dx%d au lieu de %s" % [dims, MainUI.W, MainUI.H, want])
+			await capture("13_resize_%dx%d" % [dims.x, dims.y])
 	if only.contains("tooltip"):
 		# Uniquement sur demande (--only=tooltip) : infobulle d'une ressource (survol simulé, sans
 		# déplacer le vrai curseur).

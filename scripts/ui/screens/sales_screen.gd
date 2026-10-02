@@ -33,13 +33,14 @@ func rebuild() -> void:
 					selected_client = c.id
 		if selected_client < 0 and not clients.is_empty():
 			selected_client = clients[0].id
+	var lw: int = split(222)
 	var list: VBoxContainer = UIKit.vbox([], 2)
 	list.add_child(section(t("ui.sales.clients", {"n": clients.size()})))
 	if clients.is_empty():
-		list.add_child(UIKit.panel(UIKit.wrap_label(t("ui.sales.no_clients"), 200, UIKit.C_DIM), "DarkPanel"))
+		list.add_child(UIKit.panel(UIKit.wrap_label(t("ui.sales.no_clients"), 200 + list_grow, UIKit.C_DIM), "DarkPanel"))
 	for c: Client in clients:
 		list.add_child(_client_card(c))
-	make_scroll("clients", list, Rect2(2, 2, 222, size.y - 4))
+	make_scroll("clients", list, Rect2(2, 2, lw, size.y - 4))
 	var sel: Client = gm.find_client(selected_client)
 	if sel != null:
 		_detail(sel)
@@ -74,7 +75,7 @@ func _client_card(c: Client) -> Control:
 		v.add_child(UIKit.label(t("ui.sales.budget", {"budget": UIKit.credits(c.budget)})))
 		var left: int = c.leave_day - gm.day
 		v.add_child(UIKit.label(t("ui.sales.leaves", {"n": left}) if left > 0 else t("ui.sales.leaves_today"), UIKit.C_ORANGE if left <= 0 else UIKit.C_DIM))
-	v.add_child(UIKit.wrap_label(t("ui.sales.likes", {"likes": likes_text(gm, c)}), 150, UIKit.C_TEXT))
+	v.add_child(UIKit.wrap_label(t("ui.sales.likes", {"likes": likes_text(gm, c)}), 150 + list_grow, UIKit.C_TEXT))
 	if not c.busy.is_empty():
 		v.add_child(UIKit.label(t("ui.sales.with_seller"), UIKit.C_DIM))
 	row.add_child(v)
@@ -90,12 +91,12 @@ func _detail(c: Client) -> void:
 	var gm: GameModel = m()
 	var v: VBoxContainer = UIKit.vbox([], 2)
 	var head: HBoxContainer = UIKit.hbox([UIKit.portrait_rect(c.portrait)], 4)
-	var hv: VBoxContainer = UIKit.vbox([UIKit.label(c.name, UIKit.C_ACCENT), UIKit.wrap_label(t("species.%s.desc" % c.species), 180, UIKit.C_DIM)], 1)
+	var hv: VBoxContainer = UIKit.vbox([UIKit.label(c.name, UIKit.C_ACCENT), UIKit.wrap_label(t("species.%s.desc" % c.species), 180 + detail_grow, UIKit.C_DIM)], 1)
 	head.add_child(hv)
 	v.add_child(head)
 	if not c.quest.is_empty():
 		v.add_child(section(t("ui.sales.criteria")))
-		v.add_child(UIKit.wrap_label(criteria_text(c.criteria), 230))
+		v.add_child(UIKit.wrap_label(criteria_text(c.criteria), 230 + detail_grow))
 	if c.refusals > 0:
 		v.add_child(UIKit.label(t("ui.sales.patience", {"n": c.refusals}), UIKit.C_ORANGE))
 	if not last_result.is_empty() and int(last_result.get("client", -1)) == c.id:
@@ -113,7 +114,7 @@ func _detail(c: Client) -> void:
 	for s: Ship in ships:
 		v.add_child(_ship_offer(c, s))
 	var p: PanelContainer = UIKit.panel(v, "DarkPanel")
-	make_scroll("sale_detail", p, Rect2(228, 2, size.x - 230, size.y - 4))
+	make_scroll("sale_detail", p, Rect2(228 + list_grow, 2, size.x - 230 - list_grow, size.y - 4))
 
 
 static func criteria_text(crit: Dictionary) -> String:

@@ -9,6 +9,7 @@ func test_defaults() -> void:
 	check(s.pause_on_focus_loss, "pause quand la fenêtre perd le focus")
 	eq(s.idle_pause_minutes, 5, "pause après 5 min d'inactivité")
 	eq(s.locale, "", "langue du système")
+	eq(s.ui_scale, 0, "taille de l'interface automatique")
 	check(s.master_volume > 0.0 and s.music_volume > 0.0 and s.sfx_volume > 0.0, "son actif")
 
 
@@ -21,6 +22,7 @@ func test_roundtrip() -> void:
 	s.locale = "en"
 	s.pause_on_focus_loss = false
 	s.idle_pause_minutes = 10
+	s.ui_scale = 3
 	var cfg: ConfigFile = ConfigFile.new()
 	s.to_config(cfg)
 	var r: GameSettings = GameSettings.from_config(cfg)
@@ -31,6 +33,7 @@ func test_roundtrip() -> void:
 	eq(r.locale, "en", "langue")
 	check(not r.pause_on_focus_loss, "pause de focus désactivée")
 	eq(r.idle_pause_minutes, 10, "inactivité")
+	eq(r.ui_scale, 3, "taille de l'interface")
 
 
 func test_invalid_values_are_clamped_or_ignored() -> void:
@@ -40,12 +43,16 @@ func test_invalid_values_are_clamped_or_ignored() -> void:
 	cfg.set_value("audio", "sfx", "fort")
 	cfg.set_value("general", "locale", "tlh")
 	cfg.set_value("game", "idle_pause_minutes", 7)
+	cfg.set_value("display", "ui_scale", -2)
 	var s: GameSettings = GameSettings.from_config(cfg)
 	near(s.master_volume, 1.0, 0.0001, "borné à 1")
 	near(s.music_volume, 0.0, 0.0001, "borné à 0")
 	near(s.sfx_volume, GameSettings.new().sfx_volume, 0.0001, "valeur invalide ignorée")
 	eq(s.locale, "", "langue inconnue ignorée")
 	eq(s.idle_pause_minutes, GameSettings.new().idle_pause_minutes, "durée hors choix ignorée")
+	eq(s.ui_scale, 0, "taille d'interface négative ignorée")
+	cfg.set_value("display", "ui_scale", "×3")
+	eq(GameSettings.from_config(cfg).ui_scale, 0, "taille d'interface non numérique ignorée")
 
 
 func test_keeps_locale_key_of_i18n() -> void:

@@ -9,6 +9,7 @@ const SELLER_MARGINS: Array[float] = [0.0, 0.05, 0.15]
 
 func rebuild() -> void:
 	UIKit.clear(self)
+	split(236)
 	var gm: GameModel = m()
 	var left: VBoxContainer = UIKit.vbox([], 3)
 	# Finances
@@ -64,7 +65,7 @@ func rebuild() -> void:
 		b2.tooltip_text = t("ui.policy.%s.desc" % p)
 		pol.add_child(b2)
 	left.add_child(pol)
-	left.add_child(UIKit.wrap_label(t("ui.policy.%s.desc" % cur), 220, UIKit.C_DIM))
+	left.add_child(UIKit.wrap_label(t("ui.policy.%s.desc" % cur), 220 + list_grow, UIKit.C_DIM))
 	# Automatisation
 	left.add_child(section(t("ui.office.automation")))
 	var auto_list: bool = bool(gm.settings.get("auto_list", true))
@@ -73,7 +74,7 @@ func rebuild() -> void:
 	left.add_child(al)
 	left.add_child(_choice_row("ui.office.buyer_budget", "buyer_budget", BUYER_BUDGETS))
 	left.add_child(_choice_row("ui.office.seller_margin", "seller_min_margin", SELLER_MARGINS))
-	make_scroll("office_left", UIKit.panel(left, "DarkPanel"), Rect2(2, 2, 236, size.y - 4))
+	make_scroll("office_left", UIKit.panel(left, "DarkPanel"), Rect2(2, 2, 236 + list_grow, size.y - 4))
 	_report_panel()
 
 
@@ -132,7 +133,7 @@ func _report_panel() -> void:
 	if not lines.is_empty():
 		v.add_child(section(t("ui.office.events")))
 		for txt: String in lines.slice(maxi(0, lines.size() - 10)):
-			v.add_child(UIKit.wrap_label("• " + txt, 210))
+			v.add_child(UIKit.wrap_label("• " + txt, 210 + detail_grow))
 	v.add_child(section(t("ui.office.stats")))
 	var sg: GridContainer = GridContainer.new()
 	sg.columns = 2
@@ -152,4 +153,4 @@ func _report_panel() -> void:
 	susp.tooltip_text = t("ui.office.suspicion_tip")
 	susp.mouse_filter = Control.MOUSE_FILTER_PASS
 	v.add_child(susp)
-	make_scroll("office_report", UIKit.panel(v, "DarkPanel"), Rect2(242, 2, size.x - 244, size.y - 4))
+	make_scroll("office_report", UIKit.panel(v, "DarkPanel"), Rect2(242 + list_grow, 2, size.x - 244 - list_grow, size.y - 4))

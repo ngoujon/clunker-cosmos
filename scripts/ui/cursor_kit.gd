@@ -2,7 +2,7 @@ class_name CursorKit
 extends RefCounted
 ## Curseur de souris du jeu en pixel art (remplace celui de Windows dans la fenêtre) : flèche dorée, main
 ## gantée sur les boutons, flèche « ? » sur les éléments à infobulle. Motifs dessinés ici, avec les couleurs
-## de la palette, puis agrandis au plus proche voisin selon l'échelle de la fenêtre. Ce sont des curseurs
+## de la palette, puis agrandis au plus proche voisin selon la taille de l'interface. Ce sont des curseurs
 ## « matériels » (Input.set_custom_mouse_cursor) : aucune latence par rapport à la souris.
 
 ## X contour sombre, W crème, Y jaune, O orange, S ombre ; « . » transparent.
@@ -109,18 +109,18 @@ static func image(id: String, k: int) -> Image:
 	return img
 
 
-## Taille des pixels du curseur : celle des pixels du jeu, un cran en dessous au-delà de ×2 (sinon la
-## flèche paraît énorme en plein écran).
-static func scale_for(window_size: Vector2i) -> int:
-	var k: int = maxi(1, mini(window_size.x / 480, window_size.y / 270))
+## Taille des pixels du curseur : celle des pixels de l'interface (k pixels d'écran, voir ViewScale), un
+## cran en dessous au-delà de ×2 (sinon la flèche paraît énorme).
+static func scale_for(ui_scale: int) -> int:
+	var k: int = maxi(1, ui_scale)
 	return k if k <= 2 else k - 1
 
 
-## Installe les curseurs pour la taille actuelle de la fenêtre (à rappeler quand elle change).
-static func apply(win: Window) -> void:
-	if DisplayServer.get_name() == "headless" or win == null:
+## Installe les curseurs pour la taille d'interface actuelle (à rappeler quand elle change).
+static func apply(ui_scale: int) -> void:
+	if DisplayServer.get_name() == "headless":
 		return
-	var k: int = scale_for(win.size)
+	var k: int = scale_for(ui_scale)
 	var arrow: Image = image("arrow", k)
 	var arrow_shapes: Array[Input.CursorShape] = [
 		Input.CURSOR_ARROW, Input.CURSOR_IBEAM, Input.CURSOR_WAIT, Input.CURSOR_BUSY, Input.CURSOR_CROSS,

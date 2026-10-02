@@ -154,6 +154,29 @@ func test_cursor_patterns_valid() -> void:
 		var img: Image = CursorKit.image(id, 3)
 		eq(img.get_size(), Vector2i(w * 3, pat.size() * 3), "image ×3 de %s" % id)
 		check(img.get_width() <= 256 and img.get_height() <= 256, "taille de curseur acceptée par Godot")
-	eq(CursorKit.scale_for(Vector2i(1440, 810)), 2, "fenêtre ×3 : curseur ×2")
-	eq(CursorKit.scale_for(Vector2i(1920, 1080)), 3, "plein écran 1080p : curseur ×3")
-	eq(CursorKit.scale_for(Vector2i(960, 540)), 2, "fenêtre ×2 : curseur ×2")
+	eq(CursorKit.scale_for(1), 1, "interface ×1 : curseur ×1")
+	eq(CursorKit.scale_for(2), 2, "interface ×2 : curseur ×2")
+	eq(CursorKit.scale_for(3), 2, "interface ×3 : curseur ×2")
+	eq(CursorKit.scale_for(5), 4, "interface ×5 : curseur ×4")
+
+
+func test_panel_edges_seamless() -> void:
+	var edge: Color = Color8(200, 200, 210)
+	var fill: Color = Color8(40, 40, 50)
+	var img: Image = Image.create(24, 24, false, Image.FORMAT_RGBA8)
+	img.fill(fill)
+	for i: int in 24:
+		img.set_pixel(i, 0, edge)
+		img.set_pixel(0, i, edge)
+	img.set_pixel(11, 0, fill)
+	img.set_pixel(12, 0, fill)
+	img.set_pixel(0, 12, fill)
+	img.set_pixel(3, 0, Color8(250, 160, 80))
+	UIKit.seamless_image(img, 6)
+	for i: int in range(6, 18):
+		eq(img.get_pixel(i, 0), edge, "bord haut continu en x=%d" % i)
+		eq(img.get_pixel(0, i), edge, "bord gauche continu en y=%d" % i)
+	eq(img.get_pixel(3, 0), Color8(250, 160, 80), "coin intact")
+	eq(img.get_pixel(12, 12), fill, "centre intact")
+	var t: Texture2D = UIKit.tex("res://assets/ui/panel.png")
+	check(t != null and UIKit.seamless_edges(t, 6) != null, "texture de panneau traitée")

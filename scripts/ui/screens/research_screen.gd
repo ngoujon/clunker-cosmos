@@ -2,15 +2,21 @@ class_name ResearchScreen
 extends GameScreen
 ## Arbre technologique en graphe : 6 branches (colonnes), nœuds placés selon `pos` (rang, voie),
 ## liens de prérequis, états (fait / prêt / en attente de ressources / verrouillé) et fiche du nœud.
+## Colonnes, rangs et fiche s'élargissent avec l'écran (minimums : la mise en page en 480×270).
 
-const COL_W: int = 54
-const ROW_H: int = 33
-const LANE: int = 13
+const MIN_COL_W: int = 54
+const MIN_ROW_H: int = 33
+const MAX_ROW_H: int = 60
 const TOP: int = 34
-const INFO_W: int = 150
+const MIN_INFO_W: int = 150
 
 var selected_node: String = ""
 var _graph: TechGraph = null
+## Mise en page du graphe, recalculée à chaque reconstruction (voir _layout).
+var col_w: int = MIN_COL_W
+var row_h: int = MIN_ROW_H
+var lane: int = 13
+var info_w: int = MIN_INFO_W
 
 
 func background() -> Array:
@@ -24,27 +30,39 @@ func node_center(id: String) -> Vector2:
 		if str(db().branches[i]["id"]) == str(n.get("branch", "")):
 			col = i
 	var pos: Array = n.get("pos", [0, 0])
-	return Vector2(col * COL_W + COL_W / 2 + int(pos[1]) * LANE, TOP + int(pos[0]) * ROW_H)
+	return Vector2(col * col_w + col_w / 2 + int(pos[1]) * lane, TOP + int(pos[0]) * row_h)
+
+
+func _layout() -> void:
+	info_w = clampi(int(size.x * 0.3), MIN_INFO_W, 260)
+	var branches: int = maxi(1, db().branches.size())
+	col_w = maxi(MIN_COL_W, int((size.x - info_w - 6) / branches))
+	lane = col_w * 13 / MIN_COL_W
+	var max_rank: int = 1
+	for id: String in db().tech:
+		max_rank = maxi(max_rank, int((db().tech[id].get("pos", [0, 0]) as Array)[0]))
+	row_h = clampi(int((size.y - TOP - 18) / max_rank), MIN_ROW_H, MAX_ROW_H)
 
 
 func rebuild() -> void:
 	UIKit.clear(self)
+	_layout()
 	var gm: GameModel = m()
 	if selected_node.is_empty() or not db().tech.has(selected_node):
 		var avail: Array[String] = ResearchSystem.available(gm)
 		selected_node = avail[0] if not avail.is_empty() else str(db().tech.keys()[0])
 	var gp: PanelContainer = PanelContainer.new()
 	gp.theme_type_variation = "DarkPanel"
-	place(gp, Rect2(2, 2, size.x - INFO_W - 6, size.y - 4))
+	place(gp, Rect2(2, 2, size.x - info_w - 6, size.y - 4))
 	_graph = TechGraph.new()
 	_graph.screen = self
 	_graph.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	place(_graph, Rect2(2, 2, size.x - INFO_W - 6, size.y - 4))
+	place(_graph, Rect2(2, 2, size.x - info_w - 6, size.y - 4))
 	for i: int in db().branches.size():
 		var b: Dictionary = db().branches[i]
 		var ic: TextureRect = UIKit.icon_rect(str(b.get("icon", "")), 16)
 		ic.tooltip_text = t("branch.%s" % str(b["id"]))
-		place(ic, Rect2(2 + i * COL_W + COL_W / 2 - 8, 4, 16, 16))
+		place(ic, Rect2(2 + i * col_w + col_w / 2 - 8, 4, 16, 16))
 	for id: String in db().tech:
 		_node_button(id)
 	_info(selected_node)
@@ -98,19 +116,19 @@ func _info(id: String) -> void:
 	var n: Dictionary = db().tech[id]
 	var v: VBoxContainer = UIKit.vbox([], 2)
 	v.add_child(UIKit.label(t("ui.research.rp", {"rp": "%.1f" % gm.research_points}), UIKit.C_BLUE))
-	var head: HBoxContainer = UIKit.hbox([UIKit.icon_rect(str(n.get("icon", "")), 16), UIKit.wrap_label(t("tech.%s.name" % id), INFO_W - 40, UIKit.C_ACCENT)], 3)
+	var head: HBoxContainer = UIKit.hbox([UIKit.icon_rect(str(n.get("icon", "")), 16), UIKit.wrap_label(t("tech.%s.name" % id), info_w - 40, UIKit.C_ACCENT)], 3)
 	v.add_child(head)
 	v.add_child(UIKit.label(t("branch.%s" % str(n.get("branch", ""))), UIKit.C_DIM))
-	v.add_child(UIKit.wrap_label(t("tech.%s.desc" % id), INFO_W - 16))
+	v.add_child(UIKit.wrap_label(t("tech.%s.desc" % id), info_w - 16))
 	v.add_child(section(t("ui.research.effects")))
 	for e: Variant in n.get("effects", []):
-		v.add_child(UIKit.wrap_label("• " + effect_text(gm, e as Dictionary), INFO_W - 16, UIKit.C_GOOD))
+		v.add_child(UIKit.wrap_label("• " + effect_text(gm, e as Dictionary), info_w - 16, UIKit.C_GOOD))
 	var prereqs: Array = n.get("prereqs", [])
 	if not prereqs.is_empty():
 		v.add_child(section(t("ui.research.prereqs")))
 		for p: Variant in prereqs:
 			var done: bool = str(p) in gm.researched
-			v.add_child(UIKit.wrap_label(("● " if done else "○ ") + t("tech.%s.name" % str(p)), INFO_W - 16, UIKit.C_GOOD if done else UIKit.C_BAD))
+			v.add_child(UIKit.wrap_label(("● " if done else "○ ") + t("tech.%s.name" % str(p)), info_w - 16, UIKit.C_GOOD if done else UIKit.C_BAD))
 	var cost_ok_rp: bool = gm.research_points + 0.0001 >= float(n.get("rp", 0))
 	var cost_ok_cr: bool = gm.credits >= int(n.get("credits", 0))
 	v.add_child(section(t("ui.research.cost")))
@@ -126,7 +144,7 @@ func _info(id: String) -> void:
 			b.tooltip_text = t("reason." + ResearchSystem.can_research(gm, id))
 		v.add_child(b)
 	var p2: PanelContainer = UIKit.panel(v, "DarkPanel")
-	make_scroll("tech_info", p2, Rect2(size.x - INFO_W - 2, 2, INFO_W, size.y - 4))
+	make_scroll("tech_info", p2, Rect2(size.x - info_w - 2, 2, info_w, size.y - 4))
 
 
 ## Liens de prérequis dessinés en lignes orthogonales (pixels nets).
@@ -139,13 +157,13 @@ class TechGraph extends Control:
 		var gm: GameModel = Game.model
 		var db: ContentDB = Content.db
 		for i: int in range(1, db.branches.size()):
-			draw_rect(Rect2(i * ResearchScreen.COL_W, 2, 1, size.y - 4), Color(UIKit.C_SLATE, 0.9))
+			draw_rect(Rect2(i * screen.col_w, 2, 1, size.y - 4), Color(UIKit.C_SLATE, 0.9))
 		for id: String in db.tech:
 			var to: Vector2 = screen.node_center(id)
 			for p: Variant in db.tech[id].get("prereqs", []):
 				var from: Vector2 = screen.node_center(str(p))
 				var col: Color = UIKit.C_GOOD if str(p) in gm.researched else Color(UIKit.C_DIM, 0.7)
-				var mid_y: float = floorf(to.y - ResearchScreen.ROW_H / 2.0)
+				var mid_y: float = floorf(to.y - screen.row_h / 2.0)
 				_vline(from.x, from.y + 9, mid_y, col)
 				_hline(from.x, to.x, mid_y, col)
 				_vline(to.x, mid_y, to.y - 9, col)

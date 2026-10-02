@@ -98,7 +98,7 @@ func _compose(root: Control, spec: Dictionary) -> void:
 		var bg: TextureRect = TextureRect.new()
 		bg.texture = tex
 		bg.stretch_mode = TextureRect.STRETCH_SCALE
-		bg.size = Vector2(MainUI.W * k, MainUI.H * k)
+		bg.size = Vector2(MainUI.BASE_W * k, MainUI.BASE_H * k)
 		var anchor: Vector2 = spec.get("bg_anchor", Vector2(0.5, 0.5))
 		bg.position = (Vector2(W, H) / 2.0 - bg.size * anchor).round()
 		bg.position = bg.position.clamp(Vector2(W, H) - bg.size, Vector2.ZERO)

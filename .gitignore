@@ -17,3 +17,6 @@ __pycache__/
 /sim_out/
 /art/compare/px/
 /art/review/
+
+# Réglages temporaires de tools/make_trailer.py (taille de la vidéo)
+/override.cfg

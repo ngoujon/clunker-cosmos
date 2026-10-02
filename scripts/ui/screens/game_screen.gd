@@ -5,6 +5,10 @@ extends Control
 
 var main: MainUI = null
 var dirty: bool = true
+## Largeur gagnée par la liste et par les textes de la fiche par rapport à la mise en page 480×270
+## (mises à jour par split()).
+var list_grow: int = 0
+var detail_grow: int = 0
 var _scroll_state: Dictionary = {}
 
 
@@ -27,6 +31,11 @@ func t(key: String, params: Dictionary = {}) -> String:
 ## [chemin du fond, opacité du voile sombre]
 func background() -> Array:
 	return ["res://assets/backgrounds/garage.png", 0.62]
+
+
+## Rectangle (coordonnées de MainUI) où dessiner le décor ; vide : le décor couvre l'écran.
+func art_rect() -> Rect2:
+	return Rect2()
 
 
 func on_show() -> void:
@@ -60,6 +69,16 @@ func force_rebuild() -> void:
 func act(res: Dictionary, success_text: String = "") -> bool:
 	dirty = true
 	return main.report(res, success_text)
+
+
+## Mise en page « liste à gauche, fiche à droite » : largeur de la liste (`base` en 480×270, puis
+## proportionnelle à l'écran, bornée) ; met à jour list_grow et detail_grow (textes bornés pour rester
+## lisibles).
+func split(base: int) -> int:
+	var lw: int = clampi(int(size.x * float(base) / 480.0), base, base + 120)
+	list_grow = lw - base
+	detail_grow = clampi(int(size.x) - lw - (480 - base), 0, 200)
+	return lw
 
 
 func place(c: Control, rect: Rect2) -> Control:

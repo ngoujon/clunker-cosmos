@@ -58,6 +58,14 @@ func _init() -> void:
 	col.add_child(foot)
 
 
+## En bas de l'écran, juste au-dessus de la navigation ; largeur bornée pour rester lisible.
+func layout(area: Vector2) -> void:
+	var w: float = minf(area.x - 16.0, 560.0)
+	size = Vector2(w, 84)
+	position = Vector2(floorf((area.x - w) / 2.0), area.y - MainUI.NAV_H - 86)
+	_text.custom_minimum_size.x = w - 74
+
+
 func show_dialogue(d: Dictionary) -> void:
 	_data = d
 	_lines = d.get("lines", [])

@@ -8,8 +8,10 @@ Usage :
 1. Godot (fenêtré, 1920×1080) enregistre la séquence scénarisée `--tour=trailer` (scripts/ui/trailer.gd) avec
    son Movie Maker : `--write-movie build/trailer_<lang>/frame.png --fixed-fps 30`. Le temps du jeu avance de
    1/30 s par image, quelle que soit la vitesse de la machine. Le rendu « canvas_items » dessine le pixel art
-   à l'échelle ×4 (pixels nets) et le texte directement en 1080p ; le son du jeu (musique + bruitages) est
-   écrit à côté des images dans un fichier WAV.
+   à l'échelle ×4 (interface 480×270, pixels nets) et le texte directement en 1080p ; le son du jeu (musique +
+   bruitages) est écrit à côté des images dans un fichier WAV. Movie Maker prend la taille de la vidéo dans les
+   réglages du projet (taille de fenêtre imposée, 1440×810) et ignore `--resolution` : un `override.cfg`
+   temporaire (1920×1080) est posé à la racine du projet le temps de l'enregistrement, puis retiré.
 2. ffmpeg (paquet `imageio-ffmpeg` du venv) encode : H.264 High, yuv420p, 30 i/s, BT.709, AAC 192 kb/s.
 """
 from __future__ import annotations
@@ -54,7 +56,15 @@ def record(lang: str) -> Path:
     args = ["--write-movie", (frames / "frame.png").as_posix(), "--fixed-fps", str(FPS),
             "--resolution", f"{SIZE[0]}x{SIZE[1]}", "res://scenes/main.tscn", "--", "--tour=trailer", f"--lang={lang}"]
     print(f"[{lang}] enregistrement Godot (Movie Maker)…", flush=True)
-    p = godot.run(args, timeout=5400, headless=False)
+    override = ROOT / "override.cfg"
+    if override.exists():
+        raise SystemExit("override.cfg existe déjà à la racine du projet : retirez-le avant l'enregistrement")
+    override.write_text("[display]\n\nwindow/size/window_width_override=%d\nwindow/size/window_height_override=%d\n"
+                        % SIZE, encoding="utf-8")
+    try:
+        p = godot.run(args, timeout=5400, headless=False)
+    finally:
+        override.unlink(missing_ok=True)
     text = (p.stdout or "") + (p.stderr or "")
     for ln in text.splitlines():
         if ln.startswith("TRAILER:"):
@@ -67,7 +77,7 @@ def record(lang: str) -> Path:
         raise SystemExit("aucune image produite")
     w, h = png_size(pngs[0])
     if (w, h) != SIZE:
-        raise SystemExit(f"taille inattendue {w}×{h} (attendu {SIZE[0]}×{SIZE[1]} : fenêtre trop grande pour l'écran ?)")
+        raise SystemExit(f"taille inattendue {w}×{h} (attendu {SIZE[0]}×{SIZE[1]})")
     print(f"    {len(pngs)} images {w}×{h} ({len(pngs) / FPS:.1f} s), son : {', '.join(x.name for x in frames.glob('*.wav')) or 'aucun'}", flush=True)
     return frames
 

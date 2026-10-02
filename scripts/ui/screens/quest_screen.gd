@@ -13,6 +13,7 @@ func select(id: String) -> void:
 
 func rebuild() -> void:
 	UIKit.clear(self)
+	split(186)
 	var gm: GameModel = m()
 	var list: VBoxContainer = UIKit.vbox([], 2)
 	if gm.story_mode:
@@ -24,7 +25,7 @@ func rebuild() -> void:
 		for id: String in mains:
 			list.add_child(_quest_row(id))
 	else:
-		list.add_child(backdrop(UIKit.wrap_label(t("ui.quests.classic"), 170, UIKit.C_DIM)))
+		list.add_child(backdrop(UIKit.wrap_label(t("ui.quests.classic"), 170 + list_grow, UIKit.C_DIM)))
 	var avail: Array[String] = QuestSystem.ids_with_status(gm, "available", "side")
 	list.add_child(section(t("ui.quests.offers", {"n": avail.size()})))
 	if avail.is_empty():
@@ -45,7 +46,7 @@ func rebuild() -> void:
 	finished.reverse()
 	for id: String in finished.slice(0, 6):
 		list.add_child(_quest_row(id))
-	make_scroll("quest_list", list, Rect2(2, 2, 186, size.y - 4))
+	make_scroll("quest_list", list, Rect2(2, 2, 186 + list_grow, size.y - 4))
 	if not selected_quest.is_empty() and db().quests.has(selected_quest):
 		_detail(selected_quest)
 	else:
@@ -62,7 +63,7 @@ func _quest_row(id: String) -> Control:
 		col = UIKit.C_DIM
 	elif st == "available":
 		col = UIKit.C_BLUE
-	row.add_child(UIKit.wrap_label(t("quest.%s.title" % id), 150, col))
+	row.add_child(UIKit.wrap_label(t("quest.%s.title" % id), 150 + list_grow, col))
 	var c: PanelContainer = card(row, id == selected_quest)
 	clickable(c, func() -> void:
 		selected_quest = id
@@ -112,14 +113,14 @@ func _detail(id: String) -> void:
 		var info: Dictionary = DialogueBox.speaker_info(giver)
 		if not str(info["portrait"]).is_empty():
 			head.add_child(UIKit.portrait_rect(str(info["portrait"])))
-	var hv: VBoxContainer = UIKit.vbox([UIKit.wrap_label(t("quest.%s.title" % id), 200, UIKit.C_ACCENT)], 1)
+	var hv: VBoxContainer = UIKit.vbox([UIKit.wrap_label(t("quest.%s.title" % id), 200 + detail_grow, UIKit.C_ACCENT)], 1)
 	var kind_key: String = "ui.quests.kind_main" if str(q.get("kind", "")) == "main" else "ui.quests.kind_side"
 	hv.add_child(UIKit.label(t(kind_key) + " · " + t("ui.quests.status_" + status), UIKit.C_DIM))
 	if not giver.is_empty():
 		hv.add_child(UIKit.label(str(DialogueBox.speaker_info(giver)["name"]), UIKit.C_BLUE))
 	head.add_child(hv)
 	v.add_child(head)
-	v.add_child(UIKit.wrap_label(t("quest.%s.desc" % id), 260))
+	v.add_child(UIKit.wrap_label(t("quest.%s.desc" % id), 260 + detail_grow))
 	var objs: Array = q.get("objectives", [])
 	if not objs.is_empty():
 		v.add_child(section(t("ui.quests.objectives")))
@@ -134,16 +135,16 @@ func _detail(id: String) -> void:
 				vals = QuestSystem.objective_values(gm, id, i)
 			var ok: bool = vals[0] + 0.0001 >= vals[1]
 			row.add_child(UIKit.label("●" if ok else "○", UIKit.C_GOOD if ok else UIKit.C_DIM))
-			row.add_child(UIKit.wrap_label(text, 170, UIKit.C_TEXT))
+			row.add_child(UIKit.wrap_label(text, 170 + detail_grow, UIKit.C_TEXT))
 			if vals[1] > 1.0:
 				row.add_child(UIKit.label("%s/%s" % [_num(minf(vals[0], vals[1])), _num(vals[1])], UIKit.C_DIM))
 		else:
 			row.add_child(UIKit.label("○", UIKit.C_DIM))
-			row.add_child(UIKit.wrap_label(text, 220))
+			row.add_child(UIKit.wrap_label(text, 220 + detail_grow))
 		v.add_child(row)
 		if str(o.get("type", "")) == "deliver_order":
 			var crit: Dictionary = o.get("criteria", {})
-			v.add_child(UIKit.wrap_label(SalesScreen.criteria_text(crit), 240, UIKit.C_DIM))
+			v.add_child(UIKit.wrap_label(SalesScreen.criteria_text(crit), 240 + detail_grow, UIKit.C_DIM))
 	var dl: int = int(st.get("deadline", 0))
 	var days: int = int(q.get("deadline_days", 0))
 	if status == "active" and dl > 0:
@@ -157,7 +158,7 @@ func _detail(id: String) -> void:
 			rewards.append(rt)
 	if not rewards.is_empty():
 		v.add_child(section(t("ui.quests.rewards")))
-		v.add_child(UIKit.wrap_label(" · ".join(rewards), 260, UIKit.C_GOOD))
+		v.add_child(UIKit.wrap_label(" · ".join(rewards), 260 + detail_grow, UIKit.C_GOOD))
 	if status == "available":
 		v.add_child(UIKit.button(t("ui.quests.accept"), func() -> void:
 			act(m().act_accept_quest(id), t("ui.quests.accepted")), "ui_check"))
@@ -178,7 +179,7 @@ func _detail(id: String) -> void:
 		selected_quest = ""
 		dirty = true))
 	var p: PanelContainer = UIKit.panel(v, "DarkPanel")
-	make_scroll("quest_detail", p, Rect2(192, 2, size.x - 194, size.y - 4))
+	make_scroll("quest_detail", p, Rect2(192 + list_grow, 2, size.x - 194 - list_grow, size.y - 4))
 
 
 static func _num(v: float) -> String:
@@ -192,7 +193,7 @@ func _journal() -> void:
 	var v: VBoxContainer = UIKit.vbox([], 2)
 	v.add_child(UIKit.label(t("ui.quests.journal"), UIKit.C_ACCENT))
 	if gm.story_mode:
-		v.add_child(UIKit.wrap_label(t("ui.quests.story_intro"), 260, UIKit.C_DIM))
+		v.add_child(UIKit.wrap_label(t("ui.quests.story_intro"), 260 + detail_grow, UIKit.C_DIM))
 	var entries: Array[Dictionary] = gm.journal.duplicate()
 	entries.reverse()
 	if entries.is_empty():
@@ -200,12 +201,12 @@ func _journal() -> void:
 	for e: Dictionary in entries.slice(0, 14):
 		var ev: String = str(e.get("event", ""))
 		var col: Color = UIKit.C_GOOD if ev == "completed" else (UIKit.C_BAD if ev == "failed" else UIKit.C_TEXT)
-		v.add_child(UIKit.wrap_label(t("ui.quests.journal_line", {"day": int(e.get("day", 0)), "event": t("ui.quests.ev_" + ev), "title": t("quest.%s.title" % str(e.get("quest", "")))}), 260, col))
+		v.add_child(UIKit.wrap_label(t("ui.quests.journal_line", {"day": int(e.get("day", 0)), "event": t("ui.quests.ev_" + ev), "title": t("quest.%s.title" % str(e.get("quest", "")))}), 260 + detail_grow, col))
 	var items: Array[String] = []
 	for it: String in gm.items:
 		items.append(t("item.%s.name" % it))
 	if not items.is_empty():
 		v.add_child(section(t("ui.quests.items")))
-		v.add_child(UIKit.wrap_label(", ".join(items), 260, UIKit.C_ACCENT))
+		v.add_child(UIKit.wrap_label(", ".join(items), 260 + detail_grow, UIKit.C_ACCENT))
 	var p: PanelContainer = UIKit.panel(v, "DarkPanel")
-	make_scroll("journal", p, Rect2(192, 2, size.x - 194, size.y - 4))
+	make_scroll("journal", p, Rect2(192 + list_grow, 2, size.x - 194 - list_grow, size.y - 4))

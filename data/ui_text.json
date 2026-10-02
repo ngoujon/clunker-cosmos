@@ -1732,6 +1732,22 @@
   "fr": "Plein écran (F11)",
   "en": "Fullscreen (F11)"
  },
+ "ui.settings.ui_scale": {
+  "fr": "Taille de l'interface",
+  "en": "Interface size"
+ },
+ "ui.settings.ui_auto": {
+  "fr": "Auto · {res}",
+  "en": "Auto · {res}"
+ },
+ "ui.settings.ui_scale_tip": {
+  "fr": "Résolution de l'interface\nPlus elle est grande, plus les textes et les fenêtres sont fins et plus il y a de place à l'écran. Les décors et les vaisseaux restent grands et nets.",
+  "en": "Interface resolution\nThe higher it is, the smaller the text and windows, and the more fits on screen. Backgrounds and ships stay large and crisp."
+ },
+ "ui.settings.ui_scale_hint": {
+  "fr": "Interface trop grosse ? Choisissez une résolution plus grande.",
+  "en": "Interface too big? Pick a higher resolution."
+ },
  "ui.settings.audio": {
   "fr": "Audio",
   "en": "Audio"

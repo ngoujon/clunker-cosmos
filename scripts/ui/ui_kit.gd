@@ -76,11 +76,11 @@ static func portrait_small(id: String) -> Texture2D:
 	return t if t != null else portrait(id)
 
 
-static func _box(path: String, margin: int, fallback: Color, border: Color) -> StyleBox:
+static func _box(path: String, margin: int, fallback: Color, border: Color, seamless: bool = false) -> StyleBox:
 	var t: Texture2D = tex(path)
 	if t != null:
 		var sb: StyleBoxTexture = StyleBoxTexture.new()
-		sb.texture = t
+		sb.texture = seamless_edges(t, margin) if seamless else t
 		sb.texture_margin_left = margin
 		sb.texture_margin_right = margin
 		sb.texture_margin_top = margin
@@ -98,21 +98,64 @@ static func _box(path: String, margin: int, fallback: Color, border: Color) -> S
 	return f
 
 
+## Bords continus pour un 9-slice : la partie centrale des bords est étirée sur toute la largeur du panneau,
+## si bien qu'une encoche de 2 pixels au milieu d'un bord devenait un grand trou sur les panneaux larges.
+## Chaque ligne (et colonne) de bord prend, sur sa partie étirée, sa couleur la plus fréquente.
+static func seamless_edges(t: Texture2D, margin: int) -> Texture2D:
+	var src: Image = t.get_image()
+	if src == null or src.is_empty():
+		return t
+	var img: Image = src.duplicate() as Image
+	if img.is_compressed():
+		img.decompress()
+	seamless_image(img, margin)
+	return ImageTexture.create_from_image(img)
+
+
+static func seamless_image(img: Image, margin: int) -> void:
+	var w: int = img.get_width()
+	var h: int = img.get_height()
+	for y: int in h:
+		if y < margin or y >= h - margin:
+			var c: Color = _mode_color(img, Vector2i(margin, y), Vector2i(1, 0), w - 2 * margin)
+			for x: int in range(margin, w - margin):
+				img.set_pixel(x, y, c)
+	for x: int in w:
+		if x < margin or x >= w - margin:
+			var c: Color = _mode_color(img, Vector2i(x, margin), Vector2i(0, 1), h - 2 * margin)
+			for y: int in range(margin, h - margin):
+				img.set_pixel(x, y, c)
+
+
+static func _mode_color(img: Image, start: Vector2i, step: Vector2i, n: int) -> Color:
+	var counts: Dictionary = {}
+	var best: Color = img.get_pixelv(start)
+	var best_n: int = 0
+	for i: int in n:
+		var c: Color = img.get_pixelv(start + step * i)
+		var k: int = c.to_rgba32()
+		counts[k] = int(counts.get(k, 0)) + 1
+		if int(counts[k]) > best_n:
+			best_n = int(counts[k])
+			best = c
+	return best
+
+
 static func theme() -> Theme:
 	if _theme != null:
 		return _theme
 	var t: Theme = Theme.new()
 	t.default_font = font()
 	t.default_font_size = 8
-	var panel: StyleBox = _box("res://assets/ui/panel.png", 6, C_PANEL, C_DIM)
-	var panel_dark: StyleBox = _box("res://assets/ui/panel_dark.png", 6, C_SLATE, C_DARK)
+	var panel: StyleBox = _box("res://assets/ui/panel.png", 6, C_PANEL, C_DIM, true)
+	var panel_dark: StyleBox = _box("res://assets/ui/panel_dark.png", 6, C_SLATE, C_DARK, true)
 	t.set_stylebox("panel", "PanelContainer", panel)
 	t.set_stylebox("panel", "Panel", panel)
 	t.set_stylebox("panel", "PopupPanel", panel)
 	t.set_type_variation("DarkPanel", "PanelContainer")
 	t.set_stylebox("panel", "DarkPanel", panel_dark)
 	t.set_type_variation("FramePanel", "PanelContainer")
-	t.set_stylebox("panel", "FramePanel", _box("res://assets/ui/frame.png", 6, C_SLATE, C_ACCENT))
+	t.set_stylebox("panel", "FramePanel", _box("res://assets/ui/frame.png", 6, C_SLATE, C_ACCENT, true))
 	var bn: StyleBox = _box("res://assets/ui/button.png", 4, C_SLATE, C_DIM)
 	t.set_stylebox("normal", "Button", bn)
 	t.set_stylebox("hover", "Button", _box("res://assets/ui/button_hover.png", 4, C_PANEL, C_ACCENT))
@@ -315,6 +358,24 @@ static func icon_rect(id: String, size: int = 16) -> TextureRect:
 	r.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 	r.mouse_filter = Control.MOUSE_FILTER_PASS
 	return r
+
+
+## Agrandissement entier des aperçus en pixel art (vaisseau des fiches) : celui des décors quand
+## l'interface est fine (voir ViewScale), 1 en 480×270.
+static func art_zoom() -> int:
+	return maxi(1, floori(MainUI.cover_rect(Vector2(MainUI.W, MainUI.H)).size.x / float(MainUI.BASE_W) + 0.001))
+
+
+## Enveloppe un visuel (taille fixe, ex. ShipView) agrandi d'un facteur entier pour les conteneurs.
+static func zoomed(c: Control, f: int) -> Control:
+	if f <= 1:
+		return c
+	var box: Control = Control.new()
+	box.custom_minimum_size = c.get_combined_minimum_size() * float(f)
+	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	c.scale = Vector2(f, f)
+	box.add_child(c)
+	return box
 
 
 static func portrait_rect(id: String, scale_factor: int = 1) -> TextureRect:
