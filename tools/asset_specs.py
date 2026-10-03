@@ -234,8 +234,8 @@ def specs() -> list[dict[str, Any]]:
     # Le garage garde la composition de l'ancien décor (baies, mezzanine, mobilier : coordonnées utilisées par le
     # code) : restylage img2img de assets/backgrounds/garage_layout.png.
     out.append({"id": "garage", "category": "background", "out": "backgrounds/garage.png", "w": 1920, "h": 1088, "seeds": SEEDS_3,
-                "init": "art/layout/garage_layout.png", "denoise": 0.62,
-                "prompt": f"{BG_STYLE}, side view cross-section of a cozy orbital space station garage on two floors, ground floor with three large empty repair bays side by side with orange doorframes, hanging lamps, tool carts, polished metal floor with yellow hazard lines, upper floor mezzanine with an office desk, a lab bench and a coffee corner behind a metal railing, pipes on the ceiling, round portholes showing stars and a planet, warm industrial lighting, no characters, no vehicles, no text",
+                "init": "art/layout/garage_layout.png", "denoise": 0.8,
+                "prompt": f"{BG_STYLE}, side view cross-section of a cozy orbital space station garage on two floors, ground floor with three large empty repair bays side by side with orange doorframes, hanging lamps, tool carts, polished metal floor with yellow hazard lines, upper floor mezzanine with an office desk, a lab bench and a coffee corner behind a metal railing, pipes on the ceiling, round portholes showing stars and a planet, warm industrial lighting, no characters, no vehicles, no text, sharp focus, crisp details",
                 "pp": {"mode": "opaque", "size": [480, 270]}})
     loc_prompts = {
         "loc_ferropolis": "huge space scrapyard station with mountains of broken spaceship wrecks, cranes, magnets, orange sunset light, smoke",
