@@ -8,6 +8,24 @@ Français / English, musique et bruitages, tutoriel intégré.
 
 ![Garage](docs/screens/01_garage.png)
 
+## Aperçu
+
+| | |
+|---|---|
+| ![Écran titre](docs/screens/00_title.png) | ![Enchères](docs/screens/02_auctions.png) |
+| **Écran titre** — Histoire ou Classique, FR/EN | **Enchères** — 5 lieux, scan des épaves, mises par procuration |
+| ![Ventes](docs/screens/06_sales.png) | ![Équipe](docs/screens/03_staff.png) |
+| **Ventes** — clients aliens, critères, contre-offres | **Équipe** — postes, règles de priorité, embauche |
+| ![Labo](docs/screens/04_research.png) | ![Quêtes](docs/screens/05_quests.png) |
+| **Labo** — arbre de 42 technologies | **Quêtes** — 5 chapitres, 2 fins, quêtes secondaires |
+| ![Bureau](docs/screens/07_office.png) | ![Dialogue](docs/screens/08_dialogue.png) |
+| **Bureau** — finances, dette, agrandissement | **Dialogues** — BOLT, l'ordinateur de bord sarcastique |
+
+Bande-annonce : [FR](docs/steam/trailer_fr.mp4) · [EN](docs/steam/trailer_en.mp4).
+
+> **En cours (version 0.3)** : refonte graphique en **2.5D** (rendu 3D stylisé, profondeur, interface lisse)
+> à la place du pixel art. Les captures ci-dessus montrent la version 0.2.
+
 ## Lancer le jeu
 
 1. Installer **Godot 4.7.1 stable** (ou laisser `tools/godot.py` le télécharger dans `tools/godot/`).
