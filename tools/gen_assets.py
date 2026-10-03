@@ -1,10 +1,12 @@
-"""Pipeline d'assets de Clunker Cosmos (ComfyUI → pixelize → assets/ + manifeste).
+"""Pipeline d'assets de Clunker Cosmos (ComfyUI → hd_art → assets/ + manifeste).
 
 Étapes :
-  generate      génère les images brutes manquantes (art/raw/, ignoré par git) via l'API HTTP de ComfyUI
+  generate      génère les images brutes manquantes (art/raw_hd/, ignoré par git) via l'API HTTP de ComfyUI
+                (txt2img, ou img2img depuis une image de composition pour le garage)
   sheets        planches de revue par catégorie (art/review/*.png)
-  build         post-traite la graine retenue (art/selection.json) vers assets/, écrit art/manifest.json,
-                assets/ships/anchors.json, les dérivés UI 9-slice, assets/palette.png et docs/AI_DISCLOSURE.md
+  build         post-traite la graine retenue (art/selection.json) vers assets/ (images à DETAIL × la taille
+                logique, masques de peinture), écrit art/manifest.json, assets/ships/anchors.json (en pixels
+                logiques) et docs/AI_DISCLOSURE.md
   placeholders  crée des formes simples conformes à la palette pour tout asset absent (développement)
   validate      vérifie les workflows contre /object_info (ou l'instantané hors ligne)
 
@@ -14,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import sys
 import time
@@ -26,15 +29,17 @@ from PIL import Image, ImageDraw
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import asset_specs  # noqa: E402
 import comfy_client as cc  # noqa: E402
+import hd_art  # noqa: E402
 import pixelize  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
-RAW = ROOT / "art" / "raw"
+RAW = ROOT / "art" / "raw_hd"
 REVIEW = ROOT / "art" / "review"
 ASSETS = ROOT / "assets"
 MANIFEST = ROOT / "art" / "manifest.json"
 SELECTION = ROOT / "art" / "selection.json"
 WORKFLOW = "zimage_turbo_txt2img"
+WORKFLOW_I2I = "zimage_turbo_img2img"
 MODEL = "z_image_turbo_bf16.safetensors (Z-Image-Turbo, Apache-2.0) + qwen_3_4b + ae ; détourage BiRefNet (MIT)"
 
 
@@ -57,7 +62,9 @@ def generate(only: set[str] | None) -> None:
     if not client.alive():
         raise SystemExit("ComfyUI injoignable : " + client.base)
     wf = cc.load_workflow(WORKFLOW)
-    todo = [(s, seed) for s in asset_specs.specs() for seed in s["seeds"] if (not only or s["category"] in only or s["id"] in only)]
+    wf_i2i = cc.load_workflow(WORKFLOW_I2I)
+    todo = [(s, seed) for s in asset_specs.specs() for seed in s["seeds"]
+            if (not only or s["category"] in only or s["id"] in only) and s["id"] not in asset_specs.HANDMADE_ICONS]
     sel = selection()
     for s in asset_specs.specs():
         if s["id"] in sel and sel[s["id"]] not in s["seeds"] and (not only or s["category"] in only or s["id"] in only):
@@ -69,22 +76,31 @@ def generate(only: set[str] | None) -> None:
         if rp.exists():
             continue
         rp.parent.mkdir(parents=True, exist_ok=True)
-        params = {"POSITIVE": spec["prompt"], "NEGATIVE": asset_specs.NEGATIVE, "SEED": seed, "WIDTH": spec["w"], "HEIGHT": spec["h"], "PREFIX": f"wr_assets/{spec['id']}_s{seed}"}
+        params = {"POSITIVE": spec["prompt"], "NEGATIVE": asset_specs.NEGATIVE, "SEED": seed, "WIDTH": spec["w"], "HEIGHT": spec["h"], "PREFIX": f"cc25d/{spec['id']}_s{seed}"}
         t0 = time.time()
-        imgs = client.run(cc.fill(wf, params), timeout=900)
+        if spec.get("init"):
+            init = Image.open(ROOT / spec["init"]).convert("RGB").resize((spec["w"], spec["h"]), Image.LANCZOS)
+            buf = io.BytesIO()
+            init.save(buf, "PNG")
+            params["INIT"] = client.upload_image(f"cc25d_{spec['id']}_init.png", buf.getvalue())
+            params["DENOISE"] = float(spec.get("denoise", 0.6))
+            imgs = client.run(cc.fill(wf_i2i, params), timeout=900)
+        else:
+            imgs = client.run(cc.fill(wf, params), timeout=900)
         rp.write_bytes(imgs["8"][0])
-        raw_path(spec, seed, True).write_bytes(imgs["12"][0])
+        if "12" in imgs:
+            raw_path(spec, seed, True).write_bytes(imgs["12"][0])
         done += 1
         print(f"[{done}] {spec['category']}/{spec['id']} s{seed} {time.time() - t0:.1f}s", flush=True)
     print(f"génération terminée : {done} images en {time.time() - t_all:.0f}s", flush=True)
 
 
-def process_spec(spec: dict[str, Any], seed: int) -> Image.Image:
+def process_spec(spec: dict[str, Any], seed: int) -> tuple[Image.Image, Image.Image | None]:
     rp = raw_path(spec, seed)
     mp = raw_path(spec, seed, True)
     raw = Image.open(rp)
     mask = Image.open(mp) if mp.exists() and spec["pp"].get("mode") == "sprite" else None
-    return pixelize.process(raw, mask, spec["pp"])
+    return hd_art.process(raw, mask, spec["pp"])
 
 
 def sheets(only: set[str] | None) -> None:
@@ -114,12 +130,12 @@ def sheets(only: set[str] | None) -> None:
                 th.thumbnail((cell - 4, cell - 4))
                 sheet.paste(th, (x0 + k * 2 * cell + 2, y0 + 14))
                 try:
-                    px = process_spec(s, seed)
+                    hd, _ = process_spec(s, seed)
                 except Exception as exc:  # garder la planche lisible
                     dr.text((x0 + (k * 2 + 1) * cell, y0 + 40), str(exc)[:18], fill=(255, 90, 90))
                     continue
-                sc = max(1, min((cell - 4) // px.width, (cell - 4) // px.height))
-                big = px.resize((px.width * sc, px.height * sc), Image.NEAREST)
+                big = hd.copy()
+                big.thumbnail((cell - 4, cell - 4), Image.LANCZOS)
                 bg = Image.new("RGBA", big.size, (70, 70, 90, 255))
                 bg.alpha_composite(big)
                 sheet.paste(bg.convert("RGB"), (x0 + (k * 2 + 1) * cell + 2, y0 + 14))
@@ -133,101 +149,38 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def derive_ui(manifest: list[dict[str, Any]]) -> None:
-    """Construit les 9-slices (panneaux, boutons, cadre) à partir des sources UI générées."""
-    general, _ = pixelize.load_palette()
-    pal = [tuple(int(v) for v in c) for c in general]
-
-    def symmetric(src: Image.Image, w: int, h: int) -> Image.Image:
-        # quart supérieur gauche miroité : 9-slice parfaitement symétrique
-        s = src.resize((w, h), Image.NEAREST)
-        a = np.array(s)
-        hw, hh = (w + 1) // 2, (h + 1) // 2
-        q = a[:hh, :hw]
-        top = np.concatenate([q, q[:, : w - hw][:, ::-1]], axis=1)
-        full = np.concatenate([top, top[: h - hh][::-1]], axis=0)
-        return Image.fromarray(full, "RGBA")
-
-    def shade(img: Image.Image, steps: int) -> Image.Image:
-        """Éclaircit (+) ou assombrit (-) en restant dans la palette (déplacement de luminance)."""
-        a = np.array(img).copy()
-        lab = pixelize.srgb_to_oklab(np.array(pal, dtype=np.uint8))
-        order = list(np.argsort(lab[:, 0]))
-        for y in range(a.shape[0]):
-            for x in range(a.shape[1]):
-                if a[y, x, 3] == 0:
-                    continue
-                c = tuple(int(v) for v in a[y, x, :3])
-                if c not in pal:
-                    continue
-                i = order.index(pal.index(c))
-                j = int(np.clip(i + steps, 0, len(order) - 1))
-                a[y, x, :3] = pal[order[j]]
-        return Image.fromarray(a, "RGBA")
-
-    def flatten_center(img: Image.Image, margin: int) -> Image.Image:
-        a = np.array(img).copy()
-        h, w = a.shape[:2]
-        center = a[h // 2, w // 2].copy()
-        a[margin:h - margin, margin:w - margin] = center
-        a[..., 3] = 255
-        return Image.fromarray(a, "RGBA")
-
-    src_panel = ASSETS / "ui" / "_panel_src.png"
-    src_button = ASSETS / "ui" / "_button_src.png"
-    if not src_panel.exists() or not src_button.exists():
-        return
-    panel = flatten_center(symmetric(Image.open(src_panel).convert("RGBA"), 24, 24), 6)
-    button = flatten_center(symmetric(Image.open(src_button).convert("RGBA"), 24, 12), 4)
-    outputs = {
-        "panel": panel,
-        "panel_dark": shade(panel, -2),
-        "frame": shade(panel, 1),
-        "button": button,
-        "button_hover": shade(button, 2),
-        "button_pressed": shade(button, -2),
-        "button_disabled": shade(shade(button, -3), 0),
-    }
-    for name, img in outputs.items():
-        out = ASSETS / "ui" / f"{name}.png"
-        img.save(out)
-        manifest.append({"id": f"ui_{name}", "category": "ui", "file": f"assets/ui/{name}.png", "source": "derived",
-                         "derived_from": ["assets/ui/_panel_src.png" if "panel" in name or name == "frame" else "assets/ui/_button_src.png"],
-                         "process": "quart miroité (9-slice symétrique), centre aplati, décalage de luminance dans la palette",
-                         "size": [img.width, img.height], "sha256": sha256(out)})
-
-
 def handmade_icons(manifest: list[dict[str, Any]]) -> None:
-    """Symboles de lecture (pause, lecture, ×2, ×4) dessinés au pixel près dans la palette."""
-    data = json.loads(pixelize.PALETTE_FILE.read_text(encoding="utf-8"))
-    cols = [pixelize.hex_to_rgb(c) for c in data["colors"]]
+    """Symboles de lecture (pause, lecture, ×2, ×4) dessinés par code, lissés (suréchantillonnage ×4)."""
+    ss = 4
+    n = 16 * hd_art.DETAIL
+    big = n * ss
+    fill, dark = (245, 220, 106, 255), (13, 14, 20, 230)
+    u = big / 16.0
 
-    def nearest(hx: str) -> tuple[int, int, int]:
-        t = pixelize.hex_to_rgb(hx)
-        return min(cols, key=lambda c: sum((a - b) ** 2 for a, b in zip(c, t)))
+    def tri(d: ImageDraw.ImageDraw, x0: float, w: float, col: tuple[int, ...], grow: float = 0.0) -> None:
+        d.polygon([((x0 - grow) * u, (3 - grow) * u), ((x0 + w + grow * 1.6) * u, 8 * u), ((x0 - grow) * u, (13 + grow) * u)], fill=col)
 
-    fill, dark = (*nearest("#f5dc6a"), 255), (*nearest("#0d0e14"), 255)
-
-    def tri(d: ImageDraw.ImageDraw, x0: int, w: int) -> None:
-        for i in range(w):
-            h = (w - i) * 5 // w
-            d.line([(x0 + i, 8 - h), (x0 + i, 7 + h)], fill=fill)
+    def bars(d: ImageDraw.ImageDraw, col: tuple[int, ...], grow: float = 0.0) -> None:
+        for x in (4.0, 9.0):
+            d.rounded_rectangle([(x - grow) * u, (3 - grow) * u, (x + 3 + grow) * u, (13 + grow) * u], radius=0.8 * u, fill=col)
 
     shapes: dict[str, Any] = {
-        "ui_pause": lambda d: (d.rectangle([4, 3, 6, 12], fill=fill), d.rectangle([9, 3, 11, 12], fill=fill)),
-        "ui_play": lambda d: tri(d, 5, 7),
-        "ui_fast": lambda d: (tri(d, 2, 6), tri(d, 8, 6)),
-        "ui_faster": lambda d: (tri(d, 1, 5), tri(d, 6, 5), tri(d, 11, 4)),
+        "ui_pause": lambda d, c, g: bars(d, c, g),
+        "ui_play": lambda d, c, g: tri(d, 5, 7, c, g),
+        "ui_fast": lambda d, c, g: (tri(d, 2, 6, c, g), tri(d, 8, 6, c, g)),
+        "ui_faster": lambda d, c, g: (tri(d, 1, 5, c, g), tri(d, 6, 5, c, g), tri(d, 11, 4, c, g)),
     }
     for name, draw_fn in shapes.items():
-        img = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
-        draw_fn(ImageDraw.Draw(img))
-        img = Image.fromarray(pixelize.add_outline(np.array(img), dark[:3]), "RGBA")
+        img = Image.new("RGBA", (big, big), (0, 0, 0, 0))
+        d = ImageDraw.Draw(img)
+        draw_fn(d, dark, 0.9)
+        draw_fn(d, fill, 0.0)
+        img = img.resize((n, n), Image.LANCZOS)
         out = ASSETS / "icons" / f"{name}.png"
         img.save(out)
         manifest.append({"id": name, "category": "icon", "file": f"assets/icons/{name}.png", "source": "handmade",
-                         "process": "symbole dessiné par code (tools/gen_assets.py handmade_icons), couleurs de la palette",
-                         "size": [16, 16], "sha256": sha256(out)})
+                         "process": "symbole dessiné par code (tools/gen_assets.py handmade_icons), lissé",
+                         "size": [n, n], "sha256": sha256(out)})
 
 
 def write_palette_png(manifest: list[dict[str, Any]]) -> None:
@@ -254,26 +207,26 @@ def build(allow_missing: bool) -> None:
         if not raw_path(spec, seed).exists():
             missing.append(f"{spec['id']} (s{seed})")
             continue
-        img = process_spec(spec, seed)
+        img, paint = process_spec(spec, seed)
         out = ASSETS / spec["out"]
         out.parent.mkdir(parents=True, exist_ok=True)
         img.save(out)
-        n, bad = pixelize.palette_report(img)
-        if bad:
-            raise SystemExit(f"{out}: couleurs hors palette {bad[:5]}")
+        if paint is not None:
+            paint.save(out.with_name(out.stem + "_paint.png"))
         if spec["category"] in ("hull", "engine", "cockpit", "wings"):
-            anchors[spec["id"]] = pixelize.anchors_for(img, spec["category"])
+            anchors[spec["id"]] = pixelize.anchors_for(hd_art.logical_alpha(img), spec["category"])
         manifest.append({
             "id": spec["id"], "category": spec["category"], "file": f"assets/{spec['out']}", "source": "comfyui",
             "model": MODEL, "workflow": f"comfy/workflows/{WORKFLOW}.json", "prompt": spec["prompt"],
             "negative": asset_specs.NEGATIVE, "seed": seed, "candidates": spec["seeds"], "gen_size": [spec["w"], spec["h"]],
-            "postprocess": {"tool": "tools/pixelize.py", **spec["pp"]}, "size": [img.width, img.height], "colors": n,
+            "init": spec.get("init"), "denoise": spec.get("denoise"),
+            "postprocess": {"tool": "tools/hd_art.py", "detail": hd_art.DETAIL, **spec["pp"]}, "size": [img.width, img.height],
             "sha256": sha256(out),
         })
         if spec["category"] == "portrait":
-            # Version 24×24 réduite directement depuis l'image brute (plus nette qu'un sous-échantillonnage du 48×48).
+            # Version 24×24 (logique) réduite depuis l'image HD.
             pp_small = {**spec["pp"], "max": [24, 24], "canvas": [24, 24]}
-            small = pixelize.process(Image.open(raw_path(spec, seed)), Image.open(raw_path(spec, seed, True)) if raw_path(spec, seed, True).exists() else None, pp_small)
+            small = hd_art.downsize(img, (24, 24))
             sout = ASSETS / "portraits" / "small" / f"{spec['id']}.png"
             sout.parent.mkdir(parents=True, exist_ok=True)
             small.save(sout)
@@ -281,12 +234,11 @@ def build(allow_missing: bool) -> None:
                 "id": spec["id"] + "_small", "category": "portrait_small", "file": f"assets/portraits/small/{spec['id']}.png",
                 "source": "comfyui", "model": MODEL, "workflow": f"comfy/workflows/{WORKFLOW}.json", "prompt": spec["prompt"],
                 "negative": asset_specs.NEGATIVE, "seed": seed, "candidates": spec["seeds"], "gen_size": [spec["w"], spec["h"]],
-                "postprocess": {"tool": "tools/pixelize.py", **pp_small}, "size": [small.width, small.height],
-                "colors": pixelize.palette_report(small)[0], "sha256": sha256(sout),
+                "postprocess": {"tool": "tools/hd_art.py", "detail": hd_art.DETAIL, **pp_small}, "size": [small.width, small.height],
+                "sha256": sha256(sout),
             })
     if missing and not allow_missing:
         raise SystemExit("images brutes manquantes : " + ", ".join(missing[:20]))
-    derive_ui(manifest)
     handmade_icons(manifest)
     write_palette_png(manifest)
     (ASSETS / "ships").mkdir(parents=True, exist_ok=True)

@@ -175,6 +175,18 @@ class ComfyClient:
                     out.setdefault(nid, []).append(r.read())
         return out
 
+    def upload_image(self, name: str, png: bytes) -> str:
+        """Envoie une image dans le dossier input de ComfyUI (img2img) ; renvoie le nom à passer à LoadImage."""
+        boundary = "----cc" + uuid.uuid4().hex
+        body = (f"--{boundary}\r\nContent-Disposition: form-data; name=\"overwrite\"\r\n\r\ntrue\r\n"
+                f"--{boundary}\r\nContent-Disposition: form-data; name=\"image\"; filename=\"{name}\"\r\n"
+                "Content-Type: image/png\r\n\r\n").encode("utf-8") + png + f"\r\n--{boundary}--\r\n".encode("utf-8")
+        req = urllib.request.Request(self.base + "/upload/image", data=body, headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
+        with urllib.request.urlopen(req, timeout=120) as r:
+            res = json.loads(r.read().decode("utf-8"))
+        self._object_info = None  # la liste des images de LoadImage a changé
+        return (res.get("subfolder", "") + "/" if res.get("subfolder") else "") + res["name"]
+
     def run(self, workflow: dict[str, Any], timeout: float = 900) -> dict[str, list[bytes]]:
         errs = validate(workflow, self.object_info())
         if errs:

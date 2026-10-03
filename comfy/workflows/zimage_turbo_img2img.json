@@ -1,0 +1,14 @@
+{
+  "_meta_workflow": {"track": "z_image", "models": ["z_image_turbo_bf16.safetensors", "qwen_3_4b.safetensors", "ae.safetensors"], "notes": "Z-Image-Turbo img2img (restylage d'un décor en gardant sa composition), 9 étapes, cfg 1, shift 3, débruitage partiel."},
+  "1": {"class_type": "UNETLoader", "inputs": {"unet_name": "z_image_turbo_bf16.safetensors", "weight_dtype": "default"}},
+  "2": {"class_type": "CLIPLoader", "inputs": {"clip_name": "qwen_3_4b.safetensors", "type": "lumina2"}},
+  "13": {"class_type": "VAELoader", "inputs": {"vae_name": "ae.safetensors"}},
+  "14": {"class_type": "ModelSamplingAuraFlow", "inputs": {"model": ["1", 0], "shift": 3.0}},
+  "3": {"class_type": "CLIPTextEncode", "inputs": {"text": "{{POSITIVE}}", "clip": ["2", 0]}},
+  "4": {"class_type": "ConditioningZeroOut", "inputs": {"conditioning": ["3", 0]}},
+  "20": {"class_type": "LoadImage", "inputs": {"image": "{{INIT}}"}},
+  "21": {"class_type": "VAEEncode", "inputs": {"pixels": ["20", 0], "vae": ["13", 0]}},
+  "6": {"class_type": "KSampler", "inputs": {"model": ["14", 0], "seed": "{{SEED}}", "steps": 9, "cfg": 1.0, "sampler_name": "res_multistep", "scheduler": "simple", "positive": ["3", 0], "negative": ["4", 0], "latent_image": ["21", 0], "denoise": "{{DENOISE}}"}},
+  "7": {"class_type": "VAEDecode", "inputs": {"samples": ["6", 0], "vae": ["13", 0]}},
+  "8": {"class_type": "SaveImage", "inputs": {"images": ["7", 0], "filename_prefix": "{{PREFIX}}"}}
+}

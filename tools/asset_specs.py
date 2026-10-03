@@ -2,7 +2,8 @@
 
 Les prompts décrivent des concepts originaux (aucun artiste, studio ou personnage existant).
 Chaque spec : id, category, out (chemin relatif à assets/), prompt, w/h de génération,
-pp (spécification pixelize), seeds (graines candidates).
+pp (spécification de tools/hd_art.py, tailles en pixels logiques du jeu), seeds (graines candidates),
+init/denoise (img2img facultatif).
 """
 from __future__ import annotations
 
@@ -13,10 +14,18 @@ from typing import Any
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 
-STYLE = "pixel art, 16-bit retro game sprite, clean bold shapes, flat colors, limited palette, crisp edges, thick dark outline"
+## Style 2.5D (version 0.3) : rendu 3D stylisé, éclairage doux, matières lisses — plus de pixel art. Les images
+## sont réduites (et non pixelisées) à DETAIL fois leur taille logique en jeu par tools/hd_art.py.
+STYLE = ("stylized 3D render, high quality game asset, smooth sculpted shapes, soft studio lighting with gentle rim light, "
+         "ambient occlusion, subtle reflections, clean materials, vibrant colors")
 ISO = "isolated on a plain white background, centered, entire object visible, no text"
-BG_STYLE = "detailed pixel art, 16-bit retro game background, crisp pixels, limited palette"
-NEGATIVE = "blurry, photo, realistic, 3d render, text, letters, watermark, signature, logo, frame, border, multiple objects, cropped"
+BG_STYLE = ("stylized 3D rendered game environment, 2.5D diorama, cinematic soft lighting, volumetric light rays, "
+            "subtle depth of field, rich colors, highly detailed")
+NEGATIVE = ("pixel art, pixelated, 8-bit, 16-bit, low resolution, jpeg artifacts, blurry, photo, text, letters, watermark, "
+            "signature, logo, frame, border, multiple objects, cropped")
+## Graines candidates de la version 2.5D (deux par asset, trois pour les personnages et les décors).
+SEEDS: list[int] = [11, 22]
+SEEDS_3: list[int] = [11, 22, 33]
 
 HULLS = {
     "hull_shuttle": ("small chubby used space shuttle hull shaped like a mosquito body, rounded nose", [76, 34]),
@@ -50,14 +59,9 @@ WINGS = {
     "wing_swept": ("single long thin slanted red metal blade shaped like a parallelogram, grey trim and rivets, one object", [54, 20]),
     "wing_solar": ("single rectangular solar panel wing with blue photovoltaic cells on a short mounting arm, one detached part", [56, 24]),
 }
-## Graines de remplacement pour les assets dont le prompt a été corrigé après la revue des planches.
-RESEEDED: dict[str, list[int]] = {
-    "hull_tug": [111, 222, 333], "wing_stub": [111, 222, 333], "wing_delta": [444, 555, 666], "wing_swept": [444, 555, 666],
-    "wing_solar": [111, 222, 333], "client_06": [111, 222], "staff_08": [111, 222], "def_rust": [111, 222],
-    "wear_rust": [801, 802], "wear_scratch": [801, 802], "wear_dent": [801, 802], "wear_scorch": [801, 802],
-    "branch_diagnostic": [111, 222],
-}
-## Icônes dessinées à la main (symboles de lecture) : plus lisibles en 16x16 que les versions générées.
+## Graines de remplacement pour les assets dont le prompt est corrigé après la revue des planches.
+RESEEDED: dict[str, list[int]] = {}
+## Icônes dessinées par code (symboles de lecture) : plus lisibles que les versions générées.
 HANDMADE_ICONS: tuple[str, ...] = ("ui_pause", "ui_play", "ui_fast", "ui_faster")
 ## Décalcomanies d'usure dispersées sur fond blanc (détourage par les coins, toutes les taches gardées).
 WEAR = {
@@ -172,54 +176,54 @@ def specs() -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
 
     def part(cat: str, pid: str, subject: str, size: list[int], paint: bool) -> None:
-        color = "red painted panels with grey metal details" if paint else "grey metal with colored details"
+        color = "glossy red painted panels with grey metal details" if paint else "grey metal with colored details"
         out.append({
-            "id": pid, "category": cat, "out": f"ships/{cat}/{pid}.png", "w": 1344, "h": 768, "seeds": [101, 202],
+            "id": pid, "category": cat, "out": f"ships/{cat}/{pid}.png", "w": 1344, "h": 768, "seeds": SEEDS,
             "prompt": f"{STYLE}, side view of a {subject}, facing right, {color}, game asset, {ISO}",
-            "pp": {"mode": "sprite", "max": size, "paint_hue": "red" if paint else None, "outline": True},
+            "pp": {"mode": "sprite", "max": size, "paint_hue": "red" if paint else None},
         })
 
     for pid, (subj, size) in HULLS.items():
         part("hull", pid, subj + ", without wings", size, True)
     for pid, (subj, size) in ENGINES.items():
-        out.append({"id": pid, "category": "engine", "out": f"ships/engine/{pid}.png", "w": 1024, "h": 1024, "seeds": [101, 202],
+        out.append({"id": pid, "category": "engine", "out": f"ships/engine/{pid}.png", "w": 1024, "h": 1024, "seeds": SEEDS,
                     "prompt": f"{STYLE}, side view of a single {subj}, horizontal, exhaust nozzle pointing left, game asset, {ISO}",
-                    "pp": {"mode": "sprite", "max": size, "outline": True, "orient": "flame_left"}})
+                    "pp": {"mode": "sprite", "max": size, "orient": "flame_left"}})
     for pid, (subj, size) in COCKPITS.items():
-        out.append({"id": pid, "category": "cockpit", "out": f"ships/cockpit/{pid}.png", "w": 1024, "h": 1024, "seeds": [101, 202],
+        out.append({"id": pid, "category": "cockpit", "out": f"ships/cockpit/{pid}.png", "w": 1024, "h": 1024, "seeds": SEEDS,
                     "prompt": f"{STYLE}, side view of a single {subj}, facing right, game asset, {ISO}",
-                    "pp": {"mode": "sprite", "max": size, "outline": True}})
+                    "pp": {"mode": "sprite", "max": size}})
     for pid, (subj, size) in WINGS.items():
         part("wings", pid, subj + ", seen from the side", size, True)
     for wid, subj in WEAR.items():
-        out.append({"id": wid, "category": "wear", "out": f"ships/wear/{wid}.png", "w": 1344, "h": 672, "seeds": [101, 202],
-                    "prompt": f"{STYLE}, {subj}, spread across the whole image, isolated on a plain white background, no text",
-                    "pp": {"mode": "sprite", "max": [96, 48], "mask": "corners", "min_component": 0.0, "outline": False, "crop": False, "pad": 0}})
+        out.append({"id": wid, "category": "wear", "out": f"ships/wear/{wid}.png", "w": 1344, "h": 672, "seeds": SEEDS,
+                    "prompt": f"high resolution grunge decal texture, {subj}, spread across the whole image, isolated on a plain white background, no text",
+                    "pp": {"mode": "decal", "size": [96, 48]}})
     species = {s["id"]: s for s in _load("species.json")["species"]}
+    portrait_pp = {"mode": "sprite", "max": [48, 48], "canvas": [48, 48], "align": "bottom"}
     for sid, subj in CLIENTS.items():
         pid = species[sid]["portrait"]
-        out.append({"id": pid, "category": "portrait", "out": f"portraits/{pid}.png", "w": 1024, "h": 1024, "seeds": [101, 202],
-                    "prompt": f"{STYLE}, portrait of a {subj}, alien customer, head and shoulders, front view, friendly, game character portrait, {ISO}",
-                    "pp": {"mode": "sprite", "max": [48, 48], "canvas": [48, 48], "align": "bottom", "outline": True}})
+        out.append({"id": pid, "category": "portrait", "out": f"portraits/{pid}.png", "w": 1024, "h": 1024, "seeds": SEEDS,
+                    "prompt": f"{STYLE}, 3D character bust portrait of a {subj}, alien customer, head and shoulders, front view, friendly, {ISO}",
+                    "pp": portrait_pp})
     for pid, subj in STAFF.items():
-        out.append({"id": pid, "category": "portrait", "out": f"portraits/{pid}.png", "w": 1024, "h": 1024, "seeds": [101, 202],
-                    "prompt": f"{STYLE}, portrait of a {subj}, garage employee, head and shoulders, front view, game character portrait, {ISO}",
-                    "pp": {"mode": "sprite", "max": [48, 48], "canvas": [48, 48], "align": "bottom", "outline": True}})
+        out.append({"id": pid, "category": "portrait", "out": f"portraits/{pid}.png", "w": 1024, "h": 1024, "seeds": SEEDS,
+                    "prompt": f"{STYLE}, 3D character bust portrait of a {subj}, garage employee, head and shoulders, front view, {ISO}",
+                    "pp": portrait_pp})
     for pid, subj in STORY.items():
-        out.append({"id": pid, "category": "portrait", "out": f"portraits/{pid}.png", "w": 1024, "h": 1024, "seeds": [101, 202],
-                    "prompt": f"{STYLE}, portrait of a {subj}, head and shoulders, front view, game character portrait, {ISO}",
-                    "pp": {"mode": "sprite", "max": [48, 48], "canvas": [48, 48], "align": "bottom", "outline": True}})
+        out.append({"id": pid, "category": "portrait", "out": f"portraits/{pid}.png", "w": 1024, "h": 1024, "seeds": SEEDS,
+                    "prompt": f"{STYLE}, 3D character bust portrait of a {subj}, head and shoulders, front view, {ISO}",
+                    "pp": portrait_pp})
     for pid, subj in WORKERS.items():
-        out.append({"id": "worker_" + pid, "category": "worker", "out": f"workers/{pid}.png", "w": 896, "h": 1152, "seeds": [101, 202, 303],
-                    "prompt": f"{STYLE}, full body chibi game character of a {subj}, standing, three-quarter view facing right, "
+        out.append({"id": "worker_" + pid, "category": "worker", "out": f"workers/{pid}.png", "w": 896, "h": 1152, "seeds": SEEDS_3,
+                    "prompt": f"{STYLE}, full body chibi 3D game character of a {subj}, standing, three-quarter view facing right, "
                               f"whole body visible from head to feet, arms relaxed, {ISO}",
-                    "pp": {"mode": "sprite", "max": [20, 26], "canvas": [20, 26], "align": "bottom", "outline": True,
-                           "fill_holes": True, "reduce": "box"}})
+                    "pp": {"mode": "sprite", "max": [20, 26], "canvas": [20, 26], "align": "bottom", "fill_holes": True}})
 
     def icon(iid: str, subject: str) -> None:
-        out.append({"id": iid, "category": "icon", "out": f"icons/{iid}.png", "w": 1024, "h": 1024, "seeds": [101],
-                    "prompt": f"{STYLE}, single game inventory icon of a {subject}, simple chunky shape, bold colors, {ISO}",
-                    "pp": {"mode": "sprite", "max": [16, 16], "canvas": [16, 16], "align": "center", "outline": False, "min_component": 0.15}})
+        out.append({"id": iid, "category": "icon", "out": f"icons/{iid}.png", "w": 1024, "h": 1024, "seeds": SEEDS,
+                    "prompt": f"{STYLE}, single glossy 3D game icon of a {subject}, simple chunky readable shape, bold colors, {ISO}",
+                    "pp": {"mode": "sprite", "max": [16, 16], "canvas": [16, 16], "align": "center", "min_component": 0.15}})
 
     for table in (UI_ICON_SUBJECTS, ROLE_SUBJECTS, BRANCH_SUBJECTS, ITEM_SUBJECTS, DEFECT_SUBJECTS, OPTION_SUBJECTS):
         for iid, subj in table.items():
@@ -227,8 +231,11 @@ def specs() -> list[dict[str, Any]]:
     for node in _load("tech_tree.json")["nodes"]:
         icon(node["icon"], TECH_SUBJECTS[node["id"]])
 
-    out.append({"id": "garage", "category": "background", "out": "backgrounds/garage.png", "w": 1344, "h": 768, "seeds": [301, 302, 303],
-                "prompt": f"{BG_STYLE}, full-screen game scene filling the whole frame edge to edge, side view cross-section of a cozy orbital space station garage on two floors, ground floor with three large empty repair bays side by side with orange doorframes, hanging cranes, tool carts, tiled metal floor with yellow hazard lines, upper floor with an office, a lab and a paint booth behind railings, pipes on the ceiling, round portholes showing stars, warm industrial lighting, no characters, no vehicles, no text",
+    # Le garage garde la composition de l'ancien décor (baies, mezzanine, mobilier : coordonnées utilisées par le
+    # code) : restylage img2img de assets/backgrounds/garage_layout.png.
+    out.append({"id": "garage", "category": "background", "out": "backgrounds/garage.png", "w": 1920, "h": 1088, "seeds": SEEDS_3,
+                "init": "art/layout/garage_layout.png", "denoise": 0.62,
+                "prompt": f"{BG_STYLE}, side view cross-section of a cozy orbital space station garage on two floors, ground floor with three large empty repair bays side by side with orange doorframes, hanging lamps, tool carts, polished metal floor with yellow hazard lines, upper floor mezzanine with an office desk, a lab bench and a coffee corner behind a metal railing, pipes on the ceiling, round portholes showing stars and a planet, warm industrial lighting, no characters, no vehicles, no text",
                 "pp": {"mode": "opaque", "size": [480, 270]}})
     loc_prompts = {
         "loc_ferropolis": "huge space scrapyard station with mountains of broken spaceship wrecks, cranes, magnets, orange sunset light, smoke",
@@ -238,15 +245,9 @@ def specs() -> list[dict[str, Any]]:
         "loc_opalia": "luxurious moon with opal crystal domes and an elegant auction hall with golden lights, rich purple sky with rings",
     }
     for lid, subj in loc_prompts.items():
-        out.append({"id": lid, "category": "background", "out": f"backgrounds/{lid}.png", "w": 1344, "h": 768, "seeds": [301, 302],
+        out.append({"id": lid, "category": "background", "out": f"backgrounds/{lid}.png", "w": 1920, "h": 1088, "seeds": SEEDS_3,
                     "prompt": f"{BG_STYLE}, full-screen landscape scene filling the entire image edge to edge, {subj}, starry sky, no text, no border",
                     "pp": {"mode": "opaque", "size": [480, 270]}})
-    out.append({"id": "ui_panel_src", "category": "ui", "out": "ui/_panel_src.png", "w": 1024, "h": 1024, "seeds": [401, 402],
-                "prompt": f"{STYLE}, single square sci-fi metal user interface panel frame with riveted dark steel border, beveled edges, small orange corner lights, flat dark blue-grey center, game UI element, front view, {ISO}",
-                "pp": {"mode": "sprite", "max": [32, 32], "outline": False}})
-    out.append({"id": "ui_button_src", "category": "ui", "out": "ui/_button_src.png", "w": 1024, "h": 1024, "seeds": [401, 402],
-                "prompt": f"{STYLE}, single wide rectangular sci-fi metal game button with orange beveled border and a dark steel face, no text, game UI element, front view, {ISO}",
-                "pp": {"mode": "sprite", "max": [32, 16], "outline": False}})
     for spec in out:
         if spec["id"] in RESEEDED:
             spec["seeds"] = RESEEDED[spec["id"]]
