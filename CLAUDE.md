@@ -1,10 +1,11 @@
 # CLAUDE.md — Clunker Cosmos
 
-Jeu de gestion 2D pixel art (Steam) : garage orbital de vaisseaux d'occasion, vue en coupe. **Pas un idle** :
+Jeu de gestion 2.5D (Steam) : garage orbital de vaisseaux d'occasion, vue en coupe, rendu 3D stylisé pré-calculé. **Pas un idle** :
 rien n'avance jeu fermé, le temps se suspend fenêtre inactive ou après inactivité (réglages).
 Godot **4.7.1 stable** + **GDScript typé** (avertissement `untyped_declaration` = erreur : tout doit être typé,
 y compris les variables de boucle `for x: T in ...`). Renderer GL Compatibility, stretch `canvas_items` : texte
-rastérisé à la résolution de la fenêtre, pixel art au plus proche voisin à l'échelle entière. Résolution logique
+rastérisé à la résolution de la fenêtre ; images HD stockées à 4× leur taille logique (`UIKit.DETAIL`), affichées à
+leur taille logique (filtrage linéaire + mipmaps, `UIKit.tex`). Résolution logique
 **variable** (au moins 480×270) : fenêtre / k entier (`ViewScale`, réglage « Taille de l'interface »).
 Multijoueur hors périmètre.
 
@@ -22,6 +23,7 @@ Multijoueur hors périmètre.
 | Générer l'art (ComfyUI sur :8188) | `.venv/Scripts/python.exe tools/gen_assets.py generate` puis `sheets`, `build` |
 | Générer l'audio | `.venv/Scripts/python.exe tools/gen_audio.py all` (musiques ACE-Step via ComfyUI + bruitages synthétisés) |
 | Police de symboles | `.venv/Scripts/python.exe tools/make_symbol_font.py` (sous-ensemble de Noto Sans Math) |
+| Mesure des i/s | `godot --path . res://scenes/main.tscn -- --tour=perf --window=2560x1440` (##RESULT : i/s, 1 % bas, pire image, ouverture des écrans) |
 | Captures d'écran | `python tools/screenshots.py [--window=2560x1440] [--ui-scale=2] [--only=garage,settings,tutorial,tooltip,resize]` (fenêtré, docs/screens/*.png en 1920×1080 par défaut) |
 | Kit Steam | `.venv/Scripts/python.exe tools/make_trailer.py`, `python tools/screenshots.py --steam`, `.venv/Scripts/python.exe tools/steam_assets.py` → docs/steam/ (voir docs/STEAM_STORE.md) |
 | Export Windows | `python tools/export_windows.py [--out=dossier] [--debug]` → `<Bureau>/Clunker Cosmos/` (exe + pck + ico, préréglage `export_presets.cfg`, modèles d'export 4.7.1 dans `%APPDATA%/Godot`, test de fumée du jeu exporté) |
@@ -55,8 +57,9 @@ L'éditeur Godot de l'utilisateur peut être ouvert sur le projet : ne jamais tu
 - `data/` — tout le contenu (JSON) : config d'équilibrage, pièces, défauts, personnalisation, espèces,
   personnel, lieux, arbre techno, histoire, quêtes, tutoriel, textes UI.
 - `tests/` — `runner.tscn` (suites unit/sim/story/assets), `TestCase`, `tests/unit/test_*.gd`.
-- `tools/` — pipeline Python (ComfyUI, pixelize, génération d'images et d'audio, captures, kit Steam, check_all).
-- `art/` — palette globale (32 couleurs), manifestes (images, audio), comparatifs ; `art/raw/` est ignoré par git.
+- `tools/` — pipeline Python (ComfyUI, `hd_art.py`, génération d'images et d'audio, captures, kit Steam, check_all).
+- `art/` — manifestes (images, audio), composition du garage (`art/layout/`), palette des peintures, comparatifs ;
+  `art/raw_hd/` est ignoré par git.
 - `assets/` — sprites, musiques, bruitages, polices (ne pas éditer à la main : régénérés par les outils).
 
 ## Règles
@@ -65,7 +68,7 @@ L'éditeur Godot de l'utilisateur peut être ouvert sur le projet : ne jamais tu
   (+2 h avec « Équipe du soir »). Aucune progression hors ligne.
 - Toute nouvelle mécanique : données dans `data/`, logique dans `scripts/core/`, test dans `tests/unit/`.
 - Tous les textes visibles : clé + FR + EN (`data/ui_text.json` pour l'UI).
-- Art : uniquement via ComfyUI local + `tools/pixelize.py`, palette `art/palette.json` ; tracer dans
+- Art : uniquement via ComfyUI local + `tools/hd_art.py` (style rendu 3D stylisé, voir `tools/asset_specs.py`) ; tracer dans
   `art/manifest.json`. Audio : ACE-Step 1.5 (MIT) via ComfyUI ou synthèse par code, tracé dans
   `art/audio_manifest.json`. Licence commerciale obligatoire ; aucune imitation d'artiste/studio/personnage existant.
 - Décisions arbitraires → `docs/DECISIONS.md`. Avancement → `docs/PROGRESS.md`. Un commit par jalon.

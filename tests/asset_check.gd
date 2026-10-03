@@ -1,19 +1,12 @@
 class_name AssetCheck
 extends RefCounted
-## Validation des assets du jeu (headless) : présence, chargement, tailles, palette globale,
-## points d'ancrage, et couverture des références du contenu (icônes, portraits, fonds).
+## Validation des assets du jeu (headless) : présence, chargement, tailles (images HD à DETAIL fois leur taille
+## logique), masques de peinture, points d'ancrage, et couverture des références du contenu (icônes,
+## portraits, fonds).
 
-const PALETTE_PATH: String = "res://art/palette.json"
 const ANCHORS_PATH: String = "res://assets/ships/anchors.json"
-
-
-static func palette() -> Dictionary:
-	var d: Variant = JSON.parse_string(FileAccess.get_file_as_string(PALETTE_PATH))
-	var out: Dictionary = {}
-	if typeof(d) == TYPE_DICTIONARY:
-		for c: Variant in (d as Dictionary).get("colors", []):
-			out[str(c).to_lower()] = true
-	return out
+## Pixels d'image par pixel logique (doit valoir UIKit.DETAIL et tools/hd_art.py DETAIL).
+const DETAIL: int = 4
 
 
 ## Liste des assets requis : {chemin: {"w": .., "h": .., "kind": ..}} (w/h = 0 → libre).
@@ -22,6 +15,8 @@ static func required(db: ContentDB) -> Dictionary:
 	for slot: String in ContentDB.SLOTS:
 		for id: String in db.parts_by_slot.get(slot, []):
 			req["res://assets/ships/%s/%s.png" % [slot, id]] = {"kind": "part"}
+			if slot == "hull" or slot == "wings":
+				req["res://assets/ships/%s/%s_paint.png" % [slot, id]] = {"kind": "paint_mask"}
 	for w: String in ["wear_rust", "wear_scratch", "wear_dent", "wear_scorch"]:
 		req["res://assets/ships/wear/%s.png" % w] = {"kind": "wear"}
 	for sp: String in db.species:
@@ -39,8 +34,6 @@ static func required(db: ContentDB) -> Dictionary:
 	req["res://assets/backgrounds/garage.png"] = {"kind": "background", "w": 480, "h": 270}
 	for loc: String in db.locations:
 		req["res://assets/backgrounds/%s.png" % str(db.locations[loc]["background"])] = {"kind": "background", "w": 480, "h": 270}
-	for ui: String in ["panel", "panel_dark", "button", "button_hover", "button_pressed", "button_disabled", "frame"]:
-		req["res://assets/ui/%s.png" % ui] = {"kind": "ui"}
 	return req
 
 
@@ -77,9 +70,7 @@ const UI_ICONS: Array[String] = [
 
 static func run() -> int:
 	var db: ContentDB = ContentDB.load_default()
-	var pal: Dictionary = palette()
 	var errors: Array[String] = []
-	var all_colors: Dictionary = {}
 	var counts: Dictionary = {}
 	var req: Dictionary = required(db)
 	for path: String in req:
@@ -94,20 +85,12 @@ static func run() -> int:
 		if img == null or img.is_empty():
 			errors.append("illisible : " + path)
 			continue
-		if int(spec.get("w", 0)) > 0 and (img.get_width() != int(spec["w"]) or img.get_height() != int(spec["h"])):
-			errors.append("taille %dx%d au lieu de %dx%d : %s" % [img.get_width(), img.get_height(), spec["w"], spec["h"], path])
-		var bad: int = 0
-		for y: int in img.get_height():
-			for x: int in img.get_width():
-				var c: Color = img.get_pixel(x, y)
-				if c.a < 0.5:
-					continue
-				var hx: String = "#" + c.to_html(false).to_lower()
-				all_colors[hx] = true
-				if not pal.has(hx):
-					bad += 1
-		if bad > 0:
-			errors.append("%d pixels hors palette : %s" % [bad, path])
+		var ew: int = int(spec.get("w", 0)) * DETAIL
+		var eh: int = int(spec.get("h", 0)) * DETAIL
+		if ew > 0 and (img.get_width() != ew or img.get_height() != eh):
+			errors.append("taille %dx%d au lieu de %dx%d : %s" % [img.get_width(), img.get_height(), ew, eh, path])
+		if img.get_width() % DETAIL != 0 or img.get_height() % DETAIL != 0:
+			errors.append("taille %dx%d non multiple de %d : %s" % [img.get_width(), img.get_height(), DETAIL, path])
 	var anchors: Variant = JSON.parse_string(FileAccess.get_file_as_string(ANCHORS_PATH)) if FileAccess.file_exists(ANCHORS_PATH) else null
 	if typeof(anchors) != TYPE_DICTIONARY:
 		errors.append("anchors.json manquant ou invalide")
@@ -116,11 +99,9 @@ static func run() -> int:
 			for id: String in db.parts_by_slot.get(slot, []):
 				if not (anchors as Dictionary).has(id):
 					errors.append("points d'ancrage manquants : " + id)
-	if all_colors.size() > 32:
-		errors.append("palette globale > 32 couleurs (%d)" % all_colors.size())
-	var result: Dictionary = {"assets": req.size(), "counts": counts, "colors": all_colors.size(), "errors": errors.slice(0, 40), "error_count": errors.size()}
+	var result: Dictionary = {"assets": req.size(), "counts": counts, "errors": errors.slice(0, 40), "error_count": errors.size()}
 	for e: String in errors.slice(0, 40):
 		print("  ! " + e)
-	print("ASSETS: %d fichiers vérifiés, %d couleurs, %d erreurs" % [req.size(), all_colors.size(), errors.size()])
+	print("ASSETS: %d fichiers vérifiés, %d erreurs" % [req.size(), errors.size()])
 	print("##RESULT " + JSON.stringify(result))
 	return 0 if errors.is_empty() else 1

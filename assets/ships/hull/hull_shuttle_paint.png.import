@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://cwvl6kc4xqkb5"
+path="res://.godot/imported/hull_shuttle_paint.png-2bbee35eb0cd5d18bb09f6dc49a40efe.image"
+
+[deps]
+
+source_file="res://assets/ships/hull/hull_shuttle_paint.png"
+dest_files=["res://.godot/imported/hull_shuttle_paint.png-2bbee35eb0cd5d18bb09f6dc49a40efe.image"]
+
+[params]
+

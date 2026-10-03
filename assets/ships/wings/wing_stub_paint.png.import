@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://bvc2ajlms3gb7"
+path="res://.godot/imported/wing_stub_paint.png-56ac3d1edfb3f63102c50acde69c4d4f.image"
+
+[deps]
+
+source_file="res://assets/ships/wings/wing_stub_paint.png"
+dest_files=["res://.godot/imported/wing_stub_paint.png-56ac3d1edfb3f63102c50acde69c4d4f.image"]
+
+[params]
+

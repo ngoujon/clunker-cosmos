@@ -5,7 +5,9 @@ extends Node
 ##   screens  (fenêtré) enregistre des captures PNG de chaque écran dans --out ;
 ##   steam    (fenêtré) captures pour la fiche magasin Steam, sur une partie mise en scène (--lang, --out) ;
 ##   trailer  (fenêtré, avec --write-movie) joue une séquence scénarisée pour la vidéo promotionnelle ;
-##   capsules (fenêtré) rend les visuels de la page Steam (scripts/ui/capsules.gd).
+##   capsules (fenêtré) rend les visuels de la page Steam (scripts/ui/capsules.gd) ;
+##   perf     (fenêtré) mesure les images par seconde (synchro verticale coupée) sur l'écran titre puis sur
+##            chaque écran d'une partie avancée en vitesse maximale, et imprime « ##RESULT {json} ».
 ## Captures : fenêtre --window=LxH (1920x1080 par défaut) et taille d'interface --ui-scale=k (0 : réglage
 ## automatique, comme chez le joueur). La bande-annonce garde l'interface en 480×270 (×4 en 1080p).
 
@@ -27,7 +29,7 @@ func start(p_main: MainUI, p_args: Dictionary) -> void:
 		main.get_viewport().gui_disable_input = true
 	if mode != "trailer":
 		Audio.enabled = false
-	if mode in ["screens", "steam"]:
+	if mode in ["screens", "steam", "perf"]:
 		# Rendu « canvas_items » : l'image capturée a la taille de la fenêtre (texte net à cette résolution).
 		var dims: PackedStringArray = str(args.get("window", "1920x1080")).split("x")
 		main.get_window().size = Vector2i(int(dims[0]), int(dims[1]))
@@ -42,6 +44,8 @@ func start(p_main: MainUI, p_args: Dictionary) -> void:
 	match mode:
 		"screens":
 			_screens.call_deferred()
+		"perf":
+			_perf.call_deferred()
 		"steam":
 			_steam.call_deferred()
 		"trailer", "capsules":
@@ -75,6 +79,66 @@ func open_screen(id: String) -> GameScreen:
 	var s: GameScreen = main.screen(id)
 	s.force_rebuild()
 	return s
+
+
+# --- Mesure des performances ----------------------------------------------------
+
+var _samples: Array[float] = []
+var _sampling: bool = false
+
+
+func _process(delta: float) -> void:
+	if _sampling:
+		_samples.append(delta)
+
+
+## Échantillonne `sec` secondes de temps d'image : {fps moyen, 1 % des pires images, pire image en ms}.
+func _measure(sec: float) -> Dictionary:
+	await frames(30)
+	_samples.clear()
+	_sampling = true
+	await get_tree().create_timer(sec).timeout
+	_sampling = false
+	var sorted: Array[float] = _samples.duplicate()
+	sorted.sort()
+	var total: float = 0.0
+	for d: float in sorted:
+		total += d
+	var n: int = sorted.size()
+	var worst: Array[float] = sorted.slice(n - maxi(1, n / 100), n)
+	var wsum: float = 0.0
+	for d: float in worst:
+		wsum += d
+	var slow: int = 0
+	for d: float in sorted:
+		if d > 1.0 / 55.0:
+			slow += 1
+	return {"fps": snappedf(float(n) / maxf(total, 0.001), 0.1), "low1": snappedf(float(worst.size()) / maxf(wsum, 0.0001), 0.1),
+		"worst_ms": snappedf(sorted[n - 1] * 1000.0 if n > 0 else 0.0, 0.1), "frames": n, "slow_frames": slow}
+
+
+func _perf() -> void:
+	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+	var res: Dictionary = {}
+	var tc: int = Time.get_ticks_usec()
+	for cid: String in ["arrow", "hand", "help"]:
+		CursorKit._rasterize(cid, CursorKit.scale_for(MainUI.K))
+	res["cursor_ms"] = snappedf(float(Time.get_ticks_usec() - tc) / 1000.0, 0.1)
+	res["title"] = await _measure(4.0)
+	print("PERF: title ", res["title"])
+	var m: GameModel = demo_model()
+	Game.use_model(m)
+	main.start_game()
+	Game.set_speed(99)
+	for id: String in ["garage", "auctions", "sales", "staff", "research", "quests", "office"]:
+		var t0: int = Time.get_ticks_usec()
+		open_screen(id)
+		var open_ms: float = float(Time.get_ticks_usec() - t0) / 1000.0
+		res[id] = await _measure(4.0)
+		res[id]["open_ms"] = snappedf(open_ms, 0.1)
+		print("PERF: %s %s" % [id, str(res[id])])
+	print("##RESULT " + JSON.stringify(res))
+	get_tree().quit()
 
 
 # --- Test de fumée --------------------------------------------------------------

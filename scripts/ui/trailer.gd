@@ -568,15 +568,20 @@ func _shot_end(montage: Control) -> void:
 	await wait(0.2)
 
 
-## Curseur du jeu (CursorKit) dessiné en pixels : le Movie Maker n'enregistre pas le curseur matériel.
+## Curseur du jeu (CursorKit) dessiné dans la scène : le Movie Maker n'enregistre pas le curseur matériel.
+## Image rastérisée à DETAIL fois la taille logique, affichée à la taille logique (nette à l'écran).
 class FakeCursor extends Control:
 	var _press: float = 0.0
-	var _arrow: PackedStringArray = CursorKit.pattern("arrow")
-	var _colors: Dictionary = CursorKit.colors()
+	var _tex: ImageTexture = null
+	var _hot: Vector2 = Vector2(CursorKit.HOTSPOTS["arrow"])
 
 	func _init() -> void:
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
-		size = Vector2(_arrow[0].length(), _arrow.size())
+		var img: Image = CursorKit.image("arrow", UIKit.DETAIL).duplicate() as Image
+		img.generate_mipmaps()
+		_tex = ImageTexture.create_from_image(img)
+		_tex.set_size_override(Vector2i(CursorKit.SIZES["arrow"]))
+		size = Vector2(CursorKit.SIZES["arrow"])
 
 	func press() -> void:
 		_press = 1.0
@@ -589,11 +594,6 @@ class FakeCursor extends Control:
 	func _draw() -> void:
 		if _press > 0.0:
 			var r: float = 3.0 + (1.0 - _press) * 6.0
-			draw_arc(Vector2.ZERO, r, 0.0, TAU, 16, Color(UIKit.C_ACCENT, _press), 1.0)
-		var off: Vector2 = Vector2(1, 1) if _press > 0.5 else Vector2.ZERO
-		for y: int in _arrow.size():
-			var row: String = _arrow[y]
-			for x: int in row.length():
-				var ch: String = row[x]
-				if _colors.has(ch):
-					draw_rect(Rect2(off + Vector2(x, y), Vector2.ONE), _colors[ch] as Color)
+			draw_arc(Vector2.ZERO, r, 0.0, TAU, 24, Color(UIKit.C_ACCENT, _press), 1.0, true)
+		var off: Vector2 = (Vector2(0.6, 0.6) if _press > 0.5 else Vector2.ZERO) - _hot
+		draw_texture_rect(_tex, Rect2(off, size), false)

@@ -28,7 +28,7 @@ configuration requise, langues, tags, divulgation IA, et la liste de ce qui rest
 
 Tous ces visuels sortent **du vrai jeu** : la vidéo et les captures sont rendues par Godot (aucune retouche),
 les capsules sont composées avec les assets du jeu (décors, vaisseaux peints par le shader du jeu, logo en
-Lilita One) et rendues directement à la taille demandée : pixel art net, logo sans flou. Les capsules sont des
+Lilita One) et rendues directement à la taille demandée : images nettes, logo sans flou. Les capsules sont des
 **versions provisoires** propres et conformes (logo lisible, aucun autre texte) ; un graphiste pourra les remplacer.
 
 Régénérer le kit :
@@ -52,7 +52,7 @@ python tools/screenshots.py --steam                 # captures 1920×1080 FR + E
 | Plateforme | Windows 64 bits (macOS et Linux possibles avec Godot, non testés) |
 | Moteur | Godot 4.7.1 (licence MIT), rendu « Compatibility » (OpenGL 3.3) |
 | Contrôles | Souris (obligatoire) + raccourcis clavier (Espace : pause, 1-3 : vitesse, Échap : paramètres, F1 : tutoriel, F11 ou Alt+Entrée : plein écran, F12 : capture) ; pas de manette |
-| Affichage | plein écran par défaut ou fenêtré (mémorisé) ; **taille de l'interface** automatique (853×480 en 1440p, 640×360 en 1080p) ou réglable, pixel art à l'échelle entière, texte net à toutes les résolutions |
+| Affichage | plein écran par défaut ou fenêtré (mémorisé) ; **taille de l'interface** automatique (853×480 en 1440p, 640×360 en 1080p) ou réglable, images HD lissées et texte net à toutes les résolutions |
 | Aide | tutoriel intégré (12 pages), infobulles sur les ressources |
 | Steam Deck | non testé (souris nécessaire : jouable a priori au pavé tactile, sans garantie) |
 | Connexion Internet | non requise (aucune donnée collectée) |
@@ -139,7 +139,7 @@ Story mode: 5 chapters, 2 endings, the hunt for the 5 pieces of the legendary Au
 
 [h2]Features[/h2]
 [list]
-[*]Crisp pixel art at any resolution, with an adjustable interface size
+[*]Charming 2.5D look: stylized 3D ships, crew and stations, crisp at any resolution, with an adjustable interface size
 [*]Animated cross-section of your garage, real time with pause and 3 speeds
 [*]Original music and sound effects
 [*]Built-in tutorial and tooltips that explain every resource
@@ -170,7 +170,7 @@ Mode Histoire : 5 chapitres, 2 fins, la quête des 5 pièces de la légendaire A
 
 [h2]Caractéristiques[/h2]
 [list]
-[*]Pixel art net à toutes les résolutions, taille de l'interface réglable
+[*]Style 2.5D : vaisseaux, équipage et stations en 3D stylisée, nets à toutes les résolutions, taille de l'interface réglable
 [*]Coupe animée de votre garage, temps réel avec pause et 3 vitesses
 [*]Musiques et bruitages originaux
 [*]Tutoriel intégré et infobulles qui expliquent chaque ressource
@@ -180,7 +180,7 @@ Mode Histoire : 5 chapitres, 2 fins, la quête des 5 pièces de la légendaire A
 
 ### Tags suggérés (par ordre d'importance)
 
-Management, Simulation, Pixel Graphics, Space, Economy, Casual, Funny, Sci-fi, 2D, Singleplayer,
+Management, Simulation, Stylized, Space, Economy, Casual, Funny, Sci-fi, 2.5D, Singleplayer,
 Resource Management, Automation, Trading, Strategy, Indie, Cute, Relaxing, Comedy, Story Rich, Cozy.
 
 ## 6. Captures d'écran (contenu et légendes pour la presse / les réseaux)
@@ -204,8 +204,8 @@ la vitrine (garage agrandi et plein, tous les lieux ouverts, quelques technologi
 
 ## 7. Bande-annonce
 
-Rendue image par image par le jeu lui-même (Movie Maker de Godot, 30 i/s) directement en 1920×1080 : pixel art
-agrandi ×4 (interface en 480×270, lisible même dans un petit lecteur) et texte rastérisé en 1080p, avec la
+Rendue image par image par le jeu lui-même (Movie Maker de Godot, 30 i/s) directement en 1920×1080 : images HD
+(interface en 480×270 agrandie ×4, lisible même dans un petit lecteur) et texte rastérisé en 1080p, avec la
 musique et les bruitages du jeu. Un faux curseur montre les clics.
 
 | Temps | Plan | Légende FR | Caption EN |
@@ -225,7 +225,7 @@ musique et les bruitages du jeu. Un faux curseur montre les clics.
 
 - **Son** : musique et bruitages du jeu (AAC 192 kb/s, 48 kHz). Steam lance les vidéos sans le son sur la
   fiche : les légendes incrustées suffisent à suivre la vidéo.
-- Débit vidéo faible car le pixel art se compresse très bien ; qualité quasi sans perte (CRF 14). Steam
+- Qualité quasi sans perte (CRF 14). Steam
   réencode de toute façon les vidéos envoyées.
 - Le carton final dit « Bientôt sur Steam » : à refaire au lancement (texte `trailer.cta` dans
   `data/ui_text.json`, puis `tools/make_trailer.py`).
@@ -243,18 +243,19 @@ musique et les bruitages du jeu. Un faux curseur montre les clics.
 
 Rubrique *AI Generated Content Disclosure* — **contenu pré-généré** (aucune génération pendant le jeu) :
 
-> **EN** — All 2D pixel art (spaceship parts, wear overlays, character portraits and sprites, icons,
-> backgrounds and UI frames) was generated locally with the open-weights model Z-Image-Turbo (Apache-2.0) through
-> ComfyUI, then reduced and quantized to a hand-made 32-color palette by our own tools. The instrumental music
+> **EN** — All 2.5D artwork (stylized 3D-rendered spaceship parts, wear overlays, character portraits and
+> sprites, icons and backgrounds) was generated locally with the open-weights model Z-Image-Turbo (Apache-2.0)
+> through ComfyUI, then cut out and downscaled by our own tools; interface frames and cursor are drawn by code. The instrumental music
 > was generated locally with ACE-Step 1.5 (MIT license) from generic style descriptions; sound effects are
 > synthesized by code. Prompts describe original concepts only: no artist, studio, franchise, song or existing
 > character was referenced or imitated. The game's code, design, story and texts were written with the help of
 > an AI coding assistant (Claude) under human direction. Store trailer and screenshots are captured from the game
 > itself. No AI content is generated while playing.
 
-> **FR** — Tout le pixel art 2D (pièces de vaisseaux, calques d'usure, portraits et personnages, icônes, décors
-> et cadres d'interface) a été généré localement avec le modèle open-weights Z-Image-Turbo (Apache-2.0) via
-> ComfyUI, puis réduit et quantifié sur une palette de 32 couleurs par nos propres outils. Les musiques
+> **FR** — Toutes les images 2.5D (pièces de vaisseaux en rendu 3D stylisé, calques d'usure, portraits et
+> personnages, icônes, décors) ont été générées localement avec le modèle open-weights Z-Image-Turbo (Apache-2.0)
+> via ComfyUI, puis détourées et réduites par nos propres outils ; cadres d'interface et curseur sont dessinés par
+> code. Les musiques
 > instrumentales ont été générées localement avec ACE-Step 1.5 (licence MIT) à partir de descriptions de style
 > génériques ; les bruitages sont synthétisés par code. Les invites décrivent uniquement des concepts originaux :
 > aucun artiste, studio, licence, morceau ou personnage existant n'a été cité ni imité. Le code, le game design,

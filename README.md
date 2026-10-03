@@ -1,6 +1,6 @@
 # Clunker Cosmos
 
-Jeu de **gestion 2D en pixel art** pour PC (Steam) : vous tenez un garage orbital de vaisseaux d'occasion,
+Jeu de **gestion en 2.5D** pour PC (Steam) : vous tenez un garage orbital de vaisseaux d'occasion,
 vu en coupe. Achetez des épaves aux enchères, réparez-les (ou maquillez leurs défauts…), personnalisez-les,
 revendez-les à des clients aliens, embauchez une équipe que l'on voit travailler dans l'atelier. Ce n'est pas
 un idle : rien n'avance quand le jeu est fermé. Mode **Histoire** (5 chapitres, 2 fins) ou **Classique**.
@@ -23,8 +23,8 @@ Français / English, musique et bruitages, tutoriel intégré.
 
 Bande-annonce : [FR](docs/steam/trailer_fr.mp4) · [EN](docs/steam/trailer_en.mp4).
 
-> **En cours (version 0.3)** : refonte graphique en **2.5D** (rendu 3D stylisé, profondeur, interface lisse)
-> à la place du pixel art. Les captures ci-dessus montrent la version 0.2.
+Version 0.3 : rendu **2.5D** (personnages, vaisseaux et décors en 3D stylisée pré-calculée, ombres, parallaxe,
+interface lisse) à la place du pixel art des versions précédentes.
 
 ## Lancer le jeu
 
@@ -65,19 +65,19 @@ tools/run_tests.sh --suite=unit    # tests unitaires seuls
 |---|---|
 | `scripts/core/` | logique pure (enchères, atelier, ventes/SAV/contrôles, RH, recherche, quêtes, sauvegarde, réglages, placement des employés, autopilote) |
 | `scripts/autoload/` | `Content` (données), `I18n` (FR/EN), `Game` (partie, temps réel, pauses automatiques, sauvegarde), `Audio` (musique, bruitages) |
-| `scripts/ui/` | interface construite en code (thème 9-slice, polices Barlow et Lilita One, taille d'interface variable), écrans, visite automatique |
+| `scripts/ui/` | interface construite en code (thème lisse, polices Barlow et Lilita One, taille d'interface variable), écrans, visite automatique |
 | `data/` | tout le contenu en JSON (pièces, défauts, espèces, personnel, lieux, arbre, histoire, quêtes, tutoriel, textes UI) |
-| `assets/` | sprites finaux (palette de 32 couleurs), musiques et bruitages, polices |
-| `art/` | palette, manifestes de traçabilité (images, audio), comparatifs de modèles |
+| `assets/` | images finales en HD (4× leur taille en jeu), masques de peinture, musiques et bruitages, polices |
+| `art/` | manifestes de traçabilité (images, audio), composition du garage, comparatifs de modèles |
 | `comfy/` | workflows ComfyUI (format API), liste des modèles, instantané `/object_info` |
-| `tools/` | pipeline d'art et d'audio (`pixelize.py`, `gen_assets.py`, `gen_audio.py`, `sfx_synth.py`), vérifications, captures, kit Steam, export Windows |
+| `tools/` | pipeline d'art et d'audio (`hd_art.py`, `gen_assets.py`, `gen_audio.py`, `sfx_synth.py`), vérifications, captures, kit Steam, export Windows |
 | `tests/` | lanceur headless, suites unitaires, simulation, contrôle des assets |
 | `docs/` | GDD, décisions, avancement, licences, divulgation IA, captures, kit Steam |
 
 ## Art, audio et IA
 
 Les visuels sont générés **localement** avec ComfyUI et le modèle open-weights **Z-Image-Turbo (Apache-2.0)**,
-puis réduits et quantifiés sur une palette de 32 couleurs par `tools/pixelize.py`. Les musiques sont générées
+dans un style de rendu 3D stylisé, puis détourés et réduits par `tools/hd_art.py`. Les musiques sont générées
 localement avec **ACE-Step 1.5 (MIT)** ; les bruitages sont synthétisés par code. Chaque fichier est tracé
 (invite, graine, workflow, empreinte) dans `art/manifest.json` et `art/audio_manifest.json`. Aucune imitation
 d'artiste, de studio ou de personnage existant. Détails : [docs/AI_DISCLOSURE.md](docs/AI_DISCLOSURE.md),
@@ -85,7 +85,7 @@ d'artiste, de studio ou de personnage existant. Détails : [docs/AI_DISCLOSURE.m
 
 Régénérer l'art et l'audio (ComfyUI sur `127.0.0.1:8188`) :
 ```
-.venv/Scripts/python.exe tools/gen_assets.py generate   # images brutes (art/raw/, non versionné)
+.venv/Scripts/python.exe tools/gen_assets.py generate   # images brutes (art/raw_hd/, non versionné)
 .venv/Scripts/python.exe tools/gen_assets.py sheets     # planches de revue
 .venv/Scripts/python.exe tools/gen_assets.py build      # assets/ + manifeste + divulgation
 .venv/Scripts/python.exe tools/gen_audio.py all         # musiques (ComfyUI) et bruitages (synthèse)

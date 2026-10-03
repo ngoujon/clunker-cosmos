@@ -8,7 +8,7 @@ var main: MainUI = null
 var _mode_info: Label
 var _ships: Array[ShipView] = []
 var _t: float = 0.0
-## Parade et logo suivent l'échelle du décor (pixels nets, comme à 480×270) ; le menu, celle de l'interface.
+## Parade et logo suivent l'échelle du décor (comme à 480×270) ; le menu, celle de l'interface.
 var _art_scale: float = 1.0
 var _parade: Control = null
 

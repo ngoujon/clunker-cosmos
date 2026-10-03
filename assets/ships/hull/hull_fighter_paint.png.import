@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://b47s7ssand7q3"
+path="res://.godot/imported/hull_fighter_paint.png-a7b6d949cbf93030430345388e1a0aa4.image"
+
+[deps]
+
+source_file="res://assets/ships/hull/hull_fighter_paint.png"
+dest_files=["res://.godot/imported/hull_fighter_paint.png-a7b6d949cbf93030430345388e1a0aa4.image"]
+
+[params]
+

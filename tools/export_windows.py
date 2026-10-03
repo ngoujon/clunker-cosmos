@@ -1,7 +1,7 @@
-"""Export Windows du jeu (exe + pck) avec son icône, dans un dossier du Bureau.
+"""Export Windows du jeu : uniquement les fichiers nécessaires pour jouer (exe + pck), dans exports/Clunker Cosmos/.
 
 Usage :
-  python tools/export_windows.py                      # → <Bureau>/Clunker Cosmos/
+  python tools/export_windows.py                      # → exports/Clunker Cosmos/ (dossier ignoré par git)
   python tools/export_windows.py --out=build/windows  # autre dossier
   python tools/export_windows.py --debug              # modèle debug (messages d'erreur détaillés)
 
@@ -9,14 +9,14 @@ Préréglage « Windows Desktop » (export_presets.cfg) : exécutable 64 bits + 
 `icon.ico` dans l'exe (et dans la barre des tâches via application/config/windows_native_icon), nom et version du
 projet dans les propriétés du fichier, données JSON incluses, build/ exclu. Modèles d'export Godot 4.7.1 requis
 dans %APPDATA%/Godot/export_templates/4.7.1.stable (éditeur : Éditeur → Gérer les modèles d'export).
-Le dossier reçoit aussi « Clunker Cosmos.ico » (raccourcis, icône du client Steamworks). Vérification : le jeu
+Le dossier ne contient rien d'autre (l'icône est intégrée à l'exe ; l'.ico pour Steamworks est dans
+docs/steam/capsules/). exports/ reçoit un .gdignore (Godot n'importe pas ce dossier). Vérification : le jeu
 exporté joue sa visite de fumée en headless (jamais d'écriture de la sauvegarde ni des réglages du joueur).
 """
 from __future__ import annotations
 
 import json
 import os
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -30,19 +30,6 @@ PRESET = "Windows Desktop"
 ERROR_PATTERNS = ("SCRIPT ERROR", "Parse Error", "Compile Error", "ERROR: ")
 
 
-def desktop() -> Path:
-    """Bureau réel de l'utilisateur (éventuellement redirigé, par exemple vers OneDrive)."""
-    try:
-        p = subprocess.run(["powershell", "-NoProfile", "-Command", "[Environment]::GetFolderPath('Desktop')"],
-                           capture_output=True, text=True, timeout=30)
-        d = Path(p.stdout.strip())
-        if p.returncode == 0 and p.stdout.strip() and d.is_dir():
-            return d
-    except (OSError, subprocess.TimeoutExpired):
-        pass
-    return Path.home() / "Desktop"
-
-
 def errors(text: str) -> list[str]:
     return [ln.strip() for ln in text.splitlines() if any(p in ln for p in ERROR_PATTERNS)]
 
@@ -54,9 +41,11 @@ def export(out_dir: Path, debug: bool) -> Path:
         raise SystemExit(f"modèle d'export absent : {tpl}\n"
                          "(éditeur Godot : Éditeur → Gérer les modèles d'export → Télécharger et installer)")
     out_dir.mkdir(parents=True, exist_ok=True)
+    if out_dir.parent == ROOT / "exports":
+        (out_dir.parent / ".gdignore").touch()
     exe = out_dir / f"{NAME}.exe"
     pck = out_dir / f"{NAME}.pck"
-    for old in (exe, pck, out_dir / f"{NAME}.console.exe"):
+    for old in (exe, pck, out_dir / f"{NAME}.console.exe", out_dir / f"{NAME}.ico"):
         old.unlink(missing_ok=True)
     print(f"export {'debug' if debug else 'release'} -> {exe}", flush=True)
     p = godot.run(["--export-debug" if debug else "--export-release", PRESET, exe.as_posix()], timeout=900)
@@ -64,9 +53,7 @@ def export(out_dir: Path, debug: bool) -> Path:
     if p.returncode != 0 or not exe.is_file() or not pck.is_file() or errors(text):
         print(text[-3000:])
         raise SystemExit(f"échec de l'export ({p.returncode}) : {errors(text)[:5]}")
-    shutil.copyfile(ROOT / "icon.ico", out_dir / f"{NAME}.ico")
-    print(f"    {exe.name} : {exe.stat().st_size / 1e6:.1f} Mo, {pck.name} : {pck.stat().st_size / 1e6:.1f} Mo, "
-          f"{NAME}.ico", flush=True)
+    print(f"    {exe.name} : {exe.stat().st_size / 1e6:.1f} Mo, {pck.name} : {pck.stat().st_size / 1e6:.1f} Mo", flush=True)
     return exe
 
 
@@ -86,7 +73,7 @@ def smoke(exe: Path) -> None:
 
 
 def main() -> int:
-    out_dir = desktop() / NAME
+    out_dir = ROOT / "exports" / NAME
     for a in sys.argv[1:]:
         if a.startswith("--out="):
             out_dir = Path(a.split("=", 1)[1])

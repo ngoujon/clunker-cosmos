@@ -11,8 +11,8 @@ config_version=5
 [application]
 
 config/name="Clunker Cosmos"
-config/description="Garage orbital de vaisseaux d'occasion — jeu de gestion en pixel art."
-config/version="0.1.0"
+config/description="Garage orbital de vaisseaux d'occasion — jeu de gestion en 2.5D."
+config/version="0.3.0"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 boot_splash/bg_color=Color(0.05, 0.05, 0.08, 1)
@@ -47,9 +47,9 @@ locale/fallback="en"
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=0
+textures/canvas_textures/default_texture_filter=3
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-2d/snap/snap_2d_transforms_to_pixel=true
-2d/snap/snap_2d_vertices_to_pixel=true
+2d/snap/snap_2d_transforms_to_pixel=false
+2d/snap/snap_2d_vertices_to_pixel=false
 environment/defaults/default_clear_color=Color(0.05, 0.05, 0.08, 1)

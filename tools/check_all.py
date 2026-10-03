@@ -11,7 +11,7 @@ Contrôles :
   3. simulation de 30 jours (≥ 10 ventes, résultat d'exploitation > 0, 0 erreur)
   4. chapitres 1 et 2 de l'histoire bouclés par l'autopilote
   5. test de fumée de l'interface (tous les écrans construits et manipulés en headless)
-  6. validation des assets dans Godot (présence, tailles, palette ≤ 32 couleurs, ancrages)
+  6. validation des assets dans Godot (présence, tailles HD, masques de peinture, ancrages)
   7. manifeste des assets (prompt, graine, workflow, empreintes) + divulgation IA ; manifeste audio
   8. workflows ComfyUI validés contre l'instantané /object_info + licences des modèles
   9. documents requis
@@ -149,10 +149,10 @@ def png_size(path: Path) -> tuple[int, int]:
 def check_assets_godot() -> None:
     code, out = godot_run(["res://tests/runner.tscn", "--", "--suite=assets"])
     r = parse_result(out)
-    ok = code == 0 and int(r.get("error_count", 1)) == 0 and int(r.get("colors", 99)) <= 32
+    ok = code == 0 and int(r.get("error_count", 1)) == 0
     counts = r.get("counts", {})
     report("Assets (Godot)", ok, f"{r.get('assets', 0)} fichiers ({', '.join(f'{k} {v}' for k, v in sorted(counts.items()))}), "
-           f"{r.get('colors', '?')} couleurs, {r.get('error_count', '?')} erreur(s)")
+           f"{r.get('error_count', '?')} erreur(s)")
 
 
 def check_manifest() -> None:

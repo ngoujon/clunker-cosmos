@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://xuwkiw0ewqis"
+path="res://.godot/imported/hull_cargo_paint.png-f1079db22e3d0fe4909d65398ac9486c.image"
+
+[deps]
+
+source_file="res://assets/ships/hull/hull_cargo_paint.png"
+dest_files=["res://.godot/imported/hull_cargo_paint.png-f1079db22e3d0fe4909d65398ac9486c.image"]
+
+[params]
+

@@ -37,6 +37,12 @@
 - [x] **J7 — Export Windows** (demande) : préréglage « Windows Desktop » (`export_presets.cfg`), icône `icon.ico`
   dans l'exe et la barre des tâches, `tools/export_windows.py` → `<Bureau>/Clunker Cosmos/` (`Clunker Cosmos.exe`
   109 Mo + `.pck` 11 Mo + `.ico`) ; le jeu exporté passe le test de fumée et s'affiche correctement en fenêtre.
+- [x] **J8 — Version 0.3 : passage en 2.5D** (demande : plus de pixel art) : 205 images régénérées en rendu 3D
+  stylisé (Z-Image-Turbo, 2 à 3 graines par asset, revue des planches, 11 prompts corrigés), stockées à 4× leur
+  taille logique (`tools/hd_art.py`) et affichées lissées avec mipmaps (`UIKit.tex`) ; garage restylé en img2img
+  (même disposition) ; peinture des vaisseaux par masque ; usure douce ; ombres des vaisseaux, parallaxe,
+  vignettage et poussières ; interface lisse (panneaux arrondis, curseur vectoriel, animations anticrénelées).
+  Captures, kit Steam, icône et export Windows régénérés. Dépôt public `github.com/ngoujon/clunker-cosmos`.
 
 ## État actuel
 

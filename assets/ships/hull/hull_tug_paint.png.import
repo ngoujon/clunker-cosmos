@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://b0kuhjf56hvqf"
+path="res://.godot/imported/hull_tug_paint.png-f7e80652c51e2a2402cc20457a4cd3c3.image"
+
+[deps]
+
+source_file="res://assets/ships/hull/hull_tug_paint.png"
+dest_files=["res://.godot/imported/hull_tug_paint.png-f7e80652c51e2a2402cc20457a4cd3c3.image"]
+
+[params]
+

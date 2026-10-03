@@ -21,3 +21,4 @@ __pycache__/
 # Réglages temporaires de tools/make_trailer.py (taille de la vidéo)
 /override.cfg
 /art/raw_hd/
+/exports/

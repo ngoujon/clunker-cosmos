@@ -32,7 +32,7 @@ HULLS = {
     "hull_courier": ("sleek small courier spaceship hull, slim aerodynamic body, pointed nose", [80, 30]),
     "hull_tug": ("stubby heavy hovering space tugboat hull, boxy armored body with a big front bumper and a tow hook, no wheels, no legs", [80, 38]),
     "hull_miner": ("mining spaceship hull with a big drill on the nose, sturdy body", [88, 36]),
-    "hull_cargo": ("long cargo freighter spaceship hull, whale-like big container body", [108, 42]),
+    "hull_cargo": ("long heavy cargo freighter spaceship hull with stacked rectangular container modules along its back, metal plating, rounded nose", [108, 42]),
     "hull_fighter": ("sleek retro interceptor spaceship fuselage, long pointed nose", [92, 30]),
     "hull_yacht": ("luxurious space yacht hull, elegant curved body with portholes and gold trim", [100, 38]),
     "hull_explorer": ("large deep space explorer ship hull, long body with antennas and a sensor dome", [114, 44]),
@@ -56,11 +56,11 @@ COCKPITS = {
 WINGS = {
     "wing_stub": ("single small stubby rounded triangular fin plate with grey bolts, one detached spaceship part", [30, 16]),
     "wing_delta": ("single large flat red metal plate shaped like a long right triangle, grey trim and rivets along the edges, one object", [52, 22]),
-    "wing_swept": ("single long thin slanted red metal blade shaped like a parallelogram, grey trim and rivets, one object", [54, 20]),
+    "wing_swept": ("single flat red metal wing plate shaped like a long parallelogram slanted backwards, thin panel with grey rivets along the edges, one isolated detached part, no fuselage, no airplane", [54, 20]),
     "wing_solar": ("single rectangular solar panel wing with blue photovoltaic cells on a short mounting arm, one detached part", [56, 24]),
 }
 ## Graines de remplacement pour les assets dont le prompt est corrigé après la revue des planches.
-RESEEDED: dict[str, list[int]] = {}
+RESEEDED: dict[str, list[int]] = {"hull_cargo": [44, 55], "wing_swept": [66, 77, 88], "ui_sales": [44, 55], "def_rust": [44, 55], "def_dent": [44, 55], "opt_polish": [44, 55], "tech_co_2": [44, 55], "tech_pe_3": [44, 55], "tech_pe_5": [44, 55], "tech_li_1": [44, 55]}
 ## Icônes dessinées par code (symboles de lecture) : plus lisibles que les versions générées.
 HANDMADE_ICONS: tuple[str, ...] = ("ui_pause", "ui_play", "ui_fast", "ui_faster")
 ## Décalcomanies d'usure dispersées sur fond blanc (détourage par les coins, toutes les taches gardées).
@@ -121,7 +121,7 @@ UI_ICON_SUBJECTS = {
     "ui_debt": "red bill paper with a chain", "ui_day": "small sun and moon clock", "ui_pause": "pause symbol with two bars",
     "ui_play": "play triangle symbol", "ui_fast": "double arrow fast forward symbol", "ui_faster": "triple arrow fast forward symbol",
     "ui_garage": "small hangar building", "ui_auction": "wooden auction gavel", "ui_staff": "two little worker heads with caps",
-    "ui_research": "chemistry flask with bubbles", "ui_quests": "open journal book with a bookmark", "ui_sales": "price tag",
+    "ui_research": "chemistry flask with bubbles", "ui_quests": "open journal book with a bookmark", "ui_sales": "red paper price tag on a string with a golden coin",
     "ui_settings": "metal gear cog", "ui_scan": "magnifying glass", "ui_bid": "raised hand holding a paddle",
     "ui_repair": "wrench", "ui_conceal": "paint roller covering a crack", "ui_paint": "spray paint can", "ui_sell": "handshake",
     "ui_hire": "plus sign next to a person", "ui_check": "green check mark", "ui_lock": "padlock",
@@ -140,14 +140,14 @@ ITEM_SUBJECTS = {
     "item_sail": "shimmering golden solar sail", "item_star": "star-shaped cockpit seat glowing", "item_compass": "celestial brass compass with a star",
 }
 DEFECT_SUBJECTS = {
-    "def_rust": "small grey metal square plate with big orange rust spots", "def_dent": "dented metal panel", "def_breach": "cracked hull with escaping air puff",
+    "def_rust": "rusty corroded metal bolt and nut covered in orange rust flakes", "def_dent": "crumpled dented grey metal sheet with a deep dent", "def_breach": "cracked hull with escaping air puff",
     "def_misfire": "engine coughing black smoke", "def_plasma": "leaking blue plasma drop", "def_fuel": "cracked hose with duct tape",
     "def_nav": "confused compass with question mark", "def_canopy": "cracked glass window", "def_ai": "sulking computer screen face",
     "def_wing": "bent airplane wing", "def_wiring": "chewed electric cables with spark", "def_battery": "empty battery with red level",
     "def_air": "air vent with green smelly cloud", "def_gravity": "upside down floating chair", "def_toilet": "small space toilet",
 }
 OPTION_SUBJECTS = {
-    "opt_polish": "sparkling polish cloth", "opt_flames": "flame decal sticker", "opt_horn": "trumpet horn", "opt_rack": "roof rack with boxes",
+    "opt_polish": "spray bottle of polish next to a folded cleaning cloth with sparkles", "opt_flames": "flame decal sticker", "opt_horn": "trumpet horn", "opt_rack": "roof rack with boxes",
     "opt_baby": "small baby seat", "opt_spoiler": "car spoiler fin", "opt_neon": "glowing neon light tube", "opt_leather": "luxury leather seat",
     "opt_minibar": "cocktail glass with ice", "opt_shield": "round energy shield", "opt_autopilot": "steering wheel with robot head",
     "opt_solar": "small solar panel",
@@ -155,15 +155,15 @@ OPTION_SUBJECTS = {
 TECH_SUBJECTS = {
     "at_1": "workbench with tools", "at_2": "ratchet wrench with sparkles", "at_3": "crate full of bolts", "at_4": "repair bay with lift",
     "at_5": "big hangar door", "at_6": "robotic arm", "at_7": "night lamp and moon",
-    "co_1": "smiling face with sparkle", "co_2": "holographic billboard", "co_3": "credit card", "co_4": "sales desk",
+    "co_1": "smiling face with sparkle", "co_2": "glowing holographic advertising screen on a pole", "co_3": "credit card", "co_4": "sales desk",
     "co_5": "shield with check mark", "co_6": "two hands shaking with coins", "co_7": "red carpet and crown",
-    "pe_1": "paint spray gun", "pe_2": "color swatches fan", "pe_3": "neon underglow light", "pe_4": "luxury armchair",
-    "pe_5": "paint booth", "pe_6": "trending arrow with stars", "pe_7": "gold paint bucket",
+    "pe_1": "paint spray gun", "pe_2": "color swatches fan", "pe_3": "small hovering spaceship with bright pink neon light glowing underneath it", "pe_4": "luxury armchair",
+    "pe_5": "small paint booth cabin with a spray gun and colorful paint clouds", "pe_6": "trending arrow with stars", "pe_7": "gold paint bucket",
     "rh_1": "coffee machine with mug", "rh_2": "newspaper ad", "rh_3": "graduation cap", "rh_4": "bunk bed",
     "rh_5": "pillow with Z letters", "rh_6": "magnifying glass over a person", "rh_7": "first aid kit with heart",
     "di_1": "handheld scanner", "di_2": "gamma ray scanner with green rays", "di_3": "stethoscope on engine", "di_4": "laboratory flask",
     "di_5": "certificate with seal", "di_6": "quantum atom scanner", "di_7": "robot brain chip",
-    "li_1": "ice crystal permit card", "li_2": "tow truck spaceship", "li_3": "shady handshake in purple light", "li_4": "skull map",
+    "li_1": "blue ice crystal next to a small pass card with a snowflake", "li_2": "tow truck spaceship", "li_3": "shady handshake in purple light", "li_4": "skull map",
     "li_5": "cargo crate with discount tag", "li_6": "golden invitation envelope", "li_7": "radar screen with blip",
 }
 

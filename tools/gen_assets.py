@@ -7,7 +7,7 @@
   build         post-traite la graine retenue (art/selection.json) vers assets/ (images à DETAIL × la taille
                 logique, masques de peinture), écrit art/manifest.json, assets/ships/anchors.json (en pixels
                 logiques) et docs/AI_DISCLOSURE.md
-  placeholders  crée des formes simples conformes à la palette pour tout asset absent (développement)
+  placeholders  crée des formes simples pour tout asset absent (développement)
   validate      vérifie les workflows contre /object_info (ou l'instantané hors ligne)
 
 Usage : python tools/gen_assets.py generate [--only hull,icon] | sheets | build | placeholders | validate
@@ -183,18 +183,6 @@ def handmade_icons(manifest: list[dict[str, Any]]) -> None:
                          "size": [n, n], "sha256": sha256(out)})
 
 
-def write_palette_png(manifest: list[dict[str, Any]]) -> None:
-    data = json.loads(pixelize.PALETTE_FILE.read_text(encoding="utf-8"))
-    cols = [pixelize.hex_to_rgb(c) for c in data["colors"]]
-    img = Image.new("RGBA", (len(cols), 1))
-    for i, c in enumerate(cols):
-        img.putpixel((i, 0), (*c, 255))
-    out = ASSETS / "palette.png"
-    img.save(out)
-    manifest.append({"id": "palette", "category": "palette", "file": "assets/palette.png", "source": "handmade",
-                     "process": "palette globale de 32 couleurs (art/palette.json), conçue pour le projet", "sha256": sha256(out)})
-
-
 def build(allow_missing: bool) -> None:
     sel = selection()
     manifest: list[dict[str, Any]] = []
@@ -240,7 +228,6 @@ def build(allow_missing: bool) -> None:
     if missing and not allow_missing:
         raise SystemExit("images brutes manquantes : " + ", ".join(missing[:20]))
     handmade_icons(manifest)
-    write_palette_png(manifest)
     (ASSETS / "ships").mkdir(parents=True, exist_ok=True)
     (ASSETS / "ships" / "anchors.json").write_text(json.dumps(anchors, indent=1), encoding="utf-8", newline="\n")
     MANIFEST.write_text(json.dumps({"_comment": "Traçabilité des assets : prompt, graine, workflow, modèle, post-traitement.", "palette": "art/palette.json", "assets": manifest}, indent=1, ensure_ascii=False), encoding="utf-8", newline="\n")
@@ -261,10 +248,11 @@ def write_disclosure(manifest: list[dict[str, Any]]) -> None:
         "",
         "## Résumé pour la page Steam (section « AI Generated Content Disclosure »)",
         "",
-        "> **Pre-generated content** : all 2D pixel art (spaceship parts, wear overlays, character portraits and",
-        "> sprites, icons, backgrounds and UI frames) was generated locally with the open-weights model Z-Image-Turbo (Apache-2.0)",
-        "> through ComfyUI, then reduced and quantized to a hand-made 32-color palette by our own script",
-        "> (`tools/pixelize.py`). Background removal uses BiRefNet (MIT). The five instrumental music tracks were",
+        "> **Pre-generated content** : all 2.5D artwork (stylized 3D-rendered spaceship parts, wear overlays, character",
+        "> portraits and sprites, icons and backgrounds) was generated locally with the open-weights model Z-Image-Turbo",
+        "> (Apache-2.0) through ComfyUI, then cut out, downscaled and sharpened by our own script (`tools/hd_art.py`);",
+        "> the garage backdrop was restyled from our previous in-house backdrop (img2img) to keep its layout. Background",
+        "> removal uses BiRefNet (MIT). Interface frames and the mouse cursor are drawn by code. The five instrumental music tracks were",
         "> pre-generated locally with the open-weights model ACE-Step 1.5 (MIT) from generic style descriptions,",
         "> then mastered by our own script (`tools/gen_audio.py`); sound effects are synthesized by code, without AI.",
         "> No live/runtime AI generation happens in the game. Prompts describe original concepts only: no artist,",
@@ -279,7 +267,7 @@ def write_disclosure(manifest: list[dict[str, Any]]) -> None:
         "| Détourage | BiRefNet (nœud ComfyUI RemoveBackground) | MIT |",
         "| Musique (pré-générée) | ACE-Step 1.5 turbo (`ace_step_1.5_turbo_aio.safetensors`) | MIT (reconditionnement Comfy-Org Apache-2.0) |",
         "| Bruitages | tools/sfx_synth.py (synthèse procédurale, sans IA) | propriétaire du projet |",
-        "| Post-traitement | tools/pixelize.py (code du projet) | propriétaire du projet |",
+        "| Post-traitement | tools/hd_art.py (code du projet) | propriétaire du projet |",
         "| Évalués puis écartés | SDXL base 1.0 + LoRA pixel-art-xl, FLUX.1-schnell, Qwen-Image 2512 | voir MODEL_LICENSES.md |",
         "",
         "## Assets générés par catégorie",
@@ -377,7 +365,11 @@ def validate() -> int:
     for wf_path in sorted(cc.WORKFLOW_DIR.glob("*.json")):
         wf = json.loads(wf_path.read_text(encoding="utf-8"))
         dummy = {k: (1 if k in ("SEED", "WIDTH", "HEIGHT") else 1.0 if k == "LORA_STRENGTH" else "x") for k in cc.placeholders(wf)}
-        dummy.update({"WIDTH": 1024, "HEIGHT": 1024})
+        dummy.update({"WIDTH": 1024, "HEIGHT": 1024, "DENOISE": 0.5})
+        if "INIT" in dummy:
+            # Image d'entrée de l'img2img : n'importe quelle image présente dans le dossier input de ComfyUI.
+            images = oi.get("LoadImage", {}).get("input", {}).get("required", {}).get("image", [[]])[0]
+            dummy["INIT"] = images[0] if images else "x"
         filled = cc.fill(wf, dummy)
         errs = cc.validate(filled, oi)
         classes |= {n["class_type"] for k, n in wf.items() if not k.startswith("_")}

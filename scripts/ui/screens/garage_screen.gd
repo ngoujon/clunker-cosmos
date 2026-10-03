@@ -49,7 +49,7 @@ func background() -> Array:
 	return ["res://assets/backgrounds/garage.png", 0.0]
 
 
-## Échelle de la scène : la bande utile du décor tient entière dans l'écran, pixels nets.
+## Échelle de la scène : la bande utile du décor tient entière dans l'écran.
 func stage_scale() -> float:
 	return ViewScale.fit_scale(size, ART_VIEW.size, MainUI.K)
 
@@ -206,6 +206,8 @@ func _bay(i: int, s: Ship) -> void:
 		# Grand vaisseau dans une baie resserrée : posé au sol, quitte à passer sous la plaque.
 		vy = maxf(r.position.y + 2, r.end.y - v.size.y)
 	v.position = Vector2(vx, vy)
+	# 2.5D : ombre douce du vaisseau sur le sol de la baie.
+	v.floor_y = r.end.y - 3.0 - vy
 	_stage.add_child(v)
 	_ship_rects[s.id] = [r, Rect2(v.position, v.size)]
 	clickable(frame, func() -> void:

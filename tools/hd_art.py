@@ -61,7 +61,7 @@ def _paint_mask(rgb: np.ndarray, alpha: np.ndarray, hue_name: str) -> np.ndarray
     lo, hi = px.PAINT_HUES[hue_name]
     hue, sat, val = px.hue_sat_val(rgb)
     m = px.in_hue(hue, lo, hi).astype(np.float32)
-    m *= np.clip((sat - 0.22) / 0.18, 0.0, 1.0) * np.clip((val - 0.08) / 0.10, 0.0, 1.0)
+    m *= np.clip((sat - 0.14) / 0.16, 0.0, 1.0) * np.clip((val - 0.04) / 0.08, 0.0, 1.0)
     m = np.array(Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.8))).astype(np.float32) / 255.0
     return (np.clip(m * alpha, 0, 1) * 255).astype(np.uint8)
 

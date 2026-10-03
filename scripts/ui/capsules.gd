@@ -2,7 +2,7 @@ extends Node
 ## Visuels de la page Steam (capsules, fond de page, logo, icônes) composés avec les vrais assets du jeu :
 ## décors de lieux, vaisseaux peints par le shader du jeu, logo en Lilita One. Chaque visuel est composé
 ## dans un SubViewport en coordonnées « pixel » (taille de base) étirées d'un facteur entier jusqu'à la
-## taille exigée par Steam : le pixel art reste net (filtre nearest) et le logo est rastérisé à la taille finale.
+## taille exigée par Steam : les images HD restent nettes (filtrage linéaire, mipmaps) et le logo est rastérisé à la taille finale.
 ##   godot --path . res://scenes/main.tscn -- --tour=capsules --out=docs/steam/capsules
 ## (voir tools/steam_assets.py, qui ajoute ensuite l'icône .ico et icon.svg).
 
@@ -70,8 +70,8 @@ func _render(spec: Dictionary) -> Image:
 	sv.size_2d_override_stretch = true
 	sv.oversampling_override = float(k)
 	sv.transparent_bg = transparent
-	sv.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
-	sv.snap_2d_transforms_to_pixel = true
+	sv.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	sv.snap_2d_transforms_to_pixel = false
 	sv.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	add_child(sv)
 	var root: Control = Control.new()

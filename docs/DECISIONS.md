@@ -212,3 +212,46 @@ Format : décision — raison (option la plus simple quand il y avait un doute).
     Godot (sans rcedit) et utilisée pour la barre des tâches (`windows_native_icon`), copiée aussi dans le dossier
     (raccourcis, icône du client Steam). Données JSON incluses explicitement, `build/` exclu ; tests laissés dans le
     pck (80 Ko). Version 0.1.0 conservée (identique aux captures). L'outil vérifie le jeu exporté (test de fumée).
+72. **Passage en 2.5D** (demande : « tout en 2.5D, plus de pixel art ni de 8 bits, garder le thème spatial ») :
+    rendu 3D stylisé **pré-calculé** (images Z-Image-Turbo au style « stylized 3D render », éclairage doux) plutôt
+    que de vrais modèles 3D : l'interface, la logique, la mise en page en 480×270 logiques et l'assemblage des
+    vaisseaux par ancres restent valables, et le jeu garde son renderer GL Compatibility. Des modèles 3D (TRELLIS 2
+    est installé) auraient demandé de refaire l'assemblage, la peinture et l'éclairage de 24 pièces : écarté.
+73. **Images HD à 4× leur taille logique** (`tools/hd_art.py`, `UIKit.DETAIL`) : détourage BiRefNet doux, réduction
+    Lanczos en alpha prémultiplié (pas de halo), léger renforcement, marge d'un pixel logique. En jeu, `UIKit.tex`
+    crée une `ImageTexture` avec mipmaps dont la taille est forcée à la taille logique : tout le code existant
+    (tailles, ancres, TextureRect) fonctionne sans changement, et l'image reste nette jusqu'en 4K. Filtrage linéaire
+    avec mipmaps par défaut, accrochage au pixel désactivé. En headless, substitut de la bonne taille.
+74. **Garage restylé en img2img** depuis l'ancien décor (agrandi, flou de 1,5 px, débruitage 0,8) : la disposition
+    (baies, mezzanine, mobilier) sert de coordonnées au code (baies, places des employés), elle devait rester.
+    Avec plus de flou ou moins de débruitage, l'image restait floue ; avec plus de débruitage, la disposition
+    bougeait. Composition gardée dans `art/layout/garage_layout.png`.
+75. **Peinture par masque** : les coques et ailes sont générées en rouge ; un masque doux des pixels rouges
+    (`<pièce>_paint.png`) est enregistré à côté et le shader y applique la rampe de la peinture selon la
+    luminosité du rendu (ombrage gardé), en conservant les reflets blancs. Remplace le palette-swap ; les rampes des
+    peintures (couleurs de `art/palette.json`) sont inchangées. Seuils bas (saturation 0,14) : sinon des taches
+    rouges sombres restaient visibles après une peinture.
+76. **Usure douce** : calques d'usure HD répétés sur la pièce, dosés par un bruit lissé (plus de blocs de 5 pixels)
+    et mélangés à 60 % ; l'usure du vaisseau est atténuée (× 0,75) pour que les épaves restent lisibles.
+77. **Profondeur** : ombre douce de chaque vaisseau sur le sol de sa baie (plus petite quand il monte), rebond
+    continu des vaisseaux et des employés ; décors avec vignettage et poussières lumineuses ; parallaxe légère qui
+    suit la souris sur les décors plein écran (pas au garage, dont la scène est posée exactement sur le décor, ni
+    dans les visites automatiques). Les décors passent à une échelle continue (tenir ou couvrir l'écran).
+78. **Interface lisse** : panneaux en verre sombre aux coins arrondis avec ombre portée, boutons arrondis
+    (`StyleBoxFlat`), plus de 9-slices générés ; curseur vectoriel (formes rastérisées avec 16 échantillons par
+    pixel) ; animations des employés en formes anticrénelées (outils, étincelles lumineuses, bulle de texte en
+    Lilita One) ; symboles de lecture dessinés lissés. La palette de 32 couleurs n'est plus imposée aux images.
+79. **Revue des planches 2.5D** : deux graines par asset (trois pour personnages et décors). Prompts corrigés
+    après revue : cargo (sortait en baleine), aile en flèche (épée, puis avion entier), 8 icônes devenues des
+    lettres dans un cube (prix, rouille, bosse, lustrage, panneau holographique, néon, cabine de peinture,
+    permis glacé).
+80. **Version 0.3.0** : changement visuel complet ; captures, kit Steam et export Windows régénérés.
+81. **60 i/s garantis** (demande : « le jeu rame ») : mesure intégrée `--tour=perf` (synchro verticale coupée,
+    2560×1440) : 870 à 1 400 i/s selon l'écran, pire image 5,7 ms, aucune image au-delà de 18 ms. Les à-coups
+    venaient du premier affichage d'un écran (jusqu'à 54 ms : lecture des images HD depuis la carte graphique et
+    calcul des mipmaps) et du curseur (230 ms au lancement). Les images de `assets/` sont désormais importées comme
+    `Image` (décodage sur le processeur), préparées avec leurs mipmaps sur un thread de fond dès le lancement
+    (`UIKit.warmup`) puis envoyées à la carte graphique par lots de 3 ms par image (`UIKit.pump_warmup`) :
+    ouverture d'un écran ≤ 11 ms. Curseur : 3 × 3 échantillons, pixels loin des formes ignorés, images gardées
+    en mémoire (97 ms une seule fois). La fenêtre « MovieWriter » de l'enregistrement de la bande-annonce est
+    volontairement plus lente que le temps réel : ce n'est pas le jeu.

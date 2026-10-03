@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://bg2bed7f2nfmt"
+path="res://.godot/imported/hull_yacht_paint.png-a84a02f911b58d168e2e09b9a7902c37.image"
+
+[deps]
+
+source_file="res://assets/ships/hull/hull_yacht_paint.png"
+dest_files=["res://.godot/imported/hull_yacht_paint.png-a84a02f911b58d168e2e09b9a7902c37.image"]
+
+[params]
+

@@ -3,8 +3,8 @@ extends RefCounted
 ## Taille de l'interface. La fenêtre (en pixels d'écran) est divisée par un facteur entier k, « pixels
 ## d'écran par pixel d'interface » : la résolution logique de l'interface vaut fenêtre / k (au moins
 ## 480×270, la taille de conception). Plus k est petit, plus l'interface est fine et plus il y a de place.
-## Les décors, vaisseaux et employés suivent leur propre échelle entière (pixels d'écran par pixel
-## d'image), la plus grande qui tient : ils restent grands et nets quelle que soit la taille de l'interface.
+## Les décors, vaisseaux et employés (images HD, version 2.5D) suivent leur propre échelle, continue : la plus
+## grande qui tient (ou qui couvre l'écran), jamais moins d'un pixel d'interface par pixel logique d'image.
 ## Fonctions pures (testées en headless) ; l'application à la fenêtre est faite par MainUI.
 
 ## Taille de conception (et des décors) : minimum de la résolution logique.
@@ -67,20 +67,15 @@ static func next_setting(win: Vector2i, setting: int) -> int:
 	return order[(order.find(setting) + 1) % order.size()]
 
 
-## Échelle (en pixels logiques par pixel d'image) d'une image de `content` pixels qui doit tenir
-## entièrement dans `area` (pixels logiques) : un nombre entier de pixels d'écran par pixel d'image,
-## jamais moins qu'un pixel d'interface.
-static func fit_scale(area: Vector2, content: Vector2, k: int) -> float:
-	var kk: int = maxi(1, k)
-	var p: int = floori(minf(area.x * kk / content.x, area.y * kk / content.y))
-	return float(maxi(kk, p)) / float(kk)
+## Échelle (en pixels logiques par pixel logique d'image) d'une image de `content` pixels qui doit tenir
+## entièrement dans `area` (pixels logiques), jamais moins de 1. `k` est gardé pour la compatibilité des appels.
+static func fit_scale(area: Vector2, content: Vector2, _k: int) -> float:
+	return maxf(1.0, minf(area.x / content.x, area.y / content.y))
 
 
 ## Échelle d'une image qui doit couvrir toute la zone `area` (débordement rogné), même règle.
-static func cover_scale(area: Vector2, content: Vector2, k: int) -> float:
-	var kk: int = maxi(1, k)
-	var p: int = ceili(maxf(area.x * kk / content.x, area.y * kk / content.y) - 0.0001)
-	return float(maxi(kk, p)) / float(kk)
+static func cover_scale(area: Vector2, content: Vector2, _k: int) -> float:
+	return maxf(1.0, maxf(area.x / content.x, area.y / content.y))
 
 
 ## Arrondit une position logique au pixel d'écran (k pixels d'écran par pixel logique).

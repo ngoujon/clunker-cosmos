@@ -136,23 +136,25 @@ func test_paint_ramps_valid() -> void:
 		eq(ramp.size(), 3, "rampe %s" % pid)
 
 
-func test_cursor_patterns_valid() -> void:
+func test_cursor_shapes_valid() -> void:
 	var cols: Dictionary = CursorKit.colors()
 	for id: String in ["arrow", "hand", "help"]:
-		var pat: PackedStringArray = CursorKit.pattern(id)
-		var w: int = pat[0].length()
-		var bad: Array[String] = []
-		for row: String in pat:
-			if row.length() != w:
-				bad.append("largeur " + row)
-			for i: int in row.length():
-				if row[i] != "." and not cols.has(row[i]):
-					bad.append("caractère " + row[i])
-		eq(bad.size(), 0, "motif %s : %s" % [id, str(bad)])
+		var sh: Array[Dictionary] = CursorKit.shapes(id)
+		check(not sh.is_empty(), "formes de %s" % id)
+		for s: Dictionary in sh:
+			check(cols.has(str(s["color"])), "couleur connue dans %s" % id)
+		var sz: Vector2i = CursorKit.SIZES[id]
+		var img: Image = CursorKit.image(id, 2)
+		eq(img.get_size(), sz * 2, "image ×2 de %s" % id)
 		var hs: Vector2i = CursorKit.HOTSPOTS[id]
-		check(hs.x < w and hs.y < pat.size() and pat[hs.y][hs.x] != ".", "point actif de %s sur un pixel visible" % id)
-		var img: Image = CursorKit.image(id, 3)
-		eq(img.get_size(), Vector2i(w * 3, pat.size() * 3), "image ×3 de %s" % id)
+		check(img.get_pixel(hs.x * 2 + 1, hs.y * 2 + 1).a > 0.3, "point actif de %s sur une partie visible" % id)
+		var partial: int = 0
+		for y: int in img.get_height():
+			for x: int in img.get_width():
+				var a: float = img.get_pixel(x, y).a
+				if a > 0.05 and a < 0.95:
+					partial += 1
+		check(partial > 0, "bords lissés (anticrénelage) pour %s" % id)
 		check(img.get_width() <= 256 and img.get_height() <= 256, "taille de curseur acceptée par Godot")
 	eq(CursorKit.scale_for(1), 1, "interface ×1 : curseur ×1")
 	eq(CursorKit.scale_for(2), 2, "interface ×2 : curseur ×2")
@@ -160,23 +162,15 @@ func test_cursor_patterns_valid() -> void:
 	eq(CursorKit.scale_for(5), 4, "interface ×5 : curseur ×4")
 
 
-func test_panel_edges_seamless() -> void:
-	var edge: Color = Color8(200, 200, 210)
-	var fill: Color = Color8(40, 40, 50)
-	var img: Image = Image.create(24, 24, false, Image.FORMAT_RGBA8)
-	img.fill(fill)
-	for i: int in 24:
-		img.set_pixel(i, 0, edge)
-		img.set_pixel(0, i, edge)
-	img.set_pixel(11, 0, fill)
-	img.set_pixel(12, 0, fill)
-	img.set_pixel(0, 12, fill)
-	img.set_pixel(3, 0, Color8(250, 160, 80))
-	UIKit.seamless_image(img, 6)
-	for i: int in range(6, 18):
-		eq(img.get_pixel(i, 0), edge, "bord haut continu en x=%d" % i)
-		eq(img.get_pixel(0, i), edge, "bord gauche continu en y=%d" % i)
-	eq(img.get_pixel(3, 0), Color8(250, 160, 80), "coin intact")
-	eq(img.get_pixel(12, 12), fill, "centre intact")
-	var t: Texture2D = UIKit.tex("res://assets/ui/panel.png")
-	check(t != null and UIKit.seamless_edges(t, 6) != null, "texture de panneau traitée")
+func test_hd_textures_logical_size() -> void:
+	# Les images sont stockées à DETAIL fois leur taille logique et affichées à leur taille logique.
+	var icon: Texture2D = UIKit.icon("ui_credits")
+	check(icon != null, "icône chargée")
+	eq(Vector2i(icon.get_size()), Vector2i(16, 16), "icône à 16×16 logiques")
+	var bg: Texture2D = UIKit.tex("res://assets/backgrounds/garage.png")
+	eq(Vector2i(bg.get_size()), Vector2i(480, 270), "décor à 480×270 logiques")
+	var w: Texture2D = UIKit.tex("res://assets/workers/staff_01.png")
+	eq(Vector2i(w.get_size()), Vector2i(20, 26), "personnage à 20×26 logiques")
+	check(UIKit.tex("res://assets/ships/hull/hull_shuttle_paint.png") != null, "masque de peinture de la coque")
+	var panel: StyleBox = UIKit.theme().get_stylebox("panel", "PanelContainer")
+	check(panel is StyleBoxFlat and (panel as StyleBoxFlat).corner_radius_top_left > 0, "panneaux lisses arrondis")

@@ -1,7 +1,9 @@
 class_name ShipView
 extends Control
 ## Vaisseau composé de ses 4 pièces (points d'ancrage calculés depuis l'alpha, assets/ships/anchors.json),
-## peinture par palette-swap (rampe « apprêt » → rampe de la peinture) et calque d'usure sur la coque.
+## peinture par masque (zones peintes recolorées avec la rampe de la peinture, ombrage du rendu conservé) et
+## calque d'usure sur la coque. En 2.5D, le vaisseau flotte au-dessus du sol (`floor_y`) : ombre douce portée,
+## plus petite et plus pâle quand il monte.
 
 const SHADER: Shader = preload("res://shaders/ship_part.gdshader")
 const WEAR_BY_DEFECT: Dictionary = {"d_rust": "wear_rust", "d_dent": "wear_dent", "d_breach": "wear_dent", "d_plasma_leak": "wear_scorch", "d_misfire": "wear_scorch", "d_fuel_line": "wear_scorch"}
@@ -15,6 +17,10 @@ var _root: Control = null
 var _hull_mat: ShaderMaterial = null
 var _wing_mat: ShaderMaterial = null
 var _t: float = 0.0
+## Sol sous le vaisseau (coordonnées locales, < 0 : pas d'ombre).
+var floor_y: float = -1.0
+
+static var _shadow_tex: GradientTexture2D = null
 
 
 static func anchors() -> Dictionary:
@@ -84,6 +90,11 @@ func setup(s: Ship, db: ContentDB) -> void:
 		if slot == "hull" or slot == "wings":
 			var mat: ShaderMaterial = ShaderMaterial.new()
 			mat.shader = SHADER
+			mat.set_shader_parameter("part_size", tex2.get_size())
+			var mask: Texture2D = UIKit.tex("res://assets/ships/%s/%s_paint.png" % [slot, str(p["id"])])
+			if mask != null:
+				mat.set_shader_parameter("paint_mask", mask)
+				mat.set_shader_parameter("use_paint", true)
 			_apply_ramp(mat, ramp)
 			if slot == "hull":
 				_setup_wear(mat, s, db)
@@ -147,4 +158,28 @@ func _process(delta: float) -> void:
 	if not bob or _root == null:
 		return
 	_t += delta
-	_root.position.y = floorf(sin(_t * 1.7 + float(ship_id)) * 1.2 + 0.5)
+	_root.position.y = sin(_t * 1.7 + float(ship_id)) * 1.4 - 0.4
+	if floor_y >= 0.0:
+		queue_redraw()
+
+
+## Ombre portée au sol : ellipse floue sous le vaisseau, réduite quand il s'élève.
+func _draw() -> void:
+	if floor_y < 0.0:
+		return
+	if _shadow_tex == null:
+		var g: Gradient = Gradient.new()
+		g.set_color(0, Color(0, 0, 0, 0.55))
+		g.set_color(1, Color(0, 0, 0, 0))
+		_shadow_tex = GradientTexture2D.new()
+		_shadow_tex.gradient = g
+		_shadow_tex.fill = GradientTexture2D.FILL_RADIAL
+		_shadow_tex.fill_from = Vector2(0.5, 0.5)
+		_shadow_tex.fill_to = Vector2(1.0, 0.5)
+		_shadow_tex.width = 128
+		_shadow_tex.height = 32
+	var lift: float = maxf(0.0, floor_y - size.y - (_root.position.y if _root != null else 0.0))
+	var k: float = clampf(1.0 - lift / 40.0, 0.55, 1.0)
+	var w: float = size.x * 0.95 * k
+	var h: float = maxf(4.0, size.y * 0.32) * k
+	draw_texture_rect(_shadow_tex, Rect2(size.x / 2.0 - w / 2.0, floor_y - h / 2.0, w, h), false, Color(1, 1, 1, k))

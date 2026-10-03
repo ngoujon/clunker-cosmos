@@ -1,8 +1,9 @@
 class_name UIKit
 extends RefCounted
-## Thème (9-slice pixel art générés + polices lissées) et fabriques de widgets pour l'UI construite en code.
-## Le jeu est rendu en mode « canvas_items » : les textures restent en pixels nets (filtre nearest, échelle
-## entière) et le texte est rastérisé à la résolution de la fenêtre (suréchantillonnage des polices).
+## Thème (panneaux lisses aux coins arrondis, polices lissées) et fabriques de widgets pour l'UI construite en code.
+## Le jeu est rendu en mode « canvas_items » : texte et images sont rastérisés à la résolution de la fenêtre.
+## Les images (rendu 3D stylisé, version 2.5D) sont stockées à DETAIL fois leur taille logique et affichées à
+## leur taille logique (filtrage linéaire et mipmaps) : elles restent nettes à toutes les tailles d'interface.
 
 const FONT_PATH: String = "res://assets/fonts/BarlowSemiCondensed-Medium.ttf"
 const DISPLAY_FONT_PATH: String = "res://assets/fonts/LilitaOne-Regular.ttf"
@@ -19,6 +20,12 @@ const C_BLUE: Color = Color("#5aa0e8")
 const C_DARK: Color = Color("#0d0e14")
 const C_PANEL: Color = Color("#1f2a5c")
 const C_SLATE: Color = Color("#2a2b3d")
+## Fond des panneaux (verre sombre légèrement bleuté) et liserés.
+const C_GLASS: Color = Color(0.075, 0.09, 0.16, 0.93)
+const C_GLASS_DARK: Color = Color(0.035, 0.045, 0.085, 0.88)
+const C_EDGE: Color = Color(0.5, 0.6, 0.9, 0.32)
+## Pixels d'image par pixel logique des assets (tools/hd_art.py, DETAIL).
+const DETAIL: int = 4
 
 static var _theme: Theme = null
 static var _font: FontFile = null
@@ -52,14 +59,114 @@ static func _load_font(path: String) -> FontFile:
 	return f
 
 
+## Texture d'un asset (images importées comme `Image` : décodage sur le processeur, sans relecture depuis la
+## carte graphique). Préparée d'avance par `warmup` quand c'est possible, sinon tout de suite.
 static func tex(path: String) -> Texture2D:
 	if _tex_cache.has(path):
 		return _tex_cache[path]
-	var t: Texture2D = null
-	if ResourceLoader.exists(path):
-		t = load(path) as Texture2D
+	var img: Image = null
+	_warm_mutex.lock()
+	if _warm_ready.has(path):
+		img = _warm_ready[path]
+		_warm_ready.erase(path)
+	_warm_mutex.unlock()
+	if img == null:
+		img = prepare_image(path)
+	var t: Texture2D = hd_texture(img)
 	_tex_cache[path] = t
 	return t
+
+
+## Image prête à l'affichage (copie avec mipmaps), ou null. Sans état partagé : utilisable depuis un thread.
+static func prepare_image(path: String) -> Image:
+	if not ResourceLoader.exists(path):
+		return null
+	var src: Image = load(path) as Image
+	if src == null or src.is_empty():
+		return null
+	var img: Image = src.duplicate() as Image
+	if img.is_compressed():
+		img.decompress()
+	if not img.has_mipmaps():
+		img.generate_mipmaps()
+	return img
+
+
+## Texture HD affichée à sa taille logique (taille de l'image / DETAIL), avec mipmaps pour rester nette
+## quand elle est réduite.
+static func hd_texture(img: Image) -> Texture2D:
+	if img == null:
+		return null
+	var it: ImageTexture = ImageTexture.create_from_image(img)
+	it.set_size_override(Vector2i(maxi(1, img.get_width() / DETAIL), maxi(1, img.get_height() / DETAIL)))
+	return it
+
+
+## Préchargement : toutes les images de assets/ sont décodées (avec mipmaps) sur un thread de fond dès le
+## lancement ; `pump_warmup` les envoie ensuite à la carte graphique par petits lots, dans un budget de temps
+## par image. Ouvrir un écran pour la première fois ne provoque plus d'à-coup.
+static var _warm_mutex: Mutex = Mutex.new()
+static var _warm_ready: Dictionary = {}
+static var _warm_task: int = -1
+
+
+static func warmup() -> void:
+	if _warm_task >= 0:
+		return
+	var paths: PackedStringArray = []
+	_collect_pngs("res://assets", paths)
+	_warm_task = WorkerThreadPool.add_task(func() -> void:
+		for p: String in paths:
+			var img: Image = prepare_image(p)
+			if img == null:
+				continue
+			_warm_mutex.lock()
+			_warm_ready[p] = img
+			_warm_mutex.unlock(), false, "Préchargement des images")
+
+
+## Fermeture du jeu : attend la fin du préchargement (aucun thread ne doit rester actif) et libère les textures.
+static func warmup_finish() -> void:
+	if _warm_task >= 0:
+		WorkerThreadPool.wait_for_task_completion(_warm_task)
+		_warm_task = -1
+	_warm_mutex.lock()
+	_warm_ready.clear()
+	_warm_mutex.unlock()
+	_tex_cache.clear()
+
+
+static func _collect_pngs(dir: String, out: PackedStringArray) -> void:
+	for f: String in ResourceLoader.list_directory(dir):
+		if f.ends_with("/"):
+			_collect_pngs(dir.path_join(f.trim_suffix("/")), out)
+		elif f.ends_with(".png"):
+			out.append(dir.path_join(f))
+
+
+## Crée les textures des images préchargées, sans dépasser `budget_ms` millisecondes (à appeler à chaque image).
+static func pump_warmup(budget_ms: float = 3.0) -> void:
+	if _warm_task < 0:
+		return
+	var t0: int = Time.get_ticks_usec()
+	while float(Time.get_ticks_usec() - t0) / 1000.0 < budget_ms:
+		var path: String = ""
+		var img: Image = null
+		_warm_mutex.lock()
+		if not _warm_ready.is_empty():
+			path = str(_warm_ready.keys()[0])
+			img = _warm_ready[path]
+			_warm_ready.erase(path)
+		_warm_mutex.unlock()
+		if img == null:
+			break
+		if not _tex_cache.has(path):
+			_tex_cache[path] = hd_texture(img)
+
+
+## Masque de peinture d'une pièce de vaisseau (<pièce>_paint.png, niveaux de gris), ou null.
+static func paint_mask(path: String) -> Texture2D:
+	return tex(path.get_basename() + "_paint.png")
 
 
 static func icon(id: String) -> Texture2D:
@@ -76,69 +183,30 @@ static func portrait_small(id: String) -> Texture2D:
 	return t if t != null else portrait(id)
 
 
-static func _box(path: String, margin: int, fallback: Color, border: Color, seamless: bool = false) -> StyleBox:
-	var t: Texture2D = tex(path)
-	if t != null:
-		var sb: StyleBoxTexture = StyleBoxTexture.new()
-		sb.texture = seamless_edges(t, margin) if seamless else t
-		sb.texture_margin_left = margin
-		sb.texture_margin_right = margin
-		sb.texture_margin_top = margin
-		sb.texture_margin_bottom = margin
-		sb.content_margin_left = margin
-		sb.content_margin_right = margin
-		sb.content_margin_top = maxi(2, margin - 2)
-		sb.content_margin_bottom = maxi(2, margin - 2)
-		return sb
+## Panneau lisse : fond, liseré d'un pixel, coins arrondis, ombre portée douce.
+static func _panel_box(bg: Color, border: Color, radius: int = 4, shadow: int = 3, margin: int = 6) -> StyleBoxFlat:
 	var f: StyleBoxFlat = StyleBoxFlat.new()
-	f.bg_color = fallback
+	f.bg_color = bg
 	f.border_color = border
 	f.set_border_width_all(1)
-	f.set_content_margin_all(3)
+	f.set_corner_radius_all(radius)
+	f.corner_detail = 6
+	f.anti_aliasing = true
+	f.shadow_color = Color(0, 0, 0, 0.35)
+	f.shadow_size = shadow
+	f.shadow_offset = Vector2(0, 1)
+	f.content_margin_left = margin
+	f.content_margin_right = margin
+	f.content_margin_top = maxi(2, margin - 2)
+	f.content_margin_bottom = maxi(2, margin - 2)
 	return f
 
 
-## Bords continus pour un 9-slice : la partie centrale des bords est étirée sur toute la largeur du panneau,
-## si bien qu'une encoche de 2 pixels au milieu d'un bord devenait un grand trou sur les panneaux larges.
-## Chaque ligne (et colonne) de bord prend, sur sa partie étirée, sa couleur la plus fréquente.
-static func seamless_edges(t: Texture2D, margin: int) -> Texture2D:
-	var src: Image = t.get_image()
-	if src == null or src.is_empty():
-		return t
-	var img: Image = src.duplicate() as Image
-	if img.is_compressed():
-		img.decompress()
-	seamless_image(img, margin)
-	return ImageTexture.create_from_image(img)
-
-
-static func seamless_image(img: Image, margin: int) -> void:
-	var w: int = img.get_width()
-	var h: int = img.get_height()
-	for y: int in h:
-		if y < margin or y >= h - margin:
-			var c: Color = _mode_color(img, Vector2i(margin, y), Vector2i(1, 0), w - 2 * margin)
-			for x: int in range(margin, w - margin):
-				img.set_pixel(x, y, c)
-	for x: int in w:
-		if x < margin or x >= w - margin:
-			var c: Color = _mode_color(img, Vector2i(x, margin), Vector2i(0, 1), h - 2 * margin)
-			for y: int in range(margin, h - margin):
-				img.set_pixel(x, y, c)
-
-
-static func _mode_color(img: Image, start: Vector2i, step: Vector2i, n: int) -> Color:
-	var counts: Dictionary = {}
-	var best: Color = img.get_pixelv(start)
-	var best_n: int = 0
-	for i: int in n:
-		var c: Color = img.get_pixelv(start + step * i)
-		var k: int = c.to_rgba32()
-		counts[k] = int(counts.get(k, 0)) + 1
-		if int(counts[k]) > best_n:
-			best_n = int(counts[k])
-			best = c
-	return best
+## Bouton lisse : bord inférieur plus épais (relief), coins arrondis.
+static func _button_box(bg: Color, border: Color, margin: int = 4) -> StyleBoxFlat:
+	var f: StyleBoxFlat = _panel_box(bg, border, 3, 0, margin)
+	f.border_width_bottom = 2
+	return f
 
 
 static func theme() -> Theme:
@@ -147,20 +215,19 @@ static func theme() -> Theme:
 	var t: Theme = Theme.new()
 	t.default_font = font()
 	t.default_font_size = 8
-	var panel: StyleBox = _box("res://assets/ui/panel.png", 6, C_PANEL, C_DIM, true)
-	var panel_dark: StyleBox = _box("res://assets/ui/panel_dark.png", 6, C_SLATE, C_DARK, true)
+	var panel: StyleBox = _panel_box(C_GLASS, C_EDGE)
+	var panel_dark: StyleBox = _panel_box(C_GLASS_DARK, Color(C_EDGE, 0.22), 4, 2)
 	t.set_stylebox("panel", "PanelContainer", panel)
 	t.set_stylebox("panel", "Panel", panel)
 	t.set_stylebox("panel", "PopupPanel", panel)
 	t.set_type_variation("DarkPanel", "PanelContainer")
 	t.set_stylebox("panel", "DarkPanel", panel_dark)
 	t.set_type_variation("FramePanel", "PanelContainer")
-	t.set_stylebox("panel", "FramePanel", _box("res://assets/ui/frame.png", 6, C_SLATE, C_ACCENT, true))
-	var bn: StyleBox = _box("res://assets/ui/button.png", 4, C_SLATE, C_DIM)
-	t.set_stylebox("normal", "Button", bn)
-	t.set_stylebox("hover", "Button", _box("res://assets/ui/button_hover.png", 4, C_PANEL, C_ACCENT))
-	t.set_stylebox("pressed", "Button", _box("res://assets/ui/button_pressed.png", 4, C_DARK, C_ACCENT))
-	t.set_stylebox("disabled", "Button", _box("res://assets/ui/button_disabled.png", 4, C_DARK, C_SLATE))
+	t.set_stylebox("panel", "FramePanel", _panel_box(C_GLASS, Color(C_ACCENT, 0.75), 5, 5))
+	t.set_stylebox("normal", "Button", _button_box(Color("#26325a"), Color("#4a5d94")))
+	t.set_stylebox("hover", "Button", _button_box(Color("#33447a"), Color(C_ACCENT, 0.85)))
+	t.set_stylebox("pressed", "Button", _button_box(Color("#1a2340"), C_ACCENT))
+	t.set_stylebox("disabled", "Button", _button_box(Color("#171b29"), Color("#2c3247")))
 	t.set_stylebox("focus", "Button", StyleBoxEmpty.new())
 	for b: String in ["Button", "OptionButton"]:
 		t.set_color("font_color", b, C_TEXT)
@@ -189,39 +256,31 @@ static func theme() -> Theme:
 	t.set_color("font_color", "Dim", C_DIM)
 	t.set_constant("separation", "HBoxContainer", 2)
 	t.set_constant("separation", "VBoxContainer", 2)
-	var sbg: StyleBoxFlat = StyleBoxFlat.new()
-	sbg.bg_color = C_DARK
-	var sfill: StyleBoxFlat = StyleBoxFlat.new()
-	sfill.bg_color = C_GOOD
+	var sbg: StyleBoxFlat = _round(C_DARK, 2)
+	var sfill: StyleBoxFlat = _round(C_GOOD, 2)
 	t.set_stylebox("background", "ProgressBar", sbg)
 	t.set_stylebox("fill", "ProgressBar", sfill)
 	t.set_color("font_color", "ProgressBar", C_TEXT)
 	t.set_stylebox("panel", "TooltipPanel", panel_dark)
 	t.set_color("font_color", "TooltipLabel", C_TEXT)
-	var popup: StyleBoxFlat = StyleBoxFlat.new()
-	popup.bg_color = C_SLATE
-	popup.border_color = C_DIM
-	popup.set_border_width_all(1)
+	var popup: StyleBoxFlat = _panel_box(Color("#1b2036"), C_EDGE, 3, 3, 2)
 	popup.set_content_margin_all(2)
 	t.set_stylebox("panel", "PopupMenu", popup)
 	t.set_color("font_color", "PopupMenu", C_TEXT)
 	t.set_color("font_hover_color", "PopupMenu", C_ACCENT)
-	var hov: StyleBoxFlat = StyleBoxFlat.new()
-	hov.bg_color = C_PANEL
+	var hov: StyleBoxFlat = _round(C_PANEL, 2)
 	t.set_stylebox("hover", "PopupMenu", hov)
-	var vs: StyleBoxFlat = StyleBoxFlat.new()
-	vs.bg_color = C_DIM
+	var vs: StyleBoxFlat = _round(Color(C_DIM, 0.8), 2)
 	vs.set_content_margin_all(1)
 	t.set_stylebox("grabber", "VScrollBar", vs)
 	t.set_stylebox("grabber_highlight", "VScrollBar", vs)
 	t.set_stylebox("grabber_pressed", "VScrollBar", vs)
-	var vsb: StyleBoxFlat = StyleBoxFlat.new()
-	vsb.bg_color = C_DARK
+	var vsb: StyleBoxFlat = _round(Color(C_DARK, 0.6), 2)
 	vsb.set_content_margin_all(1)
 	t.set_stylebox("scroll", "VScrollBar", vsb)
 	t.set_stylebox("scroll", "HScrollBar", vsb)
 	t.set_stylebox("grabber", "HScrollBar", vs)
-	# Curseurs (volumes) : piste sombre, partie remplie dorée, poignée pixel.
+	# Curseurs (volumes) : piste sombre, partie remplie orange, poignée ronde.
 	var track: StyleBoxFlat = _flat(C_DARK, C_DIM, 1, 0, 2)
 	t.set_stylebox("slider", "HSlider", track)
 	var filled: StyleBoxFlat = _flat(C_ORANGE, C_DIM, 1, 0, 2)
@@ -235,21 +294,41 @@ static func theme() -> Theme:
 	return t
 
 
-## Poignée de curseur 5×9 dessinée en pixels (contour sombre).
+## Poignée de curseur ronde (8×8 logiques, dessinée lissée à DETAIL fois cette taille, contour sombre).
 static func _grabber_tex(c: Color) -> ImageTexture:
-	var img: Image = Image.create(5, 9, false, Image.FORMAT_RGBA8)
-	img.fill(C_DARK)
-	for y: int in range(1, 8):
-		for x: int in range(1, 4):
-			img.set_pixel(x, y, c)
-	return ImageTexture.create_from_image(img)
+	var n: int = 8 * DETAIL
+	var img: Image = Image.create(n, n, false, Image.FORMAT_RGBA8)
+	var r: float = n / 2.0
+	for y: int in n:
+		for x: int in n:
+			var d: float = Vector2(x + 0.5 - r, y + 0.5 - r).length()
+			var a: float = clampf(r - d, 0.0, 1.0)
+			if a <= 0.0:
+				continue
+			var col: Color = C_DARK.lerp(c, clampf(r - DETAIL * 1.2 - d, 0.0, 1.0))
+			col.a = a
+			img.set_pixel(x, y, col)
+	img.generate_mipmaps()
+	var t: ImageTexture = ImageTexture.create_from_image(img)
+	t.set_size_override(Vector2i(8, 8))
+	return t
 
 
-static func _flat(bg: Color, border: Color, bw: int, ml: int, mt: int) -> StyleBoxFlat:
+static func _round(bg: Color, radius: int) -> StyleBoxFlat:
+	var f: StyleBoxFlat = StyleBoxFlat.new()
+	f.bg_color = bg
+	f.set_corner_radius_all(radius)
+	f.anti_aliasing = true
+	return f
+
+
+static func _flat(bg: Color, border: Color, bw: int, ml: int, mt: int, radius: int = 2) -> StyleBoxFlat:
 	var f: StyleBoxFlat = StyleBoxFlat.new()
 	f.bg_color = bg
 	f.border_color = border
 	f.set_border_width_all(bw)
+	f.set_corner_radius_all(radius)
+	f.anti_aliasing = true
 	f.content_margin_left = ml
 	f.content_margin_right = ml
 	f.content_margin_top = mt
@@ -259,12 +338,16 @@ static func _flat(bg: Color, border: Color, bw: int, ml: int, mt: int) -> StyleB
 
 ## Barres (haut/bas) et boutons compacts : la place est comptée en 480×270.
 static func _compact_styles(t: Theme) -> void:
-	var bar: StyleBoxFlat = _flat(C_DARK, C_SLATE, 0, 3, 1)
+	var bar: StyleBoxFlat = _flat(Color(C_DARK, 0.9), Color(C_EDGE, 0.25), 0, 3, 1, 0)
 	bar.border_width_bottom = 1
+	bar.shadow_color = Color(0, 0, 0, 0.4)
+	bar.shadow_size = 4
 	t.set_type_variation("BarPanel", "PanelContainer")
 	t.set_stylebox("panel", "BarPanel", bar)
-	var nav: StyleBoxFlat = _flat(C_DARK, C_SLATE, 0, 1, 1)
+	var nav: StyleBoxFlat = _flat(Color(C_DARK, 0.9), Color(C_EDGE, 0.25), 0, 1, 1, 0)
 	nav.border_width_top = 1
+	nav.shadow_color = Color(0, 0, 0, 0.4)
+	nav.shadow_size = 4
 	t.set_type_variation("NavPanel", "PanelContainer")
 	t.set_stylebox("panel", "NavPanel", nav)
 	t.set_type_variation("IconButton", "Button")
@@ -360,8 +443,8 @@ static func icon_rect(id: String, size: int = 16) -> TextureRect:
 	return r
 
 
-## Agrandissement entier des aperçus en pixel art (vaisseau des fiches) : celui des décors quand
-## l'interface est fine (voir ViewScale), 1 en 480×270.
+## Agrandissement entier des aperçus (vaisseau des fiches) : celui des décors quand l'interface est fine
+## (voir ViewScale), 1 en 480×270.
 static func art_zoom() -> int:
 	return maxi(1, floori(MainUI.cover_rect(Vector2(MainUI.W, MainUI.H)).size.x / float(MainUI.BASE_W) + 0.001))
 
@@ -418,9 +501,7 @@ static func bar(value: float, max_value: float, color: Color, width: int = 40, h
 	b.value = value
 	b.show_percentage = false
 	b.custom_minimum_size = Vector2(width, height)
-	var fill: StyleBoxFlat = StyleBoxFlat.new()
-	fill.bg_color = color
-	b.add_theme_stylebox_override("fill", fill)
+	b.add_theme_stylebox_override("fill", _round(color, 2))
 	b.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return b
 

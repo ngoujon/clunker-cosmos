@@ -1,15 +1,15 @@
 class_name WorkerView
 extends Control
-## Employé en pied dans la vue en coupe du garage : sprite généré (assets/workers/<portrait>.png) et
-## petite animation de travail dessinée en code au pixel près (rebond, outil, étincelles, peinture,
-## bulles). Survol : infobulle et repère au-dessus de la tête ; clic : signal `pressed` (écran Équipe).
-## L'animation s'arrête quand le jeu est en pause ; toutes les positions sont entières.
+## Employé en pied dans la vue en coupe du garage : personnage 3D pré-rendu (assets/workers/<portrait>.png) et
+## petite animation de travail dessinée en code avec des formes lissées (rebond, outil, étincelles, peinture,
+## bulles de texte). Survol : infobulle et repère au-dessus de la tête ; clic : signal `pressed` (écran Équipe).
+## L'animation s'arrête quand le jeu est en pause.
 
 signal pressed
 
 const W: int = 20
 const H: int = 26
-## Pas d'animation : 12 images/s, comme une animation pixel art.
+## Pas de la simulation de l'animation (12 images/s) ; le rebond est interpolé entre deux pas.
 const STEP: float = 1.0 / 12.0
 ## Main du personnage (regard vers la droite), relative au coin haut-gauche du sprite.
 const HAND: Vector2i = Vector2i(14, 16)
@@ -25,14 +25,6 @@ const C_GLYPH: Color = Color("#2a2b3d")
 const C_HANDLE: Color = Color("#8a5a1c")
 const C_SCREEN_A: Color = Color("#5aa0e8")
 const C_SCREEN_B: Color = Color("#4cc6c0")
-## Glyphes des bulles (3×5 ou moins), « # » = pixel plein.
-const GLYPHS: Dictionary = {
-	"?": ["###", "..#", ".##", "...", ".#."],
-	"!": ["#", "#", "#", ".", "#"],
-	"¢": [".#.", "###", "#..", "###", ".#."],
-	"z": ["###", "..#", ".#.", "#..", "###"],
-	"…": ["#.#.#"],
-}
 ## Bulles par activité (alternées).
 const BUBBLES: Dictionary = {"bid": ["¢", "!"], "sell": ["¢", "…"], "research": ["?", "!"], "idle": ["…"], "pause": ["…"]}
 
@@ -102,14 +94,16 @@ func _gui_input(ev: InputEvent) -> void:
 func _has_point(point: Vector2) -> bool:
 	if _img == null:
 		return Rect2(Vector2.ZERO, size).has_point(point)
-	var px: int = int(floorf(point.x))
-	var py: int = int(floorf(point.y)) - _bob()
-	for d: Vector2i in [Vector2i.ZERO, Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
-		var x: int = px + d.x
-		var y: int = py + d.y
+	# Image HD : DETAIL pixels d'image par pixel logique.
+	var k: float = float(_img.get_width()) / float(W)
+	var py: float = point.y - _bob()
+	for d: Vector2 in [Vector2.ZERO, Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1)]:
+		var x: float = point.x + d.x
 		if face_left:
-			x = W - 1 - x
-		if x >= 0 and y >= 0 and x < _img.get_width() and y < _img.get_height() and _img.get_pixel(x, y).a > 0.5:
+			x = W - x
+		var ix: int = int(x * k)
+		var iy: int = int((py + d.y) * k)
+		if ix >= 0 and iy >= 0 and ix < _img.get_width() and iy < _img.get_height() and _img.get_pixel(ix, iy).a > 0.5:
 			return true
 	return false
 
@@ -123,24 +117,30 @@ func _process(delta: float) -> void:
 		_acc -= STEP
 		_step()
 		stepped = true
-	if stepped:
+	if stepped or activity in ["repair", "conceal", "paint"]:
 		queue_redraw()
 
 
 # --- Animation ------------------------------------------------------------------
 
-## Décalage vertical du corps (0 ou -1).
-func _bob() -> int:
+## Décalage vertical du corps (0 ou -1), adouci entre deux pas d'animation.
+func _bob() -> float:
+	var a: int = _bob_at(_f)
+	var b: int = _bob_at(_f + 1)
+	return lerpf(float(a), float(b), clampf(_acc / STEP, 0.0, 1.0))
+
+
+func _bob_at(f: int) -> int:
 	match activity:
 		"repair":
-			return -1 if _f % 6 in [3, 4] else 0
+			return -1 if f % 6 in [3, 4] else 0
 		"conceal":
-			return -1 if _f % 8 == 4 else 0
+			return -1 if f % 8 == 4 else 0
 		"paint":
-			return -1 if _f % 16 in [0, 1] else 0
+			return -1 if f % 16 in [0, 1] else 0
 		"bid", "sell", "research":
-			return -1 if _f % 10 == 0 else 0
-	return -1 if (_f % (36 if tired else 24)) < (6 if tired else 4) else 0
+			return -1 if f % 10 == 0 else 0
+	return -1 if (f % (36 if tired else 24)) < (6 if tired else 4) else 0
 
 
 func _step() -> void:
@@ -190,125 +190,120 @@ func _bubble() -> String:
 
 # --- Dessin -------------------------------------------------------------------------
 
-## Pixel en coordonnées « regard vers la droite » (miroir si le personnage regarde à gauche).
-func _px(x: int, y: int, c: Color, w: int = 1, h: int = 1) -> void:
-	var rx: int = W - x - w if face_left else x
-	draw_rect(Rect2(rx, y, w, h), c)
+## Point en coordonnées « regard vers la droite » (miroir si le personnage regarde à gauche).
+func _m(p: Vector2) -> Vector2:
+	return Vector2(W - p.x, p.y) if face_left else p
+
+
+func _line(a: Vector2, b: Vector2, c: Color, w: float = 1.0) -> void:
+	draw_line(_m(a), _m(b), c, w, true)
 
 
 func _draw() -> void:
-	var bob: int = _bob()
+	var bob: float = _bob()
 	if _tex != null:
 		if face_left:
 			draw_set_transform(Vector2(W, 0), 0.0, Vector2(-1, 1))
 		draw_texture_rect(_tex, Rect2(0, bob, W, H), false)
 		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 	else:
-		_px(6, 4 + bob, C_STEEL, 8, 19)
+		draw_rect(Rect2(_m(Vector2(6, 4 + bob)) - (Vector2(8, 0) if face_left else Vector2.ZERO), Vector2(8, 19)), C_STEEL)
 	if rail != null:
 		draw_texture_rect(rail, Rect2(0, rail_y, W, rail.get_height()), false)
 	_draw_tool(bob)
 	for p: Dictionary in _parts:
-		var pos: Vector2 = p["p"]
-		var ps: int = int(p.get("s", 1)) if float(p["life"]) > 0.25 else 1
-		_px(int(floorf(pos.x)), int(floorf(pos.y)) + bob, p["c"], ps, ps)
+		var pos: Vector2 = (p["p"] as Vector2) + Vector2(0, bob)
+		var life: float = float(p["life"])
+		var r: float = 0.45 * float(p.get("s", 1)) * clampf(life / 0.25, 0.4, 1.0)
+		var col: Color = p["c"]
+		draw_circle(_m(pos), r * 2.2, Color(col, 0.18 * minf(1.0, life * 3.0)), true, -1.0, true)
+		draw_circle(_m(pos), r, Color(col, minf(1.0, life * 3.0)), true, -1.0, true)
 	if activity == "repair" and _f % 6 == 3:
 		# Éclair du coup de clé, au bout des mâchoires.
-		var fx: int = HAND.x + 6
-		var fy: int = HAND.y - 1 + bob
-		_px(fx, fy - 1, C_ACCENT, 1, 3)
-		_px(fx - 1, fy, C_ACCENT, 3, 1)
-		_px(fx, fy, C_WHITE)
+		var f: Vector2 = Vector2(HAND.x + 6.5, HAND.y - 0.5 + bob)
+		draw_circle(_m(f), 2.2, Color(C_ACCENT, 0.35), true, -1.0, true)
+		_line(f + Vector2(0, -1.6), f + Vector2(0, 1.6), C_ACCENT, 0.6)
+		_line(f + Vector2(-1.6, 0), f + Vector2(1.6, 0), C_ACCENT, 0.6)
+		draw_circle(_m(f), 0.6, C_WHITE, true, -1.0, true)
 	var g: String = _bubble()
 	if not g.is_empty():
 		_draw_bubble(g, bob)
 	if _hover:
 		# Repère de survol : petit triangle au-dessus de la tête.
-		_px(8, -4, C_ACCENT, 5, 1)
-		_px(9, -3, C_ACCENT, 3, 1)
-		_px(10, -2, C_ACCENT, 1, 1)
+		var tri: PackedVector2Array = [Vector2(7.5, -4.5), Vector2(12.5, -4.5), Vector2(10, -1.5)]
+		draw_colored_polygon(tri, C_ACCENT)
+		draw_polyline(PackedVector2Array([tri[0], tri[1], tri[2], tri[0]]), C_OUTLINE, 0.4, true)
 
 
-func _draw_tool(bob: int) -> void:
-	var hx: int = HAND.x
-	var hy: int = HAND.y + bob
-	var pts: Array[Array] = []
+func _draw_tool(bob: float) -> void:
+	var h: Vector2 = Vector2(HAND.x, HAND.y + bob)
 	match activity:
 		"repair":
 			if _f % 6 < 3:
 				# Clé levée : manche vertical, mâchoires en U vers le haut.
-				for k: int in 4:
-					pts.append([hx, hy - 1 - k, C_STEEL_LIGHT])
-				pts.append_array([[hx - 1, hy - 5, C_STEEL_LIGHT], [hx + 1, hy - 5, C_STEEL_LIGHT], [hx - 1, hy - 6, C_STEEL], [hx + 1, hy - 6, C_STEEL]])
+				_tool([[h + Vector2(0, -0.5), h + Vector2(0, -4.5)]], 1.2, C_STEEL_LIGHT)
+				_tool([[h + Vector2(-1, -4.5), h + Vector2(-1, -6.5)], [h + Vector2(1, -4.5), h + Vector2(1, -6.5)]], 0.9, C_STEEL)
 			else:
 				# Clé abattue vers le vaisseau (les étincelles partent des mâchoires).
-				for k: int in 4:
-					pts.append([hx + k, hy - 1, C_STEEL_LIGHT])
-				pts.append_array([[hx + 4, hy - 2, C_STEEL_LIGHT], [hx + 4, hy, C_STEEL_LIGHT], [hx + 5, hy - 2, C_STEEL], [hx + 5, hy, C_STEEL]])
+				_tool([[h + Vector2(0, -0.5), h + Vector2(4, -0.5)]], 1.2, C_STEEL_LIGHT)
+				_tool([[h + Vector2(4, -1.5), h + Vector2(6, -1.5)], [h + Vector2(4, 0.5), h + Vector2(6, 0.5)]], 0.9, C_STEEL)
 		"conceal":
 			# Spatule de mastic qui va et vient.
-			var dx: int = 1 if _f % 8 >= 4 else 0
-			pts.append_array([[hx + dx, hy - 1, C_HANDLE], [hx + 1 + dx, hy - 1, C_HANDLE]])
-			for y: int in 3:
-				pts.append_array([[hx + 2 + dx, hy - 2 + y, C_STEEL_LIGHT], [hx + 3 + dx, hy - 2 + y, C_PUTTY if y == 1 else C_STEEL_LIGHT]])
+			var dx: float = 1.0 if _f % 8 >= 4 else 0.0
+			_tool([[h + Vector2(dx, -0.5), h + Vector2(dx + 1.8, -0.5)]], 1.0, C_HANDLE)
+			_tool([[h + Vector2(dx + 2.6, -2), h + Vector2(dx + 2.6, 1)]], 1.6, C_STEEL_LIGHT)
+			_line(h + Vector2(dx + 3.4, -0.8), h + Vector2(dx + 3.4, 0.2), C_PUTTY, 0.8)
 		"paint":
 			# Pistolet à peinture : corps, buse, godet à la couleur de la peinture, poignée.
-			for x: int in 3:
-				pts.append_array([[hx + x, hy - 2, C_STEEL], [hx + x, hy - 1, C_STEEL]])
-			pts.append_array([[hx + 3, hy - 2, C_STEEL_LIGHT], [hx + 1, hy - 4, paint_color], [hx + 2, hy - 4, paint_color],
-				[hx + 1, hy - 3, paint_color], [hx + 2, hy - 3, paint_color], [hx, hy, C_HANDLE]])
+			_tool([[h + Vector2(0, -1.5), h + Vector2(3, -1.5)]], 1.8, C_STEEL)
+			_tool([[h + Vector2(3, -1.8), h + Vector2(4, -1.8)]], 0.8, C_STEEL_LIGHT)
+			_tool([[h + Vector2(0.4, -0.5), h + Vector2(0, 1)]], 0.9, C_HANDLE)
+			draw_circle(_m(h + Vector2(1.6, -3.4)), 1.4, C_OUTLINE, true, -1.0, true)
+			draw_circle(_m(h + Vector2(1.6, -3.4)), 1.0, paint_color, true, -1.0, true)
 		"bid", "sell", "research":
 			# Tablette : cadre sombre, écran qui clignote au rythme de la frappe.
 			var screen: Color = C_SCREEN_A if _f % 4 < 2 else C_SCREEN_B
-			for x: int in 4:
-				for y: int in 3:
-					var inside: bool = x in [1, 2] and y == 1
-					pts.append([hx - 1 + x, hy - 2 + y, screen if inside else C_GLYPH])
+			var r: Rect2 = Rect2(h + Vector2(-1.2, -2.6), Vector2(4.4, 3.2))
+			if face_left:
+				r.position.x = W - r.end.x
+			draw_rect(r.grow(0.4), C_OUTLINE, true, -1.0, true)
+			draw_rect(r, C_GLYPH, true, -1.0, true)
+			draw_rect(r.grow(-0.8), screen, true, -1.0, true)
 		"idle", "pause":
 			# Tasse de café (le café fume, voir _step).
-			for x: int in 3:
-				pts.append([hx + x, hy - 2, C_WHITE])
-				for y: int in 2:
-					pts.append([hx + x, hy - 1 + y, C_CUP])
-			pts.append([hx + 3, hy - 1, C_CUP])
-	_item(pts)
+			var cup: Rect2 = Rect2(h + Vector2(0, -2), Vector2(3, 3))
+			if face_left:
+				cup.position.x = W - cup.end.x
+			draw_rect(cup.grow(0.4), C_OUTLINE, true, -1.0, true)
+			draw_rect(cup, C_CUP, true, -1.0, true)
+			draw_rect(Rect2(cup.position, Vector2(3, 0.8)), C_WHITE, true, -1.0, true)
+			draw_arc(_m(h + Vector2(3.4, -0.4)), 0.9, 0.0, TAU, 12, C_CUP, 0.6, true)
 
 
-## Petit objet tenu en main : pixels [x, y, couleur] (regard à droite) cernés d'un contour sombre.
-func _item(pts: Array[Array]) -> void:
-	if pts.is_empty():
-		return
-	var filled: Dictionary = {}
-	for p: Array in pts:
-		filled[Vector2i(int(p[0]), int(p[1]))] = true
-	for p: Array in pts:
-		for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
-			var q: Vector2i = Vector2i(int(p[0]), int(p[1])) + d
-			if not filled.has(q):
-				_px(q.x, q.y, C_OUTLINE)
-	for p: Array in pts:
-		_px(int(p[0]), int(p[1]), p[2] as Color)
+## Outil tenu en main : segments [a, b] d'épaisseur `w`, cernés d'un contour sombre.
+func _tool(segs: Array, w: float, c: Color) -> void:
+	for sg: Array in segs:
+		_line(sg[0], sg[1], C_OUTLINE, w + 0.9)
+	for sg: Array in segs:
+		_line(sg[0], sg[1], c, w)
 
 
-func _draw_bubble(g: String, bob: int) -> void:
-	var rows: Array = GLYPHS.get(g, ["?"])
-	var gw: int = str(rows[0]).length()
-	var gh: int = rows.size()
-	var bw: int = gw + 4
-	var bh: int = gh + 4
-	var bx: int = 12
-	var by: int = -bh - 1 + bob
-	_px(bx + 1, by, C_OUTLINE, bw - 2, 1)
-	_px(bx + 1, by + bh - 1, C_OUTLINE, bw - 2, 1)
-	_px(bx, by + 1, C_OUTLINE, 1, bh - 2)
-	_px(bx + bw - 1, by + 1, C_OUTLINE, 1, bh - 2)
-	_px(bx + 1, by + 1, C_WHITE, bw - 2, bh - 2)
-	_px(bx + 1, by + bh, C_OUTLINE, 2, 1)
-	_px(bx + 1, by + bh - 1, C_WHITE, 1, 1)
-	# Le texte n'est jamais en miroir : position calculée depuis le bord gauche réel de la bulle.
-	var left: int = W - bx - bw if face_left else bx
-	for r: int in gh:
-		var line: String = str(rows[r])
-		for c: int in line.length():
-			if line[c] == "#":
-				draw_rect(Rect2(left + 2 + c, by + 2 + r, 1, 1), C_GLYPH)
+func _draw_bubble(g: String, bob: float) -> void:
+	var f: Font = UIKit.display_font()
+	var fs: int = 7
+	var tw: float = f.get_string_size(g, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
+	var bw: float = maxf(7.0, tw + 4.0)
+	var bh: float = 8.0
+	# Le texte n'est jamais en miroir : bulle placée depuis son bord gauche réel.
+	var left: float = W - 12.0 - bw if face_left else 12.0
+	var top: float = -bh - 1.0 + bob
+	var sb: StyleBoxFlat = StyleBoxFlat.new()
+	sb.bg_color = C_WHITE
+	sb.border_color = C_OUTLINE
+	sb.set_border_width_all(1)
+	sb.set_corner_radius_all(3)
+	sb.anti_aliasing = true
+	var tail_x: float = left + (bw - 2.5 if face_left else 2.5)
+	draw_colored_polygon(PackedVector2Array([Vector2(tail_x - 1.5, top + bh - 1), Vector2(tail_x + 1.5, top + bh - 1), Vector2(tail_x, top + bh + 1.8)]), C_OUTLINE)
+	draw_style_box(sb, Rect2(left, top, bw, bh))
+	draw_string(f, Vector2(left + (bw - tw) / 2.0, top + bh - 2.0), g, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, C_GLYPH)

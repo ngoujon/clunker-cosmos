@@ -1,6 +1,6 @@
 # Clunker Cosmos — Game Design Document
 
-*Jeu de gestion 2D en pixel art pour PC (Steam). Godot 4.7.1, GDScript typé.*
+*Jeu de gestion en 2.5D (rendu 3D stylisé pré-calculé) pour PC (Steam). Godot 4.7.1, GDScript typé.*
 
 ## 1. Pitch
 
@@ -19,7 +19,7 @@ sessions courtes ou longues. Ce n'est **pas un idle** : rien n'avance quand le j
 ```
  Enchères ──► Garage ──► Personnalisation ──► Vente ──► Crédits/RP/Réputation ──► Réinvestissement
  (scan payant,  (réparer /   (peinture par       (négociation,     (recherche, embauches,
-  état caché)    maquiller /  palette-swap,       contre-offres,     agrandissement, dette)
+  état caché)    maquiller /  masque peinture,      contre-offres,     agrandissement, dette)
                  déclarer)    options)            SAV, contrôles)
 ```
 
@@ -31,7 +31,7 @@ sessions courtes ou longues. Ce n'est **pas un idle** : rien n'avance quand le j
    **réparé** (coût en pièces + heures de travail), **maquillé** (bien moins cher et plus rapide, mais le défaut
    reste) ou **déclaré** (vendu en l'état, prix réduit). Les défauts dangereux ne peuvent pas être maquillés.
    Réparer peut révéler d'autres défauts cachés du même système.
-3. **Personnaliser** : 12 peintures (shader palette-swap des 3 couleurs « apprêt » réservées) et 12 options
+3. **Personnaliser** : 12 peintures (shader : zones peintes du rendu recolorées selon un masque, ombrage conservé) et 12 options
    (spoiler, néons, minibar…), certaines à débloquer dans l'arbre.
 4. **Vendre** (écran Ventes) : 12 espèces aliens avec budget, classes/couleurs/options préférées et patience
    (refus ⇒ départ). On propose un prix : accepté, **contre-offre** (jusqu'à +10 %) ou refus. La valeur perçue
@@ -119,18 +119,22 @@ et les clients des 12 espèces.
 
 ## 9. Direction artistique
 
-- Conception en **480×270**, pixel art au plus proche voisin à l'échelle entière ; la résolution de l'interface
-  s'adapte à l'écran (853×480 en 1440p, 640×360 en 1080p par défaut, réglable) pendant que décors et vaisseaux
-  gardent leur propre échelle entière. Textes en **Barlow Semi Condensed** (lisible, non pixel), logo et titres
-  en **Lilita One**, rastérisés à la résolution de l'écran.
-- **Palette unique de 32 couleurs** conçue pour le projet, dont 3 couleurs « apprêt » réservées aux zones
-  peignables ; peinture appliquée en jeu par **shader palette-swap**.
+- **2.5D** (version 0.3, à la place du pixel art) : vaisseaux, personnages, icônes et décors en **rendu 3D
+  stylisé pré-calculé** (matières lisses, éclairage doux), profondeur par les ombres portées des vaisseaux au sol,
+  la parallaxe des décors de lieux qui suit la souris, le vignettage et des poussières lumineuses.
+- Conception en **480×270** ; la résolution de l'interface s'adapte à l'écran (853×480 en 1440p, 640×360 en
+  1080p par défaut, réglable). Les images sont stockées à **4× leur taille logique** et affichées lissées
+  (mipmaps) : nettes à toutes les tailles. Décors à l'échelle continue (tenir ou couvrir l'écran). Textes en
+  **Barlow Semi Condensed**, logo et titres en **Lilita One**, rastérisés à la résolution de l'écran.
+- Peinture des vaisseaux : les zones peintes en rouge dans le rendu forment un **masque** ; le shader les recolore
+  avec la rampe de la peinture choisie en gardant ombrage et reflets.
 - Vaisseaux **modulaires** : 8 coques, 6 moteurs, 6 cockpits, 4 paires d'ailes avec **points d'ancrage**
-  calculés depuis l'alpha ; 4 **calques d'usure** (rouille, rayures, bosses, brûlures) découpés sur la coque.
+  calculés depuis l'alpha ; 4 **calques d'usure** (rouille, rayures, bosses, brûlures) dosés par un bruit lissé.
 - 12 portraits de clients, 10 employés (portrait et personnage en pied animé à son poste), 4 personnages ;
-  > 100 icônes 16×16 ; garage en coupe et 5 fonds de lieux ; UI 9-slice ; curseur de souris en pixel art.
-- Production : génération locale (ComfyUI, Z-Image-Turbo, Apache-2.0) puis réduction/quantification par
-  `tools/pixelize.py`. Voir `docs/AI_DISCLOSURE.md` et `docs/MODEL_LICENSES.md`.
+  > 100 icônes ; garage en coupe et 5 fonds de lieux ; panneaux lisses aux coins arrondis ; curseur vectoriel.
+- Production : génération locale (ComfyUI, Z-Image-Turbo, Apache-2.0 ; garage restylé en img2img depuis l'ancien
+  décor pour garder sa disposition) puis détourage et réduction par `tools/hd_art.py`. Voir
+  `docs/AI_DISCLOSURE.md` et `docs/MODEL_LICENSES.md`.
 
 ## 10. Interface
 

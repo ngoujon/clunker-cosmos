@@ -81,6 +81,9 @@ var _ui_scale_button: Button = null
 
 
 func _ready() -> void:
+	# Images HD décodées en tâche de fond dès le lancement (voir UIKit.warmup) ; pas en headless (tests).
+	if DisplayServer.get_name() != "headless":
+		UIKit.warmup()
 	theme = UIKit.theme()
 	position = Vector2.ZERO
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -147,7 +150,12 @@ func apply_view(force: bool = false) -> void:
 	_relayout()
 
 
+func _exit_tree() -> void:
+	UIKit.warmup_finish()
+
+
 func _process(_delta: float) -> void:
+	UIKit.pump_warmup()
 	if _resize_at_ms > 0 and Time.get_ticks_msec() - _resize_at_ms >= RESIZE_DELAY_MS:
 		apply_view()
 
@@ -166,7 +174,7 @@ func _relayout() -> void:
 	place_background()
 
 
-## Rectangle d'une image de décor 480×270 qui couvre toute la zone (pixels nets, débordement rogné).
+## Rectangle d'une image de décor 480×270 qui couvre toute la zone (débordement rogné).
 static func cover_rect(area: Vector2) -> Rect2:
 	var s: float = ViewScale.cover_scale(area, Vector2(BASE_W, BASE_H), K)
 	var sz: Vector2 = Vector2(BASE_W, BASE_H) * s
@@ -366,6 +374,7 @@ func place_background() -> void:
 		r = (screens[current] as GameScreen).art_rect()
 	if r.size == Vector2.ZERO:
 		r = cover_rect(Vector2(W, H))
+	bg.parallax = not (game_layer.visible and current == "garage")
 	bg.rect = r
 	bg.queue_redraw()
 
@@ -813,14 +822,65 @@ func quit_game() -> void:
 	get_tree().quit()
 
 
-## Décor plein écran : l'image est dessinée dans `rect` (pixels d'interface), au plus proche voisin.
+## Décor plein écran (2.5D) : l'image est dessinée dans `rect` (pixels d'interface), avec un vignettage et des
+## poussières lumineuses en suspension. `parallax` : le décor glisse légèrement à l'opposé de la souris
+## (agrandi de PARALLAX_MARGIN pour ne jamais montrer ses bords) ; désactivé au garage, dont la scène est
+## posée exactement sur le décor, et dans les visites automatiques.
 class Backdrop extends Control:
+	const PARALLAX_MARGIN: float = 8.0
+	const MOTES: int = 36
 	var texture: Texture2D = null
 	var rect: Rect2 = Rect2()
+	var parallax: bool = false
+	var _offset: Vector2 = Vector2.ZERO
+	var _t: float = 0.0
+	var _motes: Array[Vector3] = []
+	var _vignette: GradientTexture2D = null
+
+	func _ready() -> void:
+		var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+		rng.seed = 7
+		for i: int in MOTES:
+			_motes.append(Vector3(rng.randf(), rng.randf(), rng.randf()))
+		var g: Gradient = Gradient.new()
+		g.set_color(0, Color(0, 0, 0, 0))
+		g.set_color(1, Color(0.0, 0.0, 0.02, 0.5))
+		g.add_point(0.55, Color(0, 0, 0, 0))
+		_vignette = GradientTexture2D.new()
+		_vignette.gradient = g
+		_vignette.fill = GradientTexture2D.FILL_RADIAL
+		_vignette.fill_from = Vector2(0.5, 0.5)
+		_vignette.fill_to = Vector2(1.05, 1.05)
+		_vignette.width = 256
+		_vignette.height = 144
+
+	func _process(delta: float) -> void:
+		_t += delta
+		var target: Vector2 = Vector2.ZERO
+		if parallax and Game.persist and size.x > 0.0:
+			var m: Vector2 = (get_local_mouse_position() / size - Vector2(0.5, 0.5)).clampf(-0.5, 0.5)
+			target = -m * 2.0 * PARALLAX_MARGIN * 0.8
+		_offset = _offset.lerp(target, clampf(delta * 3.0, 0.0, 1.0))
+		queue_redraw()
 
 	func _draw() -> void:
 		if texture != null and rect.size != Vector2.ZERO:
-			draw_texture_rect(texture, rect, false)
+			var r: Rect2 = rect
+			if parallax:
+				var grow: Vector2 = Vector2(PARALLAX_MARGIN, PARALLAX_MARGIN * rect.size.y / rect.size.x)
+				r = Rect2(rect.position - grow + _offset, rect.size + grow * 2.0)
+			draw_texture_rect(texture, r, false)
+		# Poussières : petits points lumineux qui montent lentement en ondulant.
+		for i: int in _motes.size():
+			var mo: Vector3 = _motes[i]
+			var speed: float = 0.006 + mo.z * 0.01
+			var y: float = fposmod(mo.y - _t * speed, 1.0)
+			var x: float = mo.x + sin(_t * 0.4 + mo.z * 6.0) * 0.01
+			var a: float = 0.08 + 0.12 * (0.5 + 0.5 * sin(_t * (0.8 + mo.z) + float(i)))
+			var p: Vector2 = Vector2(x * size.x, y * size.y) + _offset * (0.5 + mo.z)
+			draw_circle(p, 0.5 + mo.z * 0.9, Color(1.0, 0.92, 0.75, a), true, -1.0, true)
+		if _vignette != null:
+			draw_texture_rect(_vignette, Rect2(Vector2.ZERO, size), false)
 
 
 func _save_screenshot() -> void:

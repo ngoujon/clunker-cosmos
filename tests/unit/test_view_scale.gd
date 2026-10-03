@@ -54,14 +54,14 @@ func test_next_setting_cycles_through_choices() -> void:
 	eq(ViewScale.next_setting(FHD, 7), 0, "réglage hors liste : retour à Auto")
 
 
-func test_art_scales_are_whole_screen_pixels() -> void:
-	# 1440p, interface ×3 : le garage (480×230 pixels d'image) tient dans 853×440 → ×5 à l'écran.
+func test_art_scales_fit_and_cover() -> void:
+	# 1440p, interface ×3 : le garage (480×230 pixels d'image) tient exactement dans 853×440.
 	var s: float = ViewScale.fit_scale(Vector2(853, 440), Vector2(480, 230), 3)
-	near(s * 3.0, 5.0, 0.0001, "garage : 5 pixels d'écran par pixel d'image")
-	check(480.0 * s <= 853.0 and 230.0 * s <= 440.0, "garage entièrement visible")
+	check(480.0 * s <= 853.001 and 230.0 * s <= 440.001, "garage entièrement visible")
+	check(absf(480.0 * s - 853.0) < 0.01 or absf(230.0 * s - 440.0) < 0.01, "garage aussi grand que possible")
 	var c: float = ViewScale.cover_scale(Vector2(853, 480), Vector2(480, 270), 3)
-	near(c * 3.0, 6.0, 0.0001, "fond : 6 pixels d'écran par pixel d'image")
-	check(480.0 * c >= 853.0 and 270.0 * c >= 480.0, "fond couvrant")
+	check(480.0 * c >= 852.999 and 270.0 * c >= 479.999, "fond couvrant")
+	check(absf(480.0 * c - 853.0) < 0.01 or absf(270.0 * c - 480.0) < 0.01, "fond rogné au minimum")
 	near(ViewScale.cover_scale(Vector2(480, 270), Vector2(480, 270), 4), 1.0, 0.0001, "taille exacte : ×1")
-	near(ViewScale.fit_scale(Vector2(480, 230), Vector2(480, 230), 4), 1.0, 0.0001, "jamais plus petit qu'un pixel d'interface")
+	near(ViewScale.fit_scale(Vector2(400, 200), Vector2(480, 230), 4), 1.0, 0.0001, "jamais plus petit qu'un pixel d'interface")
 	eq(ViewScale.snap(Vector2(10.4, 3.9), 3), Vector2(31.0 / 3.0, 11.0 / 3.0), "arrondi au pixel d'écran")

@@ -53,7 +53,15 @@ def find_godot(download: bool = True) -> Path:
     raise FileNotFoundError("archive Godot sans exécutable console")
 
 
+def ignore_work_dirs() -> None:
+    """build/ (images de la bande-annonce, captures temporaires) et exports/ ne sont jamais importés par Godot."""
+    for d in ("build", "exports"):
+        (ROOT / d).mkdir(exist_ok=True)
+        (ROOT / d / ".gdignore").touch()
+
+
 def run(args: list[str], timeout: float = 600, headless: bool = True) -> subprocess.CompletedProcess[str]:
+    ignore_work_dirs()
     exe = find_godot()
     cmd = [str(exe)] + (["--headless"] if headless else []) + ["--path", str(ROOT)] + args
     return subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=timeout)
